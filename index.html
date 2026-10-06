@@ -11,16 +11,16 @@
    Views are toggled by the URL hash so the phone back button works. */
 :root {
   --bg:#FBF6F1; --surface:#FFFFFF; --fg:#3E322C; --muted:#8A7263; --line:#E6D7C8;
-  --gold:#B08D57; --deep:#4A3B33; --ok:#1F7A4D; --okfg:#FFFFFF;
+  --gold:#B08D57; --deep:#4A3B33; --ok:#1F7A4D; --okfg:#FFFFFF; --del:#C0392B;
   --display:"Caladea",Georgia,"Times New Roman",serif;
   --body:"Carlito","Segoe UI",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg:#1A1512; --surface:#231C18; --fg:#EFE4DA; --muted:#B8A392; --line:#3A2E27;
-  --gold:#D4AF78; --deep:#F3E9E0; --ok:#2E9A63; --okfg:#FFFFFF; color-scheme:dark; } }
+  --gold:#D4AF78; --deep:#F3E9E0; --ok:#2E9A63; --okfg:#FFFFFF; --del:#F0857A; color-scheme:dark; } }
 :root[data-theme="dark"] {
   --bg:#1A1512; --surface:#231C18; --fg:#EFE4DA; --muted:#B8A392; --line:#3A2E27;
-  --gold:#D4AF78; --deep:#F3E9E0; --ok:#2E9A63; --okfg:#FFFFFF; color-scheme:dark; }
+  --gold:#D4AF78; --deep:#F3E9E0; --ok:#2E9A63; --okfg:#FFFFFF; --del:#F0857A; color-scheme:dark; }
 * { box-sizing:border-box; }
 body { background:var(--bg); color:var(--fg); font-family:var(--body); margin:0;
        padding-inline:16px; padding-block:0 104px; }
@@ -98,8 +98,9 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 .rtxt .s.miss { color:#B4551F; }
 .rp { font-family:var(--display); font-size:16px; color:var(--deep); font-variant-numeric:tabular-nums;
       white-space:nowrap; }
-.rx { font:inherit; font-size:17px; line-height:1; color:var(--muted); background:none; border:0;
-      cursor:pointer; padding:4px 2px; }
+.rx { font:inherit; font-size:19px; line-height:1; color:var(--del); background:none; border:0;
+      cursor:pointer; padding:4px 6px; border-radius:3px; }
+.rx:hover, .rx:focus-visible { background:var(--del); color:#fff; }
 .tot { display:flex; justify-content:space-between; align-items:baseline; padding:18px 0 4px; }
 .tot span { font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
 .tot b { font-family:var(--display); font-weight:400; font-size:26px; color:var(--deep);
