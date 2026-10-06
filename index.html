@@ -52,6 +52,9 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .back { font:inherit; font-size:13px; color:var(--muted); background:none; border:0; cursor:pointer;
         padding:0; text-decoration:none; }
 .back:hover { color:var(--gold); }
+.back.pill { border:1px solid var(--line); border-radius:999px; padding:7px 15px;
+             background:var(--surface); white-space:nowrap; }
+.back.pill:hover { border-color:var(--gold); color:var(--gold); }
 .ctitle { font-family:var(--display); font-size:20px; color:var(--deep); margin:0; flex:1; min-width:0; }
 .filters { display:flex; gap:8px; flex-wrap:wrap; width:100%; }
 .chip { font:inherit; font-size:12.5px; letter-spacing:.06em; padding:6px 13px; border-radius:999px;
@@ -137,7 +140,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
     <header>
       <p class="eyebrow">Catalogue 2026</p>
       <h1>KOUTA DEALS</h1>
-      <p class="tag">Sleepwear &middot; Comfort &middot; Elegance</p>
+      <p class="tag">Iconic &middot; Chic &middot; Timeless</p>
       <div class="rule"></div>
       <p class="tag">Choisissez une cat&eacute;gorie</p>
     </header>
@@ -145,21 +148,21 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
 <a class="tile" href="#/c/0">
   <span class="tshot"><img src="img/chemise-de-nuit-lalaiz-noire-undiz-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
   <span class="tname">Nuit &amp; Cocooning</span>
-  <span class="tnum">46 modèles</span>
+  <span class="tnum">44 modèles</span>
 </a>
 <a class="tile" href="#/c/1">
-  <span class="tshot"><img src="img/collant-transparent-30-deniers-motifs-petits-coeurs-calzedon-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
+  <span class="tshot"><img src="img/bas-noirs-autofixants-calzedonia-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
   <span class="tname">Collants &amp; bas</span>
-  <span class="tnum">5 modèles</span>
+  <span class="tnum">10 modèles</span>
 </a>
 <a class="tile" href="#/c/2">
   <span class="tshot"><img src="img/tablier-la-bretagne-fran-oise-saget-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Cuisine</span>
+  <span class="tname">Cuisine &amp; Maison</span>
   <span class="tnum">1 modèle</span>
 </a>
 <a class="tile" href="#/c/3">
   <span class="tshot"><img src="img/pack-chaussettes-women-s-secret-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Lingerie</span>
+  <span class="tname">Chaussettes</span>
   <span class="tnum">1 modèle</span>
 </a></nav>
     <footer>
@@ -171,7 +174,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
 
   <section id="cat" hidden>
     <div class="bar">
-      <a class="back" href="#/">&lsaquo; Cat&eacute;gories</a>
+      <a class="back pill" href="#/">&larr; Toutes les cat&eacute;gories</a>
       <h2 class="ctitle" id="ctitle"></h2>
       <div class="filters" id="filters"></div>
     </div>
@@ -598,20 +601,6 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama style chemise à carreaux et petits pois" data-brand="Women&#x27;s Secret"
-         data-price="250" data-label="250 MAD">
-  <div class="shot"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-1.jpg" alt="Pyjama style chemise à carreaux et petits pois" loading="lazy" width="1000" height="1333">
-    <span class="tick" aria-hidden="true">&#10003;</span></div>
-  <div class="gallery"><button class="th on" data-src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-1.jpg" aria-label="Photo 1"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-1-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-1-2.jpg" aria-label="Photo 2"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-1-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-2.jpg" aria-label="Photo 3"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-3.jpg" aria-label="Photo 4"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-3-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-4.jpg" aria-label="Photo 5"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-4-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret.jpg" aria-label="Photo 6"><img src="img/pyjama-style-chemise-carreaux-et-petits-pois-womens-secret-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
-  <div class="meta">
-    <p class="brand">Women&#x27;s Secret</p>
-    <h3>Pyjama style chemise à carreaux et petits pois</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
-    <p class="price">250 MAD</p>
-    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
-  </div>
-</article>
-<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
          data-name="Pyjama super soft patchwork" data-brand="Women&#x27;s Secret"
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-super-soft-patchwork-women-s-secret-1.jpg" alt="Pyjama super soft patchwork" loading="lazy" width="1000" height="1333">
@@ -705,20 +694,6 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long en polaire rose</h3>
     <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
-    <p class="price">250 MAD</p>
-    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
-  </div>
-</article>
-<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama long en velours à motifs pingouins" data-brand="Women&#x27;s Secret"
-         data-price="250" data-label="250 MAD">
-  <div class="shot"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma.jpg" alt="Pyjama long en velours à motifs pingouins" loading="lazy" width="1000" height="1333">
-    <span class="tick" aria-hidden="true">&#10003;</span></div>
-  <div class="gallery"><button class="th on" data-src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma.jpg" aria-label="Photo 1"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-2.jpg" aria-label="Photo 2"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-3.jpg" aria-label="Photo 3"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-3-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-4.jpg" aria-label="Photo 4"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-4-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-5.jpg" aria-label="Photo 5"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-5-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-6.jpg" aria-label="Photo 6"><img src="img/pyjama-long-en-velours-motifs-pingouins-women-s-secret-250ma-6-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
-  <div class="meta">
-    <p class="brand">Women&#x27;s Secret</p>
-    <h3>Pyjama long en velours à motifs pingouins</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -822,6 +797,76 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
+         data-name="Bas Noirs Autofixants" data-brand="Calzedonia"
+         data-price="100" data-label="100 MAD">
+  <div class="shot"><img src="img/bas-noirs-autofixants-calzedonia-1.jpg" alt="Bas Noirs Autofixants" loading="lazy" width="1000" height="1333">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="img/bas-noirs-autofixants-calzedonia-1.jpg" aria-label="Photo 1"><img src="img/bas-noirs-autofixants-calzedonia-1-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/bas-noirs-autofixants-calzedonia.jpg" aria-label="Photo 2"><img src="img/bas-noirs-autofixants-calzedonia-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Bas Noirs Autofixants</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <p class="price">100 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Collants &amp; bas" data-season="*"
+         data-name="Collant marron transparent à losanges et pois" data-brand="Calzedonia"
+         data-price="120" data-label="120 MAD">
+  <div class="shot"><img src="img/collant-marron-transparent-losanges-et-pois-calzedonia-1.jpg" alt="Collant marron transparent à losanges et pois" loading="lazy" width="1000" height="1333">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="img/collant-marron-transparent-losanges-et-pois-calzedonia-1.jpg" aria-label="Photo 1"><img src="img/collant-marron-transparent-losanges-et-pois-calzedonia-1-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-marron-transparent-losanges-et-pois-calzedonia-1-2.jpg" aria-label="Photo 2"><img src="img/collant-marron-transparent-losanges-et-pois-calzedonia-1-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-marron-transparent-losanges-et-pois-calzedonia.jpg" aria-label="Photo 3"><img src="img/collant-marron-transparent-losanges-et-pois-calzedonia-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Collant marron transparent à losanges et pois</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <p class="price">120 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Collants &amp; bas" data-season="*"
+         data-name="Collant Noir transparent à motifs de losanges et à pois" data-brand="Calzedonia"
+         data-price="100" data-label="100 MAD">
+  <div class="shot"><img src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon.jpg" alt="Collant Noir transparent à motifs de losanges et à pois" loading="lazy" width="1000" height="1333">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon.jpg" aria-label="Photo 1"><img src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon-2.jpg" aria-label="Photo 2"><img src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon-3.jpg" aria-label="Photo 3"><img src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon-3-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Collant Noir transparent à motifs de losanges et à pois</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <p class="price">100 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Collants &amp; bas" data-season="*"
+         data-name="Collant noir à losanges" data-brand="Calzedonia"
+         data-price="120" data-label="120 MAD">
+  <div class="shot"><img src="img/collant-noir-losanges-calzedonia-1.jpg" alt="Collant noir à losanges" loading="lazy" width="1000" height="1333">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="img/collant-noir-losanges-calzedonia-1.jpg" aria-label="Photo 1"><img src="img/collant-noir-losanges-calzedonia-1-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-noir-losanges-calzedonia-1-2.jpg" aria-label="Photo 2"><img src="img/collant-noir-losanges-calzedonia-1-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-noir-losanges-calzedonia-2.jpg" aria-label="Photo 3"><img src="img/collant-noir-losanges-calzedonia-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-noir-losanges-calzedonia.jpg" aria-label="Photo 4"><img src="img/collant-noir-losanges-calzedonia-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Collant noir à losanges</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <p class="price">120 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Collants &amp; bas" data-season="*"
+         data-name="Collant Pois Dégradé" data-brand="Calzedonia"
+         data-price="100" data-label="100 MAD">
+  <div class="shot"><img src="img/collant-pois-d-grad-calzedonia-1.jpg" alt="Collant Pois Dégradé" loading="lazy" width="1000" height="1333">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="img/collant-pois-d-grad-calzedonia-1.jpg" aria-label="Photo 1"><img src="img/collant-pois-d-grad-calzedonia-1-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-pois-d-grad-calzedonia-1-2.jpg" aria-label="Photo 2"><img src="img/collant-pois-d-grad-calzedonia-1-2-t.jpg" alt="" loading="lazy" width="56" height="74"></button><button class="th" data-src="img/collant-pois-d-grad-calzedonia.jpg" aria-label="Photo 3"><img src="img/collant-pois-d-grad-calzedonia-t.jpg" alt="" loading="lazy" width="56" height="74"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Collant Pois Dégradé</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <p class="price">100 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Collants &amp; bas" data-season="*"
          data-name="Collant Transparent 30 Deniers à motifs Petits Coeurs" data-brand="Calzedonia"
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collant-transparent-30-deniers-motifs-petits-coeurs-calzedon.jpg" alt="Collant Transparent 30 Deniers à motifs Petits Coeurs" loading="lazy" width="1000" height="1333">
@@ -891,7 +936,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="cuisine" data-season=""
+<article class="card" data-cat="Cuisine &amp; Maison" data-season=""
          data-name="Tablier La Bretagne" data-brand="Françoise Saget"
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/tablier-la-bretagne-fran-oise-saget-1.jpg" alt="Tablier La Bretagne" loading="lazy" width="1000" height="1333">
@@ -900,12 +945,12 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Françoise Saget</p>
     <h3>Tablier La Bretagne</h3>
-    
+    <label class="sz"><span>Taille</span><select data-size><option value="Unique">Unique</option></select></label>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="lingerie" data-season=""
+<article class="card" data-cat="Chaussettes" data-season=""
          data-name="Pack chaussettes" data-brand="Women&#x27;s Secret"
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pack-chaussettes-women-s-secret-1.jpg" alt="Pack chaussettes" loading="lazy" width="1000" height="1333">
@@ -914,7 +959,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pack chaussettes</h3>
-    
+    <label class="sz"><span>Taille</span><select data-size><option value="Unique">Unique</option></select></label>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -923,7 +968,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
 
   <section id="cart" hidden>
     <div class="bar">
-      <button class="back" id="cback">&lsaquo; Continuer mes achats</button>
+      <button class="back pill" id="cback">&larr; Continuer mes achats</button>
       <h2 class="ctitle">Ma commande</h2>
     </div>
     <ul class="rows" id="rows"></ul>
@@ -942,7 +987,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
 </div>
 <script>
 (function(){
-  var WA='212661793236', CUR='MAD', CATS=['Nuit & Cocooning', 'Collants & bas', 'Cuisine', 'Lingerie'], RAW=['Nuit & Cocooning', 'Collants & bas', 'cuisine', 'lingerie'];
+  var WA='212661793236', CUR='MAD', CATS=['Nuit & Cocooning', 'Collants & bas', 'Cuisine & Maison', 'Chaussettes'], RAW=['Nuit & Cocooning', 'Collants & bas', 'Cuisine & Maison', 'Chaussettes'];
   var SEAS=['Été', 'Demi-saison', 'Hiver'];
   var home=document.getElementById('home'), catv=document.getElementById('cat'),
       cartv=document.getElementById('cart');
