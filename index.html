@@ -1045,12 +1045,10 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     var t=0, lines=[];
     list.forEach(function(c){
       var q=qtyOf(c); t+=lineTotal(c);
-      var sz=sizeOf(c), det=[];
-      if(hasSize(c)) det.push(sz?('taille '+sz):'taille \u00e0 pr\u00e9ciser');
-      det.push('qt\u00e9 '+q);
+      var sz=sizeOf(c), det='';
+      if(hasSize(c)) det=' ('+(sz?('taille '+sz):'taille \u00e0 pr\u00e9ciser')+')';
       lines.push('\u2022 '+(q>1?q+' \u00d7 ':'')+c.dataset.brand+' \u2014 '+c.dataset.name
-                 +' ('+det.join(', ')+')'
-                 +(c.dataset.price?' \u2014 '+money(lineTotal(c)):''));
+                 +det+(c.dataset.price?' \u2014 '+money(lineTotal(c)):''));
     });
     return {total:t, text:'Bonjour Kouta Deals, je souhaite commander :\n'+lines.join('\n')
                         +'\n\nTotal : '+money(t)};
