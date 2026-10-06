@@ -6,6 +6,7 @@
 <title>Kouta Deals — Boutique</title>
 <meta name="description" content="Kouta Deals — pyjamas, collants et linge de maison. Commandes par WhatsApp.">
 <meta name="theme-color" content="#FBF6F1">
+<meta name="format-detection" content="telephone=no">
 <style>
 /* three views in one page: category menu, a category's products, the basket.
    Views are toggled by the URL hash so the phone back button works. */
@@ -81,7 +82,18 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .meta { padding:12px 14px 16px; display:flex; flex-direction:column; gap:8px; }
 .brand { margin:0; font-size:9.5px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); }
 h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.25; margin:0; color:var(--deep); }
-.sz { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted); }
+.opts { display:flex; align-items:center; gap:10px; }
+.sz { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted); flex:1; min-width:0; }
+.sz.solo { flex:0 0 auto; }
+.qty { display:flex; align-items:center; flex:0 0 auto; border:1px solid var(--line);
+       border-radius:2px; background:var(--bg); overflow:hidden; }
+.qty.solo { flex:1; }
+.qb { font:inherit; font-size:16px; line-height:1; width:30px; height:31px; padding:0; border:0;
+      background:none; color:var(--gold); cursor:pointer; }
+.qb:hover { background:var(--gold); color:#fff; }
+.qty [data-qty] { min-width:28px; flex:1; text-align:center; font-size:13.5px; color:var(--fg);
+                  font-variant-numeric:tabular-nums; }
+.rtxt .q { font-size:12.5px; color:var(--muted); }
 .sz select { font:inherit; font-size:13px; color:var(--fg); background:var(--bg);
              border:1px solid var(--line); border-radius:2px; padding:5px 8px; flex:1; min-width:0; }
 .price { font-family:var(--display); font-size:19px; color:var(--deep); margin:0;
@@ -118,6 +130,8 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 footer { border-top:1px solid var(--line); margin-top:30px; padding-block:26px; text-align:center; }
 footer p { margin:6px 0; font-size:13.5px; color:var(--muted); }
 footer .num { font-family:var(--display); font-size:17px; color:var(--deep); font-variant-numeric:tabular-nums; }
+footer .num a { color:inherit; text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 
 /* pinned basket summary */
 .sumbar { position:fixed; left:0; right:0; bottom:0; z-index:9; background:var(--surface);
@@ -167,7 +181,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
 </a></nav>
     <footer>
       <p class="eyebrow">Commandes uniquement par WhatsApp</p>
-      <p class="num">+34 611 392 655 &nbsp;&middot;&nbsp; +212 661 793 236</p>
+      <p class="num"><a href="https://wa.me/34611392655">+34 611 392 655</a> &nbsp;&middot;&nbsp; <a href="https://wa.me/212661793236">+212 661 793 236</a></p>
       <p>Livraison gratuite sur Essaouira</p>
     </footer>
   </section>
@@ -189,7 +203,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Chemise de nuit Lalaiz Noire</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">80 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -203,7 +217,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Chemise de nuit Lalaiz Orange</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">80 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -217,7 +231,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Ensemble Newdebidiz</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -231,7 +245,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Pyjama Charliniz</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -245,7 +259,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Pyjama Charlinz Rose</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -259,7 +273,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Tezenis</p>
     <h3>Pyjama cours coton imprimé ours</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -273,7 +287,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama court blanc à pois</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -287,7 +301,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Tezenis</p>
     <h3>Pyjama Court Manches Courtes en Viscose</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -301,7 +315,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Marfil Jaune</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -315,7 +329,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Pyjama Orange</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -329,7 +343,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Paisley Gris</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XS">XS</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XS">XS</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -343,7 +357,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Undiz</p>
     <h3>Pyjama Rose Fushia</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -357,7 +371,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Tramas</p>
     <h3>Pyjama Tobias Malva</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -371,7 +385,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Ensemble pyjama satin et dentelle gris</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">450 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -385,7 +399,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama 100% coton Bleu</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -399,7 +413,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama chemise Snoopy en coton vert</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -413,7 +427,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama chemise à carreaux en coton bleu</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -427,7 +441,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama gris aprés-ski</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -441,7 +455,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Tezenis</p>
     <h3>Pyjama long coton imprimé fraise</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -455,7 +469,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Tezenis</p>
     <h3>Pyjama Long Dentelle Manches Mi-longues Delicate Touch</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -469,7 +483,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama long en coton à carreaux, logo rose</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -483,7 +497,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long imprimé à rayures verts</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -497,7 +511,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long Snoopy Happy</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -511,7 +525,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Tezenis</p>
     <h3>Pyjama long Viscose avec Dentelle</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -525,7 +539,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama manches courtes imprimé Vichy vert</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -539,7 +553,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama manches longues imprimé Vichy vert</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -553,7 +567,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Noir Fleuri</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -567,7 +581,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama pantacourt soft touch en viscose bleu</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -581,7 +595,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama Rose étoiles</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -595,7 +609,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Snoopy Peanuts</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -609,7 +623,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama super soft patchwork</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -623,7 +637,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama vichy rouge</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -637,7 +651,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Robe de chambre &quot;Maternité&quot;</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">350 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -651,7 +665,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Cenafas Bleu</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -665,7 +679,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Cenafas Gris</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -679,7 +693,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Etoiles</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -693,7 +707,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long en polaire rose</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -707,7 +721,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long Rose motif lunes</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -721,7 +735,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Lurex</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -735,7 +749,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama polaire Nuage</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -749,7 +763,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama polaire Pingu</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -763,7 +777,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama polaire vert à fleurs</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -777,7 +791,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Primark</p>
     <h3>Pyjama Sweet Dreams</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -791,7 +805,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Primark</p>
     <h3>Pyjama Taupe</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -805,7 +819,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Bas Noirs Autofixants</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -819,7 +833,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collant marron transparent à losanges et pois</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -833,7 +847,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collant Noir transparent à motifs de losanges et à pois</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -847,7 +861,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collant noir à losanges</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -861,7 +875,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collant Pois Dégradé</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -875,7 +889,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collant Transparent 30 Deniers à motifs Petits Coeurs</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="L/XL">L/XL</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L/XL">L/XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -889,7 +903,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collants noirs résille avec noeuds</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -903,7 +917,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collants transparents Amour</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -917,7 +931,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collants transparents noirs 30 Deniers avec étoiles floquées</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -931,7 +945,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Calzedonia</p>
     <h3>Collants écrus résille avec noeuds</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -945,7 +959,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Françoise Saget</p>
     <h3>Tablier La Bretagne</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="Unique">Unique</option></select></label>
+    <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -959,7 +973,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
   <div class="meta">
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pack chaussettes</h3>
-    <label class="sz"><span>Taille</span><select data-size><option value="Unique">Unique</option></select></label>
+    <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -1016,15 +1030,27 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
 
   function picked(){ return cards.filter(function(c){ return c.dataset.on==='1'; }); }
   function sizeOf(c){ var s=c.querySelector('[data-size]'); return s&&s.value?s.value:''; }
+  function qtyOf(c){ return Math.max(1, parseInt(c.dataset.qty||'1',10)||1); }
+  function setQty(c,n){
+    n=Math.min(99,Math.max(1,n));
+    c.dataset.qty=String(n);
+    var o=c.querySelector('[data-qty]'); if(o) o.textContent=n;
+    var d=c.querySelector('[data-dec]'); if(d) d.disabled=(n<=1);
+    refresh();
+  }
+  function lineTotal(c){ return (parseFloat(c.dataset.price)||0)*qtyOf(c); }
+  function hasSize(c){ return !!c.querySelector('[data-size]'); }
 
   function message(list){
     var t=0, lines=[];
     list.forEach(function(c){
-      t+=parseFloat(c.dataset.price)||0;
-      var sz=sizeOf(c);
-      lines.push('\u2022 '+c.dataset.brand+' \u2014 '+c.dataset.name
-                 +(sz?' (taille '+sz+')':' (taille \u00e0 pr\u00e9ciser)')
-                 +(c.dataset.label?' \u2014 '+c.dataset.label:''));
+      var q=qtyOf(c); t+=lineTotal(c);
+      var sz=sizeOf(c), det=[];
+      if(hasSize(c)) det.push(sz?('taille '+sz):'taille \u00e0 pr\u00e9ciser');
+      det.push('qt\u00e9 '+q);
+      lines.push('\u2022 '+(q>1?q+' \u00d7 ':'')+c.dataset.brand+' \u2014 '+c.dataset.name
+                 +' ('+det.join(', ')+')'
+                 +(c.dataset.price?' \u2014 '+money(lineTotal(c)):''));
     });
     return {total:t, text:'Bonjour Kouta Deals, je souhaite commander :\n'+lines.join('\n')
                         +'\n\nTotal : '+money(t)};
@@ -1042,9 +1068,16 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
       tx.querySelector('.b').textContent=c.dataset.brand;
       tx.querySelector('.n').textContent=c.dataset.name;
       var s=tx.querySelector('.s');
-      s.textContent=sz?('Taille '+sz):'Taille \u00e0 pr\u00e9ciser';
-      if(!sz) s.className='s miss';
-      var p=document.createElement('div'); p.className='rp'; p.textContent=c.dataset.label||'';
+      if(hasSize(c)){
+        s.textContent=sz?('Taille '+sz):'Taille \u00e0 pr\u00e9ciser';
+        if(!sz) s.className='s miss';
+      } else { s.textContent=''; }
+      var q=qtyOf(c);
+      var qd=document.createElement('div'); qd.className='q';
+      qd.textContent=(q>1? q+' \u00d7 ' : '')+(c.dataset.label||'');
+      tx.appendChild(qd);
+      var p=document.createElement('div'); p.className='rp';
+      p.textContent=c.dataset.price?money(lineTotal(c)):'';
       var x=document.createElement('button'); x.className='rx'; x.type='button';
       x.setAttribute('aria-label','Retirer'); x.textContent='\u00d7';
       x.addEventListener('click',function(){ setPick(c,false); });
@@ -1055,7 +1088,7 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
     cartfoot.hidden=!any; cempty.hidden=any;
     if(any){
       total.textContent=money(m.total);
-      var miss=list.filter(function(c){ return !sizeOf(c); }).length;
+      var miss=list.filter(function(c){ return hasSize(c) && !sizeOf(c); }).length;
       cnote.textContent=miss? (miss>1? miss+' articles sans taille \u2014 \u00e0 pr\u00e9ciser avec Kouta Deals'
                                      : '1 article sans taille \u2014 \u00e0 pr\u00e9ciser avec Kouta Deals')
                             : 'Livraison gratuite sur Essaouira';
@@ -1068,7 +1101,8 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
     sumbar.hidden = !list.length || !cartv.hidden;
     if(list.length){
       var m=message(list);
-      sum.innerHTML=list.length+(list.length>1?' articles':' article')
+      var n=list.reduce(function(a,c){ return a+qtyOf(c); },0);
+      sum.innerHTML=n+(n>1?' articles':' article')
                     +' &nbsp;&middot;&nbsp; <b>'+money(m.total)+'</b>';
     }
     if(!cartv.hidden) drawCart();
@@ -1088,6 +1122,10 @@ footer .num { font-family:var(--display); font-size:17px; color:var(--deep); fon
     });
     var s=c.querySelector('[data-size]');
     if(s) s.addEventListener('change',refresh);
+    var dec=c.querySelector('[data-dec]'), inc=c.querySelector('[data-inc]');
+    if(dec) dec.addEventListener('click',function(){ setQty(c,qtyOf(c)-1); });
+    if(inc) inc.addEventListener('click',function(){ setQty(c,qtyOf(c)+1); });
+    if(dec) dec.disabled=true;
   });
 
   function apply(){
