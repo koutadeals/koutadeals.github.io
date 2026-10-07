@@ -36,16 +36,32 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .rule { width:54px; height:1px; background:var(--gold); margin:16px auto; }
 
 /* category menu */
-.tiles { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px;
-         padding-block:10px 24px; }
-.tile { display:flex; flex-direction:column; text-decoration:none; color:inherit;
-        background:var(--surface); border:1px solid var(--line); border-radius:3px; overflow:hidden; }
+.tiles { display:grid; grid-template-columns:1fr; gap:10px; padding-block:10px 24px; }
+@media (min-width:760px) { .tiles { grid-template-columns:1fr 1fr; gap:14px; } }
+.tile { display:flex; flex-direction:row; align-items:center; gap:14px; text-decoration:none;
+        color:inherit; background:var(--surface); border:1px solid var(--line);
+        border-radius:3px; overflow:hidden; padding:10px 14px 10px 10px; }
 .tile:hover { border-color:var(--gold); }
-.tshot { aspect-ratio:4/3; background:var(--bg); display:block; }
+.tshot { flex:0 0 64px; width:64px; height:64px; border-radius:2px; overflow:hidden;
+         background:var(--bg); display:block; }
 .tshot img { width:100%; height:100%; object-fit:cover; display:block; }
-.tname { font-family:var(--display); font-size:19px; color:var(--deep); padding:14px 14px 2px; }
-.tnum { font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold);
-        padding:0 14px 15px; }
+.tmeta { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:3px; }
+.tname { font-family:var(--display); font-size:17.5px; color:var(--deep); padding:0; line-height:1.2; }
+.tnum { font-family:var(--display); font-style:italic; font-size:13.5px; color:var(--gold);
+        padding:0; letter-spacing:0; text-transform:none; line-height:1.3; }
+.tgo { flex:0 0 auto; color:var(--gold); font-size:24px; line-height:1; }
+
+/* share + footer */
+.share { text-align:center; border-top:1px solid var(--line); padding-block:24px 4px; }
+.sharebtn { display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+            font-family:var(--display); font-size:16px; color:var(--deep);
+            background:var(--surface); border:1px solid var(--gold); border-radius:999px;
+            padding:11px 22px; }
+.sharebtn:hover { background:var(--gold); color:#fff; }
+.sharebtn svg { width:18px; height:18px; fill:currentColor; }
+.share p { margin:10px 0 0; font-size:13px; color:var(--muted); }
+footer .fnote { max-width:34em; margin-inline:auto; }
+.smax { font-size:12.5px; color:var(--del); margin:5px 0 0; }
 
 /* category view */
 .bar { position:sticky; top:0; z-index:5; background:var(--bg); border-bottom:1px solid var(--line);
@@ -161,41 +177,49 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <nav class="tiles">
 <a class="tile" href="#/c/0">
   <span class="tshot"><img src="img/pyjama-charliniz-undiz-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Nuit &amp; Cocooning</span>
-  <span class="tnum">44 modèles</span>
+  <span class="tmeta"><span class="tname">Nuit &amp; Cocooning</span><span class="tnum">Confort avec style</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a>
 <a class="tile" href="#/c/1">
   <span class="tshot"><img src="img/gloss-repulpant-la-teinte-490-berry-jolie-l-oreal-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Beauté</span>
-  <span class="tnum">14 modèles</span>
+  <span class="tmeta"><span class="tname">Beauté &amp; Maquillage</span><span class="tnum">Sublimez votre quotidien</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a>
 <a class="tile" href="#/c/2">
   <span class="tshot"><img src="img/collants-transparents-amour-calzedonia-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Collants &amp; bas</span>
-  <span class="tnum">12 modèles</span>
+  <span class="tmeta"><span class="tname">Collants &amp; bas</span><span class="tnum">L&#x27;élégance jusqu&#x27;au bout des jambes</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a>
 <a class="tile" href="#/c/3">
   <span class="tshot"><img src="img/torchon-de-cuisine-gourmandise-douceur-d-int-rieur-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Cuisine &amp; Maison</span>
-  <span class="tnum">11 modèles</span>
+  <span class="tmeta"><span class="tname">Cuisine &amp; Maison</span><span class="tnum">Les petits détails qui changent tout</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a>
 <a class="tile" href="#/c/4">
   <span class="tshot"><img src="img/gilet-crochet-tezenis-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Plage &amp; Piscine</span>
-  <span class="tnum">7 modèles</span>
+  <span class="tmeta"><span class="tname">Plage &amp; Piscine</span><span class="tnum">L&#x27;été, autrement</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a>
 <a class="tile" href="#/c/5">
   <span class="tshot"><img src="img/pack-chaussettes-women-s-secret-1-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">Chaussettes</span>
-  <span class="tnum">3 modèles</span>
+  <span class="tmeta"><span class="tname">Chaussettes</span><span class="tnum">Le confort au quotidien</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a>
 <a class="tile" href="#/c/6">
   <span class="tshot"><img src="img/chaussons-undiz-tile.jpg" alt="" loading="lazy" width="700" height="525"></span>
-  <span class="tname">L&#x27;Univers Chaussures</span>
-  <span class="tnum">2 modèles</span>
+  <span class="tmeta"><span class="tname">L&#x27;Univers Chaussures</span><span class="tnum">Les essentiels à vos pieds</span></span>
+  <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a></nav>
+    <div class="share">
+      <a class="sharebtn" href="https://wa.me/?text=D%C3%A9couvrez%20Kouta%20Deals%20%E2%80%94%20Iconic%20%C2%B7%20Chic%20%C2%B7%20Timeless.%20Pyjamas%2C%20beaut%C3%A9%2C%20maison%20et%20bien%20plus%2C%20command%C3%A9s%20simplement%20sur%20WhatsApp%20%3A%20https%3A%2F%2Fkoutadeals.github.io" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.2.4-.2.6-.1l2.1 1c.3.1.5.2.5.4.1.1.1.6-.1 1.1z"/></svg>
+        Partager avec vos amis
+      </a>
+      <p>Faites d&eacute;couvrir notre univers sur WhatsApp</p>
+    </div>
     <footer>
-      <p class="eyebrow">Commandes uniquement par WhatsApp</p>
+      <p class="eyebrow">Commandes &amp; assistance sur WhatsApp</p>
+      <p class="fnote">Commandez facilement sur WhatsApp et contactez-nous pour toute question ou besoin d&rsquo;aide.</p>
       <p class="num"><a href="https://wa.me/34611392655">+34 611 392 655</a> &nbsp;&middot;&nbsp; <a href="https://wa.me/212661793236">+212 661 793 236</a></p>
       <p>Livraison gratuite sur Essaouira</p>
     </footer>
@@ -210,7 +234,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="count" id="count"></p>
     <div class="grid" id="grid">
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Chemise de nuit Lalaiz Noire" data-brand="Undiz"
+         data-name="Chemise de nuit Lalaiz Noire" data-brand="Undiz" data-stock=""
          data-price="80" data-label="80 MAD">
   <div class="shot"><img src="img/chemise-de-nuit-lalaiz-noire-undiz-1.jpg" alt="Chemise de nuit Lalaiz Noire" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -219,12 +243,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Chemise de nuit Lalaiz Noire</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">80 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Chemise de nuit Lalaiz Orange" data-brand="Undiz"
+         data-name="Chemise de nuit Lalaiz Orange" data-brand="Undiz" data-stock=""
          data-price="80" data-label="80 MAD">
   <div class="shot"><img src="img/chemise-de-nuit-lalaiz-orange-undiz-1.jpg" alt="Chemise de nuit Lalaiz Orange" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -233,12 +258,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Chemise de nuit Lalaiz Orange</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">80 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Ensemble Newdebidiz" data-brand="Undiz"
+         data-name="Ensemble Newdebidiz" data-brand="Undiz" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/ensemble-newdebidiz-undiz-1.jpg" alt="Ensemble Newdebidiz" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -247,12 +273,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Ensemble Newdebidiz</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Charliniz" data-brand="Undiz"
+         data-name="Pyjama Charliniz" data-brand="Undiz" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/pyjama-charliniz-undiz-1.jpg" alt="Pyjama Charliniz" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -261,12 +288,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Pyjama Charliniz</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Charlinz Rose" data-brand="Undiz"
+         data-name="Pyjama Charlinz Rose" data-brand="Undiz" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/pyjama-charlinz-rose-undiz-1.jpg" alt="Pyjama Charlinz Rose" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -275,12 +303,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Pyjama Charlinz Rose</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama cours coton imprimé ours" data-brand="Tezenis"
+         data-name="Pyjama cours coton imprimé ours" data-brand="Tezenis" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/pyjama-cours-coton-imprim-ours-tezenis-200-mad-1.jpg" alt="Pyjama cours coton imprimé ours" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -289,12 +318,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Pyjama cours coton imprimé ours</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama court blanc à pois" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama court blanc à pois" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/pyjama-court-blanc-pois-women-s-secret-170mad-1.jpg" alt="Pyjama court blanc à pois" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -303,12 +333,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama court blanc à pois</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Court Manches Courtes en Viscose" data-brand="Tezenis"
+         data-name="Pyjama Court Manches Courtes en Viscose" data-brand="Tezenis" data-stock=""
          data-price="150" data-label="150 MAD">
   <div class="shot"><img src="img/pyjama-court-manches-courtes-en-viscose-tezenis-160-mad-1.jpg" alt="Pyjama Court Manches Courtes en Viscose" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -317,12 +348,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Pyjama Court Manches Courtes en Viscose</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Marfil Jaune" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Marfil Jaune" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/pyjama-marfil-jaune-women-s-secret-200-mad-1.jpg" alt="Pyjama Marfil Jaune" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -331,12 +363,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Marfil Jaune</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Orange" data-brand="Undiz"
+         data-name="Pyjama Orange" data-brand="Undiz" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/pyjama-orange-undiz-1.jpg" alt="Pyjama Orange" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -345,12 +378,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Pyjama Orange</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Paisley Gris" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Paisley Gris" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/pyjama-paisley-gris-women-s-secret-1.jpg" alt="Pyjama Paisley Gris" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -359,12 +393,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Paisley Gris</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XS">XS</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Rose Fushia" data-brand="Undiz"
+         data-name="Pyjama Rose Fushia" data-brand="Undiz" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/pyjama-rose-fushia-undiz-120-mad-1.jpg" alt="Pyjama Rose Fushia" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -373,12 +408,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Pyjama Rose Fushia</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
-         data-name="Pyjama Tobias Malva" data-brand="Tramas"
+         data-name="Pyjama Tobias Malva" data-brand="Tramas" data-stock=""
          data-price="150" data-label="150 MAD">
   <div class="shot"><img src="img/pyjama-tobias-malva-tramas-1.jpg" alt="Pyjama Tobias Malva" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -387,12 +423,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tramas</p>
     <h3>Pyjama Tobias Malva</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Ensemble pyjama satin et dentelle gris" data-brand="Women&#x27;s Secret"
+         data-name="Ensemble pyjama satin et dentelle gris" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="450" data-label="450 MAD">
   <div class="shot"><img src="img/ensemble-pyjama-satin-et-dentelle-gris-women-s-secret-450-ma.jpg" alt="Ensemble pyjama satin et dentelle gris" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -401,12 +438,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Ensemble pyjama satin et dentelle gris</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">450 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama 100% coton Bleu" data-brand="HI&amp;BYE"
+         data-name="Pyjama 100% coton Bleu" data-brand="HI&amp;BYE" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pyjama-100-coton-bleu-hi-bye-200-mad-1.jpg" alt="Pyjama 100% coton Bleu" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -415,12 +453,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama 100% coton Bleu</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama chemise Snoopy en coton vert" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama chemise Snoopy en coton vert" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-chemise-snoopy-en-coton-vert-women-s-secret-250-mad-1.jpg" alt="Pyjama chemise Snoopy en coton vert" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -429,12 +468,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama chemise Snoopy en coton vert</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama chemise à carreaux en coton bleu" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama chemise à carreaux en coton bleu" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-chemise-carreaux-en-coton-bleu-women-s-secret-250-mad.jpg" alt="Pyjama chemise à carreaux en coton bleu" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -443,12 +483,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama chemise à carreaux en coton bleu</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama gris aprés-ski" data-brand="HI&amp;BYE"
+         data-name="Pyjama gris aprés-ski" data-brand="HI&amp;BYE" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-gris-apr-s-ski-hi-bye-1.jpg" alt="Pyjama gris aprés-ski" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -457,12 +498,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama gris aprés-ski</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama long coton imprimé fraise" data-brand="Tezenis"
+         data-name="Pyjama long coton imprimé fraise" data-brand="Tezenis" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pyjama-long-coton-imprim-fraise-tezenis-200-mad-1.jpg" alt="Pyjama long coton imprimé fraise" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -471,12 +513,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Pyjama long coton imprimé fraise</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama Long Dentelle Manches Mi-longues Delicate Touch" data-brand="Tezenis"
+         data-name="Pyjama Long Dentelle Manches Mi-longues Delicate Touch" data-brand="Tezenis" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pyjama-long-dentelle-manches-mi-longues-delicate-touch-tezen.jpg" alt="Pyjama Long Dentelle Manches Mi-longues Delicate Touch" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -485,12 +528,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Pyjama Long Dentelle Manches Mi-longues Delicate Touch</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama long en coton à carreaux, logo rose" data-brand="HI&amp;BYE"
+         data-name="Pyjama long en coton à carreaux, logo rose" data-brand="HI&amp;BYE" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-long-en-coton-carreaux-logo-rose-hi-bye-1.jpg" alt="Pyjama long en coton à carreaux, logo rose" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -499,12 +543,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama long en coton à carreaux, logo rose</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama long imprimé à rayures verts" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama long imprimé à rayures verts" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-long-imprim-rayures-verts-women-s-secret-250-mad-1.jpg" alt="Pyjama long imprimé à rayures verts" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -513,12 +558,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long imprimé à rayures verts</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama long Snoopy Happy" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama long Snoopy Happy" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-long-snoopy-happy-women-s-secret-250-mad-1.jpg" alt="Pyjama long Snoopy Happy" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -527,12 +573,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long Snoopy Happy</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama long Viscose avec Dentelle" data-brand="Tezenis"
+         data-name="Pyjama long Viscose avec Dentelle" data-brand="Tezenis" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pyjama-long-viscose-avec-dentelle-tezenis-200-mad-1.jpg" alt="Pyjama long Viscose avec Dentelle" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -541,12 +588,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Pyjama long Viscose avec Dentelle</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama manches courtes imprimé Vichy vert" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama manches courtes imprimé Vichy vert" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-manches-courtes-imprim-vichy-vert-women-s-secret-250m.jpg" alt="Pyjama manches courtes imprimé Vichy vert" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -555,12 +603,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama manches courtes imprimé Vichy vert</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama manches longues imprimé Vichy vert" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama manches longues imprimé Vichy vert" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-manches-longues-imprim-vichy-vert-women-s-secret-250m.jpg" alt="Pyjama manches longues imprimé Vichy vert" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -569,12 +618,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama manches longues imprimé Vichy vert</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama Noir Fleuri" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Noir Fleuri" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-noir-fleuri-women-s-secret-250-mad-1.jpg" alt="Pyjama Noir Fleuri" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -583,12 +633,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Noir Fleuri</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama pantacourt soft touch en viscose bleu" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama pantacourt soft touch en viscose bleu" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-pantacourt-soft-touch-en-viscose-bleu-women-s-secret.jpg" alt="Pyjama pantacourt soft touch en viscose bleu" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -597,12 +648,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama pantacourt soft touch en viscose bleu</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama Rose étoiles" data-brand="HI&amp;BYE"
+         data-name="Pyjama Rose étoiles" data-brand="HI&amp;BYE" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-rose-toiles-women-s-secret-250-mad-1.jpg" alt="Pyjama Rose étoiles" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -611,12 +663,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama Rose étoiles</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama Snoopy Peanuts" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Snoopy Peanuts" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-snoopy-peanuts-women-s-secret-250mad-1.jpg" alt="Pyjama Snoopy Peanuts" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -625,12 +678,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Snoopy Peanuts</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama super soft patchwork" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama super soft patchwork" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-super-soft-patchwork-women-s-secret-1.jpg" alt="Pyjama super soft patchwork" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -639,12 +693,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama super soft patchwork</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Pyjama vichy rouge" data-brand="HI&amp;BYE"
+         data-name="Pyjama vichy rouge" data-brand="HI&amp;BYE" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pyjama-vichy-rouge-hi-bye-200-mad-1.jpg" alt="Pyjama vichy rouge" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -653,12 +708,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">HI&amp;BYE</p>
     <h3>Pyjama vichy rouge</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Demi-saison"
-         data-name="Robe de chambre &quot;Maternité&quot;" data-brand="Women&#x27;s Secret"
+         data-name="Robe de chambre &quot;Maternité&quot;" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="350" data-label="350 MAD">
   <div class="shot"><img src="img/robe-de-chambre-maternit-women-s-secret-1.jpg" alt="Robe de chambre &quot;Maternité&quot;" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -667,12 +723,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Robe de chambre &quot;Maternité&quot;</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">350 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama Cenafas Bleu" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Cenafas Bleu" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-cenafas-bleu-women-s-secret-1.jpg" alt="Pyjama Cenafas Bleu" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -681,12 +738,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Cenafas Bleu</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama Cenafas Gris" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Cenafas Gris" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-cenafas-gris-women-s-secret-1.jpg" alt="Pyjama Cenafas Gris" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -695,12 +753,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Cenafas Gris</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama Etoiles" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Etoiles" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-etoiles-women-s-secret-1.jpg" alt="Pyjama Etoiles" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -709,12 +768,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Etoiles</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama long en polaire rose" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama long en polaire rose" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-long-en-polaire-rose-women-s-secret-1.jpg" alt="Pyjama long en polaire rose" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -723,12 +783,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long en polaire rose</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama long Rose motif lunes" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama long Rose motif lunes" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-long-rose-motif-lunes-women-s-secret-1.jpg" alt="Pyjama long Rose motif lunes" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -737,12 +798,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama long Rose motif lunes</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama Lurex" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama Lurex" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-lurex-women-s-secret-200-mad-1.jpg" alt="Pyjama Lurex" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -751,12 +813,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama Lurex</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama polaire Nuage" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama polaire Nuage" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-polaire-nuage-women-s-secret-1.jpg" alt="Pyjama polaire Nuage" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -765,12 +828,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama polaire Nuage</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama polaire Pingu" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama polaire Pingu" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-polaire-pingu-women-s-secret-250-mad-1.jpg" alt="Pyjama polaire Pingu" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -779,12 +843,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama polaire Pingu</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama polaire vert à fleurs" data-brand="Women&#x27;s Secret"
+         data-name="Pyjama polaire vert à fleurs" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/pyjama-polaire-vert-fleurs-women-s-secret-250-mad-1.jpg" alt="Pyjama polaire vert à fleurs" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -793,12 +858,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pyjama polaire vert à fleurs</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama Sweet Dreams" data-brand="Primark"
+         data-name="Pyjama Sweet Dreams" data-brand="Primark" data-stock=""
          data-price="150" data-label="150 MAD">
   <div class="shot"><img src="img/pyjama-sweet-dreams-primark-1.jpg" alt="Pyjama Sweet Dreams" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -807,12 +873,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Primark</p>
     <h3>Pyjama Sweet Dreams</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M">M</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Nuit &amp; Cocooning" data-season="Hiver"
-         data-name="Pyjama Taupe" data-brand="Primark"
+         data-name="Pyjama Taupe" data-brand="Primark" data-stock=""
          data-price="150" data-label="150 MAD">
   <div class="shot"><img src="img/pyjama-taupe-primark-1.jpg" alt="Pyjama Taupe" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -821,12 +888,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Primark</p>
     <h3>Pyjama Taupe</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Crazy &#x27;90s Matte Liquid Lip Colour 06 Magenta Rhythm" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Crazy &#x27;90s Matte Liquid Lip Colour 06 Magenta Rhythm" data-brand="Kiko" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/crazy-90s-matte-liquid-lip-colour-06-magenta-rhythm-kiko-1.jpg" alt="Crazy &#x27;90s Matte Liquid Lip Colour 06 Magenta Rhythm" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -835,12 +903,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Crazy &#x27;90s Matte Liquid Lip Colour 06 Magenta Rhythm</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="glitter shower eyeshadow 05" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="glitter shower eyeshadow 05" data-brand="Kiko" data-stock=""
          data-price="70" data-label="70 MAD">
   <div class="shot"><img src="img/glitter-shower-eyeshadow-05-kiko-1.jpg" alt="glitter shower eyeshadow 05" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -849,12 +918,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>glitter shower eyeshadow 05</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">70 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Gloss repulpant à la teinte 490 Berry Jolie" data-brand="L&#x27;Oreal"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Gloss repulpant à la teinte 490 Berry Jolie" data-brand="L&#x27;Oreal" data-stock=""
          data-price="160" data-label="160 MAD">
   <div class="shot"><img src="img/gloss-repulpant-la-teinte-490-berry-jolie-l-oreal-1.jpg" alt="Gloss repulpant à la teinte 490 Berry Jolie" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -863,12 +933,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">L&#x27;Oreal</p>
     <h3>Gloss repulpant à la teinte 490 Berry Jolie</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">160 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="High pigment eyeshadow 34" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="High pigment eyeshadow 34" data-brand="Kiko" data-stock=""
          data-price="70" data-label="70 MAD">
   <div class="shot"><img src="img/high-pigment-eyeshadow-34-kiko-1.jpg" alt="High pigment eyeshadow 34" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -877,12 +948,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>High pigment eyeshadow 34</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">70 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Holiday Première Iconic Masterpiece Blush" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Holiday Première Iconic Masterpiece Blush" data-brand="Kiko" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/holiday-premi-re-iconic-masterpiece-blush-kiko-1.jpg" alt="Holiday Première Iconic Masterpiece Blush" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -891,12 +963,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Holiday Première Iconic Masterpiece Blush</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Masque Tissu Visage Rafraîchissant à l&#x27;Orange Vegan" data-brand="SENCE"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Masque Tissu Visage Rafraîchissant à l&#x27;Orange Vegan" data-brand="SENCE" data-stock=""
          data-price="25" data-label="25 MAD">
   <div class="shot"><img src="img/masque-tissu-visage-rafra-chissant-l-orange-vegan-sence.jpg" alt="Masque Tissu Visage Rafraîchissant à l&#x27;Orange Vegan" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -905,12 +978,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">SENCE</p>
     <h3>Masque Tissu Visage Rafraîchissant à l&#x27;Orange Vegan</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">25 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Masque visage purifiant et matifiant avec charbon et argile noire" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Masque visage purifiant et matifiant avec charbon et argile noire" data-brand="Kiko" data-stock=""
          data-price="150" data-label="150 MAD">
   <div class="shot"><img src="img/masque-visage-purifiant-et-matifiant-avec-charbon-et-argile.jpg" alt="Masque visage purifiant et matifiant avec charbon et argile noire" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -919,12 +993,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Masque visage purifiant et matifiant avec charbon et argile noire</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Maxi poudre bronzante" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Maxi poudre bronzante" data-brand="Kiko" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/maxi-poudre-bronzante-kiko-1.jpg" alt="Maxi poudre bronzante" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -933,12 +1008,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Maxi poudre bronzante</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Patchs contour des yeux Retinol Eye Mask" data-brand="Biovène Barcelona"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Patchs contour des yeux Retinol Eye Mask" data-brand="Biovène Barcelona" data-stock=""
          data-price="25" data-label="25 MAD">
   <div class="shot"><img src="img/patchs-contour-des-yeux-retinol-eye-mask-biov-ne-barcelona-1.jpg" alt="Patchs contour des yeux Retinol Eye Mask" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -947,12 +1023,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Biovène Barcelona</p>
     <h3>Patchs contour des yeux Retinol Eye Mask</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">25 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Patchs contour des yeux Vitamin C Eye Mask" data-brand="Biovène Barcelona"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Patchs contour des yeux Vitamin C Eye Mask" data-brand="Biovène Barcelona" data-stock=""
          data-price="25" data-label="25 MAD">
   <div class="shot"><img src="img/patchs-contour-des-yeux-vitamin-c-eye-mask-biov-ne-barcelona.jpg" alt="Patchs contour des yeux Vitamin C Eye Mask" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -961,12 +1038,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Biovène Barcelona</p>
     <h3>Patchs contour des yeux Vitamin C Eye Mask</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">25 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Rouge à lèvres liquide à la couleur intense et à la brillance extrême 03 Dazzling Coral" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Rouge à lèvres liquide à la couleur intense et à la brillance extrême 03 Dazzling Coral" data-brand="Kiko" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/rouge-l-vres-liquide-la-couleur-intense-et-la-brillance-extr.jpg" alt="Rouge à lèvres liquide à la couleur intense et à la brillance extrême 03 Dazzling Coral" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -975,12 +1053,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Rouge à lèvres liquide à la couleur intense et à la brillance extrême 03 Dazzling Coral</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Rouge à lèvres liquide à la couleur intense et à la brillance extrême 08 Iced Brown" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Rouge à lèvres liquide à la couleur intense et à la brillance extrême 08 Iced Brown" data-brand="Kiko" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/rouge-l-vres-liquide-la-couleur-intense-et-la-brillance-extr-5.jpg" alt="Rouge à lèvres liquide à la couleur intense et à la brillance extrême 08 Iced Brown" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -989,12 +1068,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Rouge à lèvres liquide à la couleur intense et à la brillance extrême 08 Iced Brown</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Smart fusion lipstick 414 Poppy Red" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Smart fusion lipstick 414 Poppy Red" data-brand="Kiko" data-stock=""
          data-price="80" data-label="80 MAD">
   <div class="shot"><img src="img/smart-fusion-lipstick-414-poppy-red-kiko.jpg" alt="Smart fusion lipstick 414 Poppy Red" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1003,12 +1083,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Smart fusion lipstick 414 Poppy Red</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">80 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
-<article class="card" data-cat="Beauté" data-season=""
-         data-name="Water eyeshadow" data-brand="Kiko"
+<article class="card" data-cat="Beauté &amp; Maquillage" data-season=""
+         data-name="Water eyeshadow" data-brand="Kiko" data-stock=""
          data-price="70" data-label="70 MAD">
   <div class="shot"><img src="img/water-eyeshadow-kiko-1.jpg" alt="Water eyeshadow" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1017,12 +1098,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Kiko</p>
     <h3>Water eyeshadow</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">70 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Bas Noirs Autofixants" data-brand="Calzedonia"
+         data-name="Bas Noirs Autofixants" data-brand="Calzedonia" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/bas-noirs-autofixants-calzedonia-1.jpg" alt="Bas Noirs Autofixants" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1031,12 +1113,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Bas Noirs Autofixants</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collant marron transparent à losanges et pois" data-brand="Calzedonia"
+         data-name="Collant marron transparent à losanges et pois" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collant-marron-transparent-losanges-et-pois-calzedonia-1.jpg" alt="Collant marron transparent à losanges et pois" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1045,12 +1128,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant marron transparent à losanges et pois</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collant Noir transparent à motifs de losanges et à pois" data-brand="Calzedonia"
+         data-name="Collant Noir transparent à motifs de losanges et à pois" data-brand="Calzedonia" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/collant-noir-transparent-motifs-de-losanges-et-pois-calzedon.jpg" alt="Collant Noir transparent à motifs de losanges et à pois" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1059,12 +1143,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant Noir transparent à motifs de losanges et à pois</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="XL">XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collant noir à losanges" data-brand="Calzedonia"
+         data-name="Collant noir à losanges" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collant-noir-losanges-calzedonia-1.jpg" alt="Collant noir à losanges" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1073,12 +1158,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant noir à losanges</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collant Pois Dégradé" data-brand="Calzedonia"
+         data-name="Collant Pois Dégradé" data-brand="Calzedonia" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/collant-pois-d-grad-calzedonia-1.jpg" alt="Collant Pois Dégradé" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1087,12 +1173,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant Pois Dégradé</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collant Transparent 30 Deniers à motifs Petits Coeurs" data-brand="Calzedonia"
+         data-name="Collant Transparent 30 Deniers à motifs Petits Coeurs" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collant-transparent-30-deniers-motifs-petits-coeurs-calzedon.jpg" alt="Collant Transparent 30 Deniers à motifs Petits Coeurs" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1101,12 +1188,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant Transparent 30 Deniers à motifs Petits Coeurs</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L/XL">L/XL</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collants noirs résille avec noeuds" data-brand="Calzedonia"
+         data-name="Collants noirs résille avec noeuds" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collants-noirs-r-sille-avec-noeuds-calzedonia-1.jpg" alt="Collants noirs résille avec noeuds" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1115,12 +1203,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collants noirs résille avec noeuds</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collants transparents Amour" data-brand="Calzedonia"
+         data-name="Collants transparents Amour" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collants-transparents-amour-calzedonia-1.jpg" alt="Collants transparents Amour" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1129,12 +1218,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collants transparents Amour</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collants transparents noirs 30 Deniers avec étoiles floquées" data-brand="Calzedonia"
+         data-name="Collants transparents noirs 30 Deniers avec étoiles floquées" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collants-transparents-noirs-30-deniers-avec-toiles-floqu-es.jpg" alt="Collants transparents noirs 30 Deniers avec étoiles floquées" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1143,12 +1233,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collants transparents noirs 30 Deniers avec étoiles floquées</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season="*"
-         data-name="Collants écrus résille avec noeuds" data-brand="Calzedonia"
+         data-name="Collants écrus résille avec noeuds" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collants-crus-r-sille-avec-noeuds-calzedonia-1.jpg" alt="Collants écrus résille avec noeuds" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1157,12 +1248,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collants écrus résille avec noeuds</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season=""
-         data-name="Collant noir voile Matt Second Skin Resistance 15 deniers" data-brand="Calzedonia"
+         data-name="Collant noir voile Matt Second Skin Resistance 15 deniers" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collant-noir-voile-matt-second-skin-resistance-15-deniers-ca.jpg" alt="Collant noir voile Matt Second Skin Resistance 15 deniers" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1171,12 +1263,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant noir voile Matt Second Skin Resistance 15 deniers</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Collants &amp; bas" data-season=""
-         data-name="Collant voile Matt Second Skin Resistance 15 deniers" data-brand="Calzedonia"
+         data-name="Collant voile Matt Second Skin Resistance 15 deniers" data-brand="Calzedonia" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/collant-voile-matt-second-skin-resistance-15-deniers-calzedo.jpg" alt="Collant voile Matt Second Skin Resistance 15 deniers" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1185,12 +1278,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Collant voile Matt Second Skin Resistance 15 deniers</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Lot 2 Tabliers Moment partagé" data-brand="Françoise Saget"
+         data-name="Lot 2 Tabliers Moment partagé" data-brand="Françoise Saget" data-stock=""
          data-price="290" data-label="290 MAD">
   <div class="shot"><img src="img/lot-2-tabliers-moment-partag-fran-oise-saget-1.jpg" alt="Lot 2 Tabliers Moment partagé" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1199,12 +1293,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Lot 2 Tabliers Moment partagé</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">290 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Lot 2 Torchons Côtes de Bretagne" data-brand="Françoise Saget"
+         data-name="Lot 2 Torchons Côtes de Bretagne" data-brand="Françoise Saget" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/lot-2-torchons-c-tes-de-bretagne-fran-oise-saget-1.jpg" alt="Lot 2 Torchons Côtes de Bretagne" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1213,12 +1308,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Lot 2 Torchons Côtes de Bretagne</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Lot 3 Torchons Bretagne" data-brand="Françoise Saget"
+         data-name="Lot 3 Torchons Bretagne" data-brand="Françoise Saget" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/lot-3-torchons-bretagne-fran-oise-saget-1.jpg" alt="Lot 3 Torchons Bretagne" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1227,12 +1323,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Lot 3 Torchons Bretagne</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Lot 6 Torchons Feuilles qui dansent" data-brand="Françoise Saget"
+         data-name="Lot 6 Torchons Feuilles qui dansent" data-brand="Françoise Saget" data-stock=""
          data-price="350" data-label="350 MAD">
   <div class="shot"><img src="img/lot-6-torchons-feuilles-qui-dansent-fran-oise-saget-1.jpg" alt="Lot 6 Torchons Feuilles qui dansent" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1241,12 +1338,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Lot 6 Torchons Feuilles qui dansent</h3>
     <div class="opts"><label class="sz solo"><span>50x60cm</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">350 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Machine à cocktails" data-brand="Percutti"
+         data-name="Machine à cocktails" data-brand="Percutti" data-stock=""
          data-price="250" data-label="250 MAD">
   <div class="shot"><img src="img/machine-cocktails-percutti-1.jpg" alt="Machine à cocktails" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1255,12 +1353,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Percutti</p>
     <h3>Machine à cocktails</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">250 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Salière et Poivrière" data-brand="Pepco"
+         data-name="Salière et Poivrière" data-brand="Pepco" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/sali-re-et-poivri-re-pepco-1.jpg" alt="Salière et Poivrière" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1269,12 +1368,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Pepco</p>
     <h3>Salière et Poivrière</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Tablier Citron" data-brand="Françoise Saget"
+         data-name="Tablier Citron" data-brand="Françoise Saget" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/tablier-citron-fran-oise-saget-1.jpg" alt="Tablier Citron" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1283,12 +1383,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Tablier Citron</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Tablier La Bretagne" data-brand="Françoise Saget"
+         data-name="Tablier La Bretagne" data-brand="Françoise Saget" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/tablier-la-bretagne-fran-oise-saget-1.jpg" alt="Tablier La Bretagne" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1297,12 +1398,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Tablier La Bretagne</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Tablier les jardins de Balata" data-brand="Françoise Saget"
+         data-name="Tablier les jardins de Balata" data-brand="Françoise Saget" data-stock=""
          data-price="170" data-label="170 MAD">
   <div class="shot"><img src="img/tablier-les-jardins-de-balata-fran-oise-saget-1.jpg" alt="Tablier les jardins de Balata" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1311,12 +1413,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Tablier les jardins de Balata</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">170 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Torchon de cuisine Comme un Chef" data-brand="Douceur d&#x27;intérieur"
+         data-name="Torchon de cuisine Comme un Chef" data-brand="Douceur d&#x27;intérieur" data-stock=""
          data-price="50" data-label="50 MAD">
   <div class="shot"><img src="img/torchon-de-cuisine-comme-un-chef-douceur-d-int-rieur-1.jpg" alt="Torchon de cuisine Comme un Chef" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1325,12 +1428,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Douceur d&#x27;intérieur</p>
     <h3>Torchon de cuisine Comme un Chef</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">50 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Cuisine &amp; Maison" data-season=""
-         data-name="Torchon de cuisine Gourmandise" data-brand="Douceur d&#x27;intérieur"
+         data-name="Torchon de cuisine Gourmandise" data-brand="Douceur d&#x27;intérieur" data-stock=""
          data-price="50" data-label="50 MAD">
   <div class="shot"><img src="img/torchon-de-cuisine-gourmandise-douceur-d-int-rieur-1.jpg" alt="Torchon de cuisine Gourmandise" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1339,12 +1443,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Douceur d&#x27;intérieur</p>
     <h3>Torchon de cuisine Gourmandise</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">50 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season="Été"
-         data-name="Paréo" data-brand="Calzedonia"
+         data-name="Paréo" data-brand="Calzedonia" data-stock=""
          data-price="60" data-label="60 MAD">
   <div class="shot"><img src="img/par-o-calzedonia-1.jpg" alt="Paréo" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1353,12 +1458,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Calzedonia</p>
     <h3>Paréo</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">60 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season=""
-         data-name="Drap de plage" data-brand="Françoise Saget"
+         data-name="Drap de plage" data-brand="Françoise Saget" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/drap-de-plage-fran-oise-saget-1.jpg" alt="Drap de plage" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1367,12 +1473,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Drap de plage</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season=""
-         data-name="Drap de plage Folie Equatoriale" data-brand="Françoise Saget"
+         data-name="Drap de plage Folie Equatoriale" data-brand="Françoise Saget" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/drap-de-plage-folie-equatoriale-fran-oise-saget-1.jpg" alt="Drap de plage Folie Equatoriale" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1381,12 +1488,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Françoise Saget</p>
     <h3>Drap de plage Folie Equatoriale</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season=""
-         data-name="Flip Flops" data-brand="Tezenis"
+         data-name="Flip Flops" data-brand="Tezenis" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/flip-flops-tezenis-1.jpg" alt="Flip Flops" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1395,12 +1503,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Flip Flops</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="37/38">37/38</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season=""
-         data-name="Gilet crochet" data-brand="Tezenis"
+         data-name="Gilet crochet" data-brand="Tezenis" data-stock=""
          data-price="60" data-label="60 MAD">
   <div class="shot"><img src="img/gilet-crochet-tezenis-1.jpg" alt="Gilet crochet" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1409,12 +1518,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Gilet crochet</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">60 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season=""
-         data-name="Sac de plage" data-brand="Tezenis"
+         data-name="Sac de plage" data-brand="Tezenis" data-stock=""
          data-price="100" data-label="100 MAD">
   <div class="shot"><img src="img/sac-de-plage-tezenis-1.jpg" alt="Sac de plage" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1423,12 +1533,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Sac de plage</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">100 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Plage &amp; Piscine" data-season=""
-         data-name="Serviette de plage" data-brand="Tezenis"
+         data-name="Serviette de plage" data-brand="Tezenis" data-stock=""
          data-price="140" data-label="140 MAD">
   <div class="shot"><img src="img/serviette-de-plage-tezenis-1.jpg" alt="Serviette de plage" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1437,12 +1548,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Tezenis</p>
     <h3>Serviette de plage</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">140 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Chaussettes" data-season=""
-         data-name="Chaussettes Mafalda" data-brand="Women&#x27;s Secret"
+         data-name="Chaussettes Mafalda" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/chaussettes-mafalda-women-s-secret-1.jpg" alt="Chaussettes Mafalda" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1451,12 +1563,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Chaussettes Mafalda</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Chaussettes" data-season=""
-         data-name="Chaussettes Snoopy" data-brand="Women&#x27;s Secret"
+         data-name="Chaussettes Snoopy" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="120" data-label="120 MAD">
   <div class="shot"><img src="img/chaussettes-snoopy-women-s-secret-1.jpg" alt="Chaussettes Snoopy" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1465,12 +1578,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Chaussettes Snoopy</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">120 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="Chaussettes" data-season=""
-         data-name="Pack chaussettes" data-brand="Women&#x27;s Secret"
+         data-name="Pack chaussettes" data-brand="Women&#x27;s Secret" data-stock=""
          data-price="200" data-label="200 MAD">
   <div class="shot"><img src="img/pack-chaussettes-women-s-secret-1.jpg" alt="Pack chaussettes" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1479,12 +1593,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Women&#x27;s Secret</p>
     <h3>Pack chaussettes</h3>
     <div class="opts"><label class="sz solo"><span>Quantit&eacute;</span></label><div class="qty solo"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">200 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="L&#x27;Univers Chaussures" data-season=""
-         data-name="Chaussons" data-brand="Undiz"
+         data-name="Chaussons" data-brand="Undiz" data-stock=""
          data-price="150" data-label="150 MAD">
   <div class="shot"><img src="img/chaussons-undiz.jpg" alt="Chaussons" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1493,12 +1608,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Undiz</p>
     <h3>Chaussons</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="38/39">38/39</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">150 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
 <article class="card" data-cat="L&#x27;Univers Chaussures" data-season=""
-         data-name="Pantoufles" data-brand="Esprit"
+         data-name="Pantoufles" data-brand="Esprit" data-stock=""
          data-price="300" data-label="300 MAD">
   <div class="shot"><img src="img/pantoufles-esprit-1.jpg" alt="Pantoufles" loading="lazy" width="1000" height="1333">
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -1507,6 +1623,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <p class="brand">Esprit</p>
     <h3>Pantoufles</h3>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="41">41</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
+    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
     <p class="price">300 MAD</p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
@@ -1534,7 +1651,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 </div>
 <script>
 (function(){
-  var WA='212661793236', CUR='MAD', CATS=['Nuit & Cocooning', 'Beauté', 'Collants & bas', 'Cuisine & Maison', 'Plage & Piscine', 'Chaussettes', "L'Univers Chaussures"], RAW=['Nuit & Cocooning', 'Beauté', 'Collants & bas', 'Cuisine & Maison', 'Plage & Piscine', 'Chaussettes', "L'Univers Chaussures"];
+  var WA='212661793236', CUR='MAD', CATS=['Nuit & Cocooning', 'Beauté & Maquillage', 'Collants & bas', 'Cuisine & Maison', 'Plage & Piscine', 'Chaussettes', "L'Univers Chaussures"], RAW=['Nuit & Cocooning', 'Beauté & Maquillage', 'Collants & bas', 'Cuisine & Maison', 'Plage & Piscine', 'Chaussettes', "L'Univers Chaussures"];
   var SEAS=['Été', 'Demi-saison', 'Hiver'];
   var home=document.getElementById('home'), catv=document.getElementById('cat'),
       cartv=document.getElementById('cart');
@@ -1564,11 +1681,16 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   function picked(){ return cards.filter(function(c){ return c.dataset.on==='1'; }); }
   function sizeOf(c){ var s=c.querySelector('[data-size]'); return s&&s.value?s.value:''; }
   function qtyOf(c){ return Math.max(1, parseInt(c.dataset.qty||'1',10)||1); }
+  function maxQty(c){ var s=parseInt(c.dataset.stock||'',10);
+    return (isFinite(s)&&s>0)? s : 99; }
   function setQty(c,n){
-    n=Math.min(99,Math.max(1,n));
+    var mx=maxQty(c);
+    n=Math.min(mx,Math.max(1,n));
     c.dataset.qty=String(n);
     var o=c.querySelector('[data-qty]'); if(o) o.textContent=n;
     var d=c.querySelector('[data-dec]'); if(d) d.disabled=(n<=1);
+    var u=c.querySelector('[data-inc]'); if(u) u.disabled=(n>=mx);
+    var w=c.querySelector('[data-max]'); if(w) w.hidden=!(n>=mx&&mx<99);
     refresh();
   }
   function lineTotal(c){ return (parseFloat(c.dataset.price)||0)*qtyOf(c); }
