@@ -1,0 +1,60 @@
+name: Build shop
+
+on:
+  repository_dispatch:
+    types: [publish]
+  workflow_dispatch:
+  push:
+    paths:
+      - 'photos/**'
+      - 'build/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-shop
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Pillow
+        run: pip install --quiet Pillow
+
+      - name: Build the shop
+        env:
+          KD_SHEET_URL: ${{ secrets.KD_SHEET_URL }}
+          KD_SHEET_SECRET: ${{ secrets.KD_SHEET_SECRET }}
+          KD_PHOTOS: ${{ github.workspace }}/photos
+        run: |
+          mkdir -p photos
+          python build/build_site.py ..
+
+      - name: File away the photos that were used
+        run: |
+          shopt -s nullglob
+          used=(photos/*.*)
+          if [ ${#used[@]} -gt 0 ]; then
+            mkdir -p photos/_used
+            mv "${used[@]}" photos/_used/
+          fi
+
+      - name: Commit the new shop
+        run: |
+          git config user.name  "Kouta Deals robot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A index.html img panel build/manifest.json photos
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Rebuild the shop"
+            git push
+          fi
