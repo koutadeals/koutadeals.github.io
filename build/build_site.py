@@ -398,12 +398,19 @@ def main():
     for it in items:
         rank = srank(it["season"])
         sea  = "*" if rank == -1 else (SEASONS[rank][1] if 0 <= rank < len(SEASONS) else "")
-        if it["pics"]:
-            big = [emit(p, BIG_W, BIG_Q, "") for p in it["pics"]]
-            thm = [emit(p, THUMB_W, THUMB_Q, "-t") for p in it["pics"]]
-        else:
-            big = it["ready"]["big"]
-            thm = it["ready"]["thumb"] or big
+        # already published photos first, then any new originals, never losing either
+        rd    = it["ready"] or {}
+        rbig  = list(rd.get("big") or [])
+        rthm  = list(rd.get("thumb") or []) or rbig
+        pairs = [(b, rthm[n] if n < len(rthm) else b) for n, b in enumerate(rbig)]
+        have  = set(b for b, _ in pairs)
+        for p in it["pics"]:
+            b = emit(p, BIG_W, BIG_Q, "")
+            t = emit(p, THUMB_W, THUMB_Q, "-t")
+            if b not in have:
+                pairs.append((b, t)); have.add(b)
+        big = [b for b, _ in pairs]
+        thm = [t for _, t in pairs]
         it["_big"], it["_thm"] = big, thm
 
         gal = ""
