@@ -266,7 +266,8 @@ def write_share_card(outdir):
         for p in sorted(glob.glob(os.path.join(PHOTOS, "*"))):
             if len(pics) >= 5:
                 break
-            if p not in have and os.path.basename(p) not in SKIP_PHOTOS:
+            if (p not in have and os.path.isfile(p)
+                    and os.path.basename(p) not in SKIP_PHOTOS):
                 pics.append(p)
     pics = pics[:5]
     gap  = 10
@@ -469,8 +470,8 @@ def main():
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
     open(os.path.join(OUT, ".nojekyll"), "w").close()
-    if glob.glob(os.path.join(PHOTOS, "*")):
-        write_share_card(OUT)            # only when originals are available
+    if all(os.path.exists(os.path.join(PHOTOS, n)) for n in SHARE_PHOTOS):
+        write_share_card(OUT)            # only when the five share photos are there
 
     # ---- keep the two indexes the app and the next build rely on
     man = {"products": {}, "tiles": {}}
