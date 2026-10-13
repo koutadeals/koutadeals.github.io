@@ -10,30 +10,27 @@
 <meta name="theme-color" content="#FBF6F1">
 <meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="/panel/manifest.json">
-<meta http-equiv="refresh" content="0; url=https://script.google.com/macros/s/AKfycbw63-AIxEcecJ_oSe8dBtqx9n4XpeF6ABSHiVUrj_BkfRbDmKMaHTIcLifUJCLhG38Wzw/exec">
 <style>
 :root{--bg:#FBF6F1;--ink:#4A3B33;--soft:#8A7263;--gold:#B08D57}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
   font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
   display:grid;place-items:center;padding:28px;text-align:center}
-img{width:108px;height:108px;border-radius:22px}
-.eyebrow{font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-top:18px}
-h1{font-family:Georgia,serif;font-size:21px;font-weight:600;margin:6px 0 10px}
-p{color:var(--soft);font-size:14px;margin:0 0 16px}
-a{color:var(--ink);font-size:14px}
+img{width:132px;height:132px;border-radius:26px}
+.eyebrow{font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-top:20px}
+h1{font-family:Georgia,serif;font-size:22px;font-weight:600;margin:6px 0 20px}
+a.go{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;
+  font-size:16px;font-weight:600;padding:15px 30px;border-radius:12px}
+p{color:var(--soft);font-size:13px;margin:20px 0 0;max-width:30ch;line-height:1.5}
 </style>
 </head>
 <body>
 <div>
-  <img src="/panel-icon-192.png" alt="Kouta Deals">
+  <img src="/panel-icon-192.png" alt="Kouta Deals Control Panel">
   <div class="eyebrow">Kouta Deals</div>
   <h1>Control Panel</h1>
-  <p>Opening&hellip;</p>
-  <a id="go" href="https://script.google.com/macros/s/AKfycbw63-AIxEcecJ_oSe8dBtqx9n4XpeF6ABSHiVUrj_BkfRbDmKMaHTIcLifUJCLhG38Wzw/exec">Tap here if nothing happens</a>
+  <a class="go" href="https://script.google.com/macros/s/AKfycbw63-AIxEcecJ_oSe8dBtqx9n4XpeF6ABSHiVUrj_BkfRbDmKMaHTIcLifUJCLhG38Wzw/exec">Open the products</a>
+  <p>Only Yossi and Kaoutar can open it. Google asks for the sign-in.</p>
 </div>
-<script>
-setTimeout(function(){ location.replace(document.getElementById('go').href); }, 150);
-</script>
 </body>
 </html>
