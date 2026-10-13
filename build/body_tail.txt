@@ -1,0 +1,72 @@
+t="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Collants transparents noirs 30 Deniers avec étoiles floquées</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <p class="price">120 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Collants &amp; bas" data-season="*"
+         data-name="Collants écrus résille avec noeuds" data-brand="Calzedonia"
+         data-price="120" data-label="120 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Collants écrus résille avec noeuds" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 3"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Calzedonia</p>
+    <h3>Collants écrus résille avec noeuds</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="M/L">M/L</option></select></label>
+    <p class="price">120 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="cuisine" data-season=""
+         data-name="Tablier La Bretagne" data-brand="Françoise Saget"
+         data-price="170" data-label="170 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Tablier La Bretagne" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Françoise Saget</p>
+    <h3>Tablier La Bretagne</h3>
+    
+    <p class="price">170 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="lingerie" data-season=""
+         data-name="Pack chaussettes" data-brand="Women&#x27;s Secret"
+         data-price="200" data-label="200 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Pack chaussettes" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 3"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Women&#x27;s Secret</p>
+    <h3>Pack chaussettes</h3>
+    
+    <p class="price">200 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article></div>
+  </section>
+
+  <section id="cart" hidden>
+    <div class="bar">
+      <button class="back" id="cback">&lsaquo; Continuer mes achats</button>
+      <h2 class="ctitle">Ma commande</h2>
+    </div>
+    <ul class="rows" id="rows"></ul>
+    <div id="cartfoot" hidden>
+      <div class="tot"><span>Total</span><b id="total"></b></div>
+      <p class="note" id="cnote"></p>
+      <a class="checkout" id="checkout" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.98 3 3 6.58 3 11c0 2.3 1.08 4.36 2.82 5.8L5 21l4.3-1.7c.85.23 1.75.35 2.7.35 5.02 0 9-3.58 9-8s-3.98-8-9-8z"/></svg> Envoyer ma commande sur WhatsApp</a>
+    </div>
+    <p class="empty" id="cempty">Votre commande est vide.</p>
+  </section>
+
+</div>
+<div class="sumbar" id="sumbar" hidden>
+  <p id="sum"></p>
+  <a href="#/panier">Voir ma commande</a>
+</div>

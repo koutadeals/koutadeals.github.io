@@ -1,0 +1,43 @@
+ddot;&nbsp; +212 661 793 236</p>
+      <p>Livraison gratuite sur Essaouira</p>
+    </footer>
+  </section>
+
+  <section id="cat" hidden>
+    <div class="bar">
+      <a class="back" href="#/">&lsaquo; Cat&eacute;gories</a>
+      <h2 class="ctitle" id="ctitle"></h2>
+      <div class="filters" id="filters"></div>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="grid" id="grid">
+<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
+         data-name="Pyjama court blanc à pois" data-brand="Women&#x27;s Secret"
+         data-price="170" data-label="170 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Pyjama court blanc à pois" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 3"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Women&#x27;s Secret</p>
+    <h3>Pyjama court blanc à pois</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <p class="price">170 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
+         data-name="Pyjama Marfil Jaune" data-brand="Women&#x27;s Secret"
+         data-price="170" data-label="170 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Pyjama Marfil Jaune" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 3"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Women&#x27;s Secret</p>
+    <h3>Pyjama Marfil Jaune</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <p class="price">170 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
+         data-name="Pyjama Paisle

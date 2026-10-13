@@ -1,0 +1,81 @@
+
+<div class="wrap">
+
+  <section id="home">
+    <header>
+      <p class="eyebrow">Catalogue 2026</p>
+      <h1>KOUTA DEALS</h1>
+      <p class="tag">Sleepwear &middot; Comfort &middot; Elegance</p>
+      <div class="rule"></div>
+      <p class="tag">Choisissez une cat&eacute;gorie</p>
+    </header>
+    <nav class="tiles">
+<a class="tile" href="#/c/0">
+  <span class="tshot"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></span>
+  <span class="tname">Nuit &amp; Cocooning</span>
+  <span class="tnum">46 modèles</span>
+</a>
+<a class="tile" href="#/c/1">
+  <span class="tshot"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></span>
+  <span class="tname">Collants &amp; bas</span>
+  <span class="tnum">5 modèles</span>
+</a>
+<a class="tile" href="#/c/2">
+  <span class="tshot"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></span>
+  <span class="tname">Cuisine</span>
+  <span class="tnum">1 modèle</span>
+</a>
+<a class="tile" href="#/c/3">
+  <span class="tshot"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></span>
+  <span class="tname">Lingerie</span>
+  <span class="tnum">1 modèle</span>
+</a></nav>
+    <footer>
+      <p class="eyebrow">Commandes uniquement par WhatsApp</p>
+      <p class="num">+34 611 392 655 &nbsp;&middot;&nbsp; +212 661 793 236</p>
+      <p>Livraison gratuite sur Essaouira</p>
+    </footer>
+  </section>
+
+  <section id="cat" hidden>
+    <div class="bar">
+      <a class="back" href="#/">&lsaquo; Cat&eacute;gories</a>
+      <h2 class="ctitle" id="ctitle"></h2>
+      <div class="filters" id="filters"></div>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="grid" id="grid">
+<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
+         data-name="Pyjama court blanc à pois" data-brand="Women&#x27;s Secret"
+         data-price="170" data-label="170 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Pyjama court blanc à pois" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 3"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Women&#x27;s Secret</p>
+    <h3>Pyjama court blanc à pois</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <p class="price">170 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
+         data-name="Pyjama Marfil Jaune" data-brand="Women&#x27;s Secret"
+         data-price="170" data-label="170 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Pyjama Marfil Jaune" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 1"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 2"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button><button class="th" data-src="data:image/jpeg;base64,<<IMG>>" aria-label="Photo 3"><img src="data:image/jpeg;base64,<<IMG>>" alt="" loading="lazy"></button></div>
+  <div class="meta">
+    <p class="brand">Women&#x27;s Secret</p>
+    <h3>Pyjama Marfil Jaune</h3>
+    <label class="sz"><span>Taille</span><select data-size><option value="L">L</option></select></label>
+    <p class="price">170 MAD</p>
+    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
+  </div>
+</article>
+<article class="card" data-cat="Nuit &amp; Cocooning" data-season="Été"
+         data-name="Pyjama Paisley Gris" data-brand="Women&#x27;s Secret"
+         data-price="170" data-label="170 MAD">
+  <div class="shot"><img src="data:image/jpeg;base64,<<IMG>>" alt="Pyjama Paisley Gris" loading="lazy">
+    <span class="tick" aria-hidden="true">&#10003;</span></div>
+  <div class="gallery"><button class="th on" data-sr

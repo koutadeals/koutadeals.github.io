@@ -1,0 +1,164 @@
+<script>
+(function(){
+  var WA='212661793236', CUR='MAD', CATS=['Nuit & Cocooning', 'Collants & bas', 'Cuisine', 'Lingerie'], RAW=['Nuit & Cocooning', 'Collants & bas', 'cuisine', 'lingerie'];
+  var SEAS=['Été', 'Demi-saison', 'Hiver'];
+  var home=document.getElementById('home'), catv=document.getElementById('cat'),
+      cartv=document.getElementById('cart');
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var ctitle=document.getElementById('ctitle'), filters=document.getElementById('filters'),
+      count=document.getElementById('count');
+  var rows=document.getElementById('rows'), total=document.getElementById('total'),
+      cartfoot=document.getElementById('cartfoot'), cempty=document.getElementById('cempty'),
+      cnote=document.getElementById('cnote'), checkout=document.getElementById('checkout');
+  var sumbar=document.getElementById('sumbar'), sum=document.getElementById('sum');
+  var cur={cat:0, f:'all'};
+
+  function money(n){ return n.toLocaleString('fr-FR')+' '+CUR; }
+
+  // keep each card's own first photo for the basket thumbnail
+  cards.forEach(function(c){
+    var main=c.querySelector('.shot img');
+    c._hero=main.getAttribute('src');
+    c.querySelectorAll('.th').forEach(function(t){
+      t.addEventListener('click',function(){
+        main.src=t.dataset.src;
+        c.querySelectorAll('.th').forEach(function(o){ o.classList.toggle('on',o===t); });
+      });
+    });
+  });
+
+  function picked(){ return cards.filter(function(c){ return c.dataset.on==='1'; }); }
+  function sizeOf(c){ var s=c.querySelector('[data-size]'); return s&&s.value?s.value:''; }
+
+  function message(list){
+    var t=0, lines=[];
+    list.forEach(function(c){
+      t+=parseFloat(c.dataset.price)||0;
+      var sz=sizeOf(c);
+      lines.push('\u2022 '+c.dataset.brand+' \u2014 '+c.dataset.name
+                 +(sz?' (taille '+sz+')':' (taille \u00e0 pr\u00e9ciser)')
+                 +(c.dataset.label?' \u2014 '+c.dataset.label:''));
+    });
+    return {total:t, text:'Bonjour Kouta Deals, je souhaite commander :\n'+lines.join('\n')
+                        +'\n\nTotal : '+money(t)};
+  }
+
+  function drawCart(){
+    var list=picked(); rows.innerHTML='';
+    var m=message(list);
+    list.forEach(function(c){
+      var sz=sizeOf(c);
+      var li=document.createElement('li'); li.className='row';
+      var im=document.createElement('img'); im.src=c._hero; im.alt='';
+      var tx=document.createElement('div'); tx.className='rtxt';
+      tx.innerHTML='<div class="b"></div><div class="n"></div><div class="s"></div>';
+      tx.querySelector('.b').textContent=c.dataset.brand;
+      tx.querySelector('.n').textContent=c.dataset.name;
+      var s=tx.querySelector('.s');
+      s.textContent=sz?('Taille '+sz):'Taille \u00e0 pr\u00e9ciser';
+      if(!sz) s.className='s miss';
+      var p=document.createElement('div'); p.className='rp'; p.textContent=c.dataset.label||'';
+      var x=document.createElement('button'); x.className='rx'; x.type='button';
+      x.setAttribute('aria-label','Retirer'); x.textContent='\u00d7';
+      x.addEventListener('click',function(){ setPick(c,false); });
+      li.appendChild(im); li.appendChild(tx); li.appendChild(p); li.appendChild(x);
+      rows.appendChild(li);
+    });
+    var any=list.length>0;
+    cartfoot.hidden=!any; cempty.hidden=any;
+    if(any){
+      total.textContent=money(m.total);
+      var miss=list.filter(function(c){ return !sizeOf(c); }).length;
+      cnote.textContent=miss? (miss>1? miss+' articles sans taille \u2014 \u00e0 pr\u00e9ciser avec Kouta Deals'
+                                     : '1 article sans taille \u2014 \u00e0 pr\u00e9ciser avec Kouta Deals')
+                            : 'Livraison gratuite sur Essaouira';
+      checkout.href='https://wa.me/'+WA+'?text='+encodeURIComponent(m.text);
+    }
+  }
+
+  function refresh(){
+    var list=picked();
+    sumbar.hidden = !list.length || !cartv.hidden;
+    if(list.length){
+      var m=message(list);
+      sum.innerHTML=list.length+(list.length>1?' articles':' article')
+                    +' &nbsp;&middot;&nbsp; <b>'+money(m.total)+'</b>';
+    }
+    if(!cartv.hidden) drawCart();
+  }
+
+  function setPick(c,on){
+    c.dataset.on=on?'1':'0';
+    var b=c.querySelector('.pick');
+    b.setAttribute('aria-pressed',String(on));
+    b.querySelector('span').textContent=on?'\u2713 Ajout\u00e9':'Ajouter';
+    refresh();
+  }
+
+  cards.forEach(function(c){
+    c.querySelector('.pick').addEventListener('click',function(){
+      setPick(c,c.dataset.on!=='1');
+    });
+    var s=c.querySelector('[data-size]');
+    if(s) s.addEventListener('change',refresh);
+  });
+
+  function apply(){
+    var n=0;
+    cards.forEach(function(c){
+      var on = c.dataset.cat===RAW[cur.cat]
+               && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*');
+      c.hidden=!on; if(on) n++;
+    });
+    count.textContent=n+(n>1?' modèles':' modèle');
+    [].slice.call(filters.children).forEach(function(ch){
+      ch.setAttribute('aria-pressed',String(ch.dataset.f===cur.f));
+    });
+  }
+
+  function openCat(i){
+    cur.cat=i; cur.f='all';
+    ctitle.textContent=CATS[i];
+    var present=SEAS.filter(function(s){
+      return cards.some(function(c){ return c.dataset.cat===RAW[i] && c.dataset.season===s; });
+    });
+    filters.innerHTML='';
+    if(present.length>1){
+      ['all'].concat(present).forEach(function(f){
+        var b=document.createElement('button'); b.className='chip'; b.type='button';
+        b.dataset.f=f; b.textContent=(f==='all'?'Tout':f);
+        b.addEventListener('click',function(){ cur.f=f; apply(); });
+        filters.appendChild(b);
+      });
+    }
+    apply();
+    home.hidden=true; cartv.hidden=true; catv.hidden=false;
+    refresh(); window.scrollTo(0,0);
+  }
+  function openHome(){
+    catv.hidden=true; cartv.hidden=true; home.hidden=false;
+    refresh(); window.scrollTo(0,0);
+  }
+  function openCart(){
+    home.hidden=true; catv.hidden=true; cartv.hidden=false;
+    drawCart(); refresh(); window.scrollTo(0,0);
+  }
+
+  document.getElementById('cback').addEventListener('click',function(){
+    if(history.length>1) history.back(); else location.hash='#/';
+  });
+
+  function route(){
+    var h=location.hash||'#/';
+    if(h.indexOf('#/c/')===0){
+      var i=parseInt(h.slice(4),10);
+      if(i>=0 && i<RAW.length) return openCat(i);
+      return openHome();
+    }
+    if(h==='#/panier') return openCart();
+    openHome();
+  }
+  window.addEventListener('hashchange',route);
+  route();
+})();
+</script>
