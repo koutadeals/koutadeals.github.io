@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'photos/**'
       - 'build/**'
 
 permissions:
@@ -14,7 +13,7 @@ permissions:
 
 concurrency:
   group: build-shop
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
