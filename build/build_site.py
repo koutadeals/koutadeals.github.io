@@ -157,20 +157,33 @@ def index_photos():
         files += glob.glob(os.path.join(PHOTOS, "*." + ext))
     return sorted(set(files))
 
+STYLES_N  = []        # every product name, normalised, longest first
+STYLE_DUP = set()     # names used by more than one product
+
 def match_photos(style, brand, files):
-    """Longest-prefix match on style+brand, falling back to style alone."""
-    keys = [norm(style) + norm(brand), norm(style)]
-    for key in keys:
-        if not key:
+    """The photos of ONE product.  The longest product name wins, and when
+    two products share a name the brand must appear in the file name."""
+    sn = norm(style)
+    bn = norm(brand)
+    if not sn:
+        return []
+    longer = [s for s in STYLES_N if len(s) > len(sn) and s.startswith(sn)]
+    hits = []
+    for f in files:
+        stem = norm(os.path.splitext(os.path.basename(f))[0])
+        if not stem.startswith(sn):
             continue
-        hits = [f for f in files
-                if norm(os.path.splitext(os.path.basename(f))[0]).startswith(key)]
-        if hits:
-            def is_hero(p):
-                stem = os.path.splitext(os.path.basename(p))[0]
-                return stem.endswith("_1")
-            hits.sort(key=lambda p: (not is_hero(p), os.path.basename(p).lower()))
-            return hits
+        if any(stem.startswith(s) for s in longer):
+            continue                 # it belongs to a longer product name
+        if sn in STYLE_DUP and not (bn and stem[len(sn):].startswith(bn)):
+            continue                 # two products share this name
+        hits.append(f)
+    if hits:
+        def is_hero(p):
+            stem = os.path.splitext(os.path.basename(p))[0]
+            return stem.endswith("_1")
+        hits.sort(key=lambda p: (not is_hero(p), os.path.basename(p).lower()))
+        return hits
     return []
 
 # ---------------------------------------------------------------- images
@@ -293,6 +306,27 @@ def main():
     os.makedirs(IMGDIR, exist_ok=True)   # never wipe: published images stay
 
     items, problems = [], []
+
+    # product names, so one product cannot take another product photos
+    _real = {}
+    for _r in rows:
+        _s = (_r.get("style") or "").strip()
+        if _s:
+            _real.setdefault(norm(_s), _s)
+    _count = collections.Counter(norm((_r.get("style") or "").strip()) for _r in rows)
+    _count.pop("", None)
+    STYLES_N[:] = sorted(_real.keys(), key=len, reverse=True)
+    STYLE_DUP.clear()
+    STYLE_DUP.update(n for n, c in _count.items() if c > 1)
+    for n, c in sorted(_count.items()):
+        if c > 1:
+            problems.append("same product name used by %d products: %s" % (c, _real[n]))
+    for n in STYLES_N:
+        for s in STYLES_N:
+            if s != n and s.startswith(n):
+                problems.append("the name %s is the beginning of %s" % (_real[n], _real[s]))
+                break
+
     for r in rows:
         cat   = (r.get("category") or "").strip()
         stock = (r.get("stock") or "").strip()
