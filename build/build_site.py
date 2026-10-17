@@ -50,7 +50,7 @@ def fetch_rows():
     if not data.get("ok"):
         raise SystemExit("sheet read failed: %s" % data.get("error"))
     head = ["category","marque","stock","style","tailles","saison","matiere",
-            "c1","c2","c3","c4","ancien","prix","cur","photos"]
+            "c1","c2","c3","c4","ancien","prix","cur","photos","descr"]
     out = []
     for row in data["rows"]:
         row = list(row) + [""] * (len(head) - len(row))
@@ -390,6 +390,7 @@ def main():
             sizes=sizes,
             season=(r.get("saison") or "").strip(),
             price=prix, label=("%s %s" % (prix, cur) if prix else ""), old=old_html, off=off_html,
+            descr=(r.get("descr") or "").strip()[:400],
             pics=pics, ready=ready))
 
     # category order: biggest first, first-seen as tie-break
@@ -487,16 +488,20 @@ def main():
             sz = ('<div class="opts"><label class="sz solo"><span>%s</span></label>%s</div>'
                   % (lab, qty % " solo"))
 
+        dsc   = it["descr"]
+        dattr = (' data-descr="%s"' % e(dsc).replace("\n", "&#10;")) if dsc else ""
+        more  = '\n    <button class="more" type="button">En savoir plus</button>' if dsc else ""
+
         cards.append(
             '<article class="card" data-cat="%s" data-season="%s"\n'
             '         data-name="%s" data-brand="%s" data-stock="%s"\n'
-            '         data-price="%s" data-label="%s">\n'
+            '         data-price="%s" data-label="%s"%s>\n'
             '  <div class="shot"><img src="%s" alt="%s" loading="lazy" width="1000" height="1333">\n'
             '    <span class="tick" aria-hidden="true">&#10003;</span></div>\n'
             '  <div class="gallery">%s</div>\n'
             '  <div class="meta">\n'
             '    <p class="brand">%s</p>\n'
-            '    <h3>%s</h3>\n'
+            '    <h3>%s</h3>%s\n'
             '    %s\n'
             '    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>\n'
             '    <p class="price"><span class="pL">%s</span>'
@@ -505,8 +510,8 @@ def main():
             '  </div>\n'
             '</article>'
             % (e(it["cat"]), e(sea), e(it["name"]), e(it["brand"]), e(it["stock"]),
-               e(it["price"]), e(it["label"]), big[0], e(it["name"]),
-               gal, e(it["brand"]), e(it["name"]), sz, it["old"], e(it["label"]), it["off"]))
+               e(it["price"]), e(it["label"]), dattr, big[0], e(it["name"]),
+               gal, e(it["brand"]), e(it["name"]), more, sz, it["old"], e(it["label"]), it["off"]))
 
     page = TEMPLATE.replace("{{TILES}}", "\n".join(tiles)) \
                    .replace("{{CARDS}}", "\n".join(cards)) \
@@ -701,6 +706,24 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 .price em.off { font-style:normal; font-size:12px; letter-spacing:.03em;
                 background:#2f7d4f; color:#fff; border-radius:999px; padding:3px 9px;
                 white-space:nowrap; }
+.more { align-self:flex-start; font:inherit; font-size:11.5px; letter-spacing:.06em;
+        background:none; border:0; padding:0; margin:-2px 0 0; cursor:pointer;
+        color:var(--gold); border-bottom:1px solid rgba(176,141,87,.45); }
+.infowrap { position:fixed; inset:0; background:rgba(62,50,44,.45); z-index:90;
+            display:flex; align-items:center; justify-content:center; padding:20px; }
+.infobox { position:relative; background:var(--bg); border:1px solid var(--line);
+           border-radius:4px; max-width:360px; width:100%; padding:20px 20px 24px;
+           box-shadow:0 18px 50px rgba(0,0,0,.22); max-height:72vh; overflow:auto; }
+.infox { position:sticky; top:0; float:right; margin:-6px -6px 0 0; width:34px; height:34px;
+         border-radius:999px; border:1px solid var(--line); background:var(--surface);
+         color:var(--deep); font-size:15px; line-height:1; cursor:pointer;
+         box-shadow:0 2px 8px rgba(0,0,0,.10); }
+.infobox .ib { margin:0 0 4px; font-size:9.5px; letter-spacing:.3em;
+               text-transform:uppercase; color:var(--gold); }
+.infobox h4 { font-family:var(--display); font-weight:400; font-size:19px; line-height:1.25;
+              margin:0 0 14px; color:var(--deep); padding-right:36px; }
+.infobox p.t { margin:0 0 12px; font-size:14px; line-height:1.65; color:var(--fg); }
+.infobox p.t:last-child { margin-bottom:0; }
 .pick { font:inherit; font-size:12.5px; letter-spacing:.08em; padding:10px; cursor:pointer;
         border:1px solid var(--gold); background:transparent; color:var(--gold); border-radius:2px; }
 .card[data-on="1"] .pick { background:var(--ok); border-color:var(--ok); color:var(--okfg); }
@@ -997,6 +1020,42 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   }
   window.addEventListener('hashchange',route);
   route();
+})();
+
+/* ---- "En savoir plus": the product description ---- */
+(function(){
+  var ov=null;
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function onKey(ev){ if(ev.key==='Escape') shut(true); }
+  function shut(goBack){
+    if(!ov) return;
+    if(ov.parentNode) ov.parentNode.removeChild(ov);
+    ov=null;
+    document.removeEventListener('keydown',onKey);
+    if(goBack){ try{ if(history.state && history.state.kdInfo) history.back(); }catch(e){} }
+  }
+  document.addEventListener('click',function(ev){
+    var t=ev.target; if(!t || !t.closest) return;
+    var b=t.closest('.more'); if(!b) return;
+    var card=b.closest('article.card'); if(!card) return;
+    var txt=card.getAttribute('data-descr')||''; if(!txt) return;
+    shut(false);
+    var paras=txt.split(/\n\s*\n/).map(function(p){
+      return '<p class="t">'+esc(p).replace(/\n/g,'<br>')+'</p>'; }).join('');
+    ov=document.createElement('div');
+    ov.className='infowrap';
+    ov.innerHTML='<div class="infobox" role="dialog" aria-modal="true">'
+      +'<button class="infox" type="button" aria-label="Fermer">&#10005;</button>'
+      +'<p class="ib">'+esc(card.getAttribute('data-brand')||'')+'</p>'
+      +'<h4>'+esc(card.getAttribute('data-name')||'')+'</h4>'+paras+'</div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',function(e2){ if(e2.target===ov) shut(true); });
+    ov.querySelector('.infox').onclick=function(){ shut(true); };
+    document.addEventListener('keydown',onKey);
+    try{ history.pushState({kdInfo:1},''); }catch(e){}
+  });
+  window.addEventListener('popstate',function(){ if(ov) shut(false); });
 })();
 </script>
 </body>
