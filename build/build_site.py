@@ -499,7 +499,8 @@ def main():
             '    <h3>%s</h3>\n'
             '    %s\n'
             '    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>\n'
-            '    <p class="price">%s<b>%s</b>%s</p>\n'
+            '    <p class="price"><span class="pL">%s</span>'
+            '<b>%s</b><span class="pR">%s</span></p>\n'
             '    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>\n'
             '  </div>\n'
             '</article>'
@@ -692,10 +693,12 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 .price { font-family:var(--display); font-size:19px; color:var(--deep); margin:0;
          font-variant-numeric:tabular-nums;
          display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; }
+.price .pL { justify-self:start; min-width:0; }
+.price .pR { justify-self:end; min-width:0; }
 .price b { font-weight:inherit; justify-self:center; white-space:nowrap; }
-.price s { justify-self:start; color:#9b9089; font-size:15px; text-decoration-thickness:1px;
+.price s { color:#9b9089; font-size:15px; text-decoration-thickness:1px;
            white-space:nowrap; }
-.price em.off { justify-self:end; font-style:normal; font-size:12px; letter-spacing:.03em;
+.price em.off { font-style:normal; font-size:12px; letter-spacing:.03em;
                 background:#2f7d4f; color:#fff; border-radius:999px; padding:3px 9px;
                 white-space:nowrap; }
 .pick { font:inherit; font-size:12.5px; letter-spacing:.08em; padding:10px; cursor:pointer;
