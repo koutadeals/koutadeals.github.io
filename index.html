@@ -144,6 +144,21 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 .price em.off { font-style:normal; font-size:12px; letter-spacing:.03em;
                 background:#2f7d4f; color:#fff; border-radius:999px; padding:3px 9px;
                 white-space:nowrap; }
+.card.sold .shot img { filter:saturate(.55); opacity:.9; }
+.card.sold .shot { position:relative; }
+.card.sold .gallery { display:none; }
+.soldtag { position:absolute; top:10px; left:10px; z-index:3;
+           font-family:var(--body); font-size:9.5px; letter-spacing:.26em;
+           text-transform:uppercase; background:var(--bg); color:var(--del);
+           border:1px solid var(--del); border-radius:2px; padding:5px 10px; }
+.soldline { margin:4px 0 0; font-size:11.5px; letter-spacing:.18em;
+            text-transform:uppercase; color:var(--del); text-align:center; }
+.card.sold .price { color:var(--muted); }
+.soldhead { grid-column:1/-1; margin:26px 0 2px; text-align:center;
+            font-size:10px; letter-spacing:.3em; text-transform:uppercase;
+            color:var(--muted); }
+.soldhead span { display:inline-block; border-top:1px solid var(--line);
+                 padding-top:10px; min-width:230px; }
 .more { align-self:flex-start; font:inherit; font-size:11.5px; letter-spacing:.06em;
         background:none; border:0; padding:0; margin:-2px 0 0; cursor:pointer;
         color:var(--gold); border-bottom:1px solid rgba(176,141,87,.45); }
@@ -2548,7 +2563,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   }
 
   cards.forEach(function(c){
-    c.querySelector('.pick').addEventListener('click',function(){
+    var pk=c.querySelector('.pick');
+    if(pk) pk.addEventListener('click',function(){
       setPick(c,c.dataset.on!=='1');
     });
     var s=c.querySelector('[data-size]');
@@ -2560,12 +2576,24 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   });
 
   function apply(){
-    var n=0;
+    var n=0, firstSold=null;
     cards.forEach(function(c){
       var on = c.dataset.cat===RAW[cur.cat]
                && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*');
-      c.hidden=!on; if(on) n++;
+      c.hidden=!on;
+      if(on){
+        if(c.dataset.sold==='1'){ if(!firstSold) firstSold=c; }
+        else n++;
+      }
     });
+    var hd=document.getElementById('soldhead');
+    if(!hd){
+      hd=document.createElement('p');
+      hd.id='soldhead'; hd.className='soldhead';
+      hd.innerHTML='<span>D\u00e9j\u00e0 vendus</span>';
+    }
+    if(firstSold) firstSold.parentNode.insertBefore(hd,firstSold);
+    else if(hd.parentNode) hd.parentNode.removeChild(hd);
     count.textContent=n+(n>1?' modèles':' modèle');
     [].slice.call(filters.children).forEach(function(ch){
       ch.setAttribute('aria-pressed',String(ch.dataset.f===cur.f));
