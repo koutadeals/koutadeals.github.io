@@ -57,6 +57,8 @@ def fetch_rows():
         out.append(dict(zip(head, row)))
     return out
 
+SOLD_MAX = 20                  # sold pieces kept on the page, per category
+
 BIG_W,  BIG_Q  = 1000, 82      # main photo / what a thumbnail swaps in
 THUMB_W, THUMB_Q = 220, 78     # the small strip under the photo
 TILE_W, TILE_Q = 700, 80       # category menu cover
@@ -353,9 +355,8 @@ def main():
             continue
         if not cat:
             problems.append("no category: %s" % style);            continue
-        if stock == "0":
-            problems.append("out of stock (hidden): %s" % style);   continue
-        stock_n = stock if stock.isdigit() else ""
+        sold    = (stock == "0")
+        stock_n = "" if sold else (stock if stock.isdigit() else "")
         pics = match_photos(style, brand, files)
         # skip photos confirmed by eye to be phone screenshots; only flag the rest
         keep = []
@@ -391,10 +392,11 @@ def main():
             season=(r.get("saison") or "").strip(),
             price=prix, label=("%s %s" % (prix, cur) if prix else ""), old=old_html, off=off_html,
             descr=(r.get("descr") or "").strip()[:400],
+            sold=sold, rowno=len(items),
             pics=pics, ready=ready))
 
     # category order: biggest first, first-seen as tie-break
-    cnt  = collections.Counter(i["cat"] for i in items)
+    cnt  = collections.Counter(i["cat"] for i in items if not i["sold"])
     seen = []
     for i in items:
         if i["cat"] not in seen:
@@ -402,8 +404,25 @@ def main():
     order = {c: n for n, c in enumerate(seen)}
     cats  = sorted(set(i["cat"] for i in items), key=lambda c: (-cnt[c], order[c]))
 
-    # season order inside a category
-    items.sort(key=lambda i: (cats.index(i["cat"]), srank(i["season"]), i["name"].lower()))
+    # season order inside a category; sold ones always after, newest first
+    items.sort(key=lambda i: (cats.index(i["cat"]), i["sold"],
+                              -i["rowno"] if i["sold"] else srank(i["season"]),
+                              i["name"].lower()))
+
+    # only the last SOLD_MAX sold pieces of each category stay on the page.
+    # nothing is deleted anywhere: the sheet row and the photos are untouched,
+    # the card is simply not printed.
+    keep, nsold = [], collections.Counter()
+    for i in items:
+        if i["sold"]:
+            nsold[i["cat"]] += 1
+            if nsold[i["cat"]] > SOLD_MAX:
+                continue
+        keep.append(i)
+    dropped = len(items) - len(keep)
+    if dropped:
+        problems.append("%d older sold pieces are kept in the sheet but not shown" % dropped)
+    items = keep
 
     # ---- category tiles
     tiles = []
@@ -431,7 +450,8 @@ def main():
             if first is None:
                 problems.append("cover photo not found in %s: %r" % (c, want))
         if first is None:
-            first = next(i for i in items if i["cat"] == c)
+            first = next((i for i in items if i["cat"] == c and not i["sold"]),
+                         next(i for i in items if i["cat"] == c))
         if pic or first["pics"]:
             href = emit(pic or first["pics"][0], TILE_W, TILE_Q, "-tile")
         else:
@@ -492,11 +512,18 @@ def main():
         dattr = (' data-descr="%s"' % e(dsc).replace("\n", "&#10;")) if dsc else ""
         more  = '\n    <button class="more" type="button">En savoir plus</button>' if dsc else ""
 
+        sold  = it["sold"]
+        scls  = " sold" if sold else ""
+        sattr = ' data-sold="1"' if sold else ""
+        stick = '\n    <span class="soldtag">Vendu</span>' if sold else ""
+        tail  = ('<p class="soldline">Vendu</p>' if sold else
+                 '<button class="pick" aria-pressed="false"><span>Ajouter</span></button>')
+
         cards.append(
-            '<article class="card" data-cat="%s" data-season="%s"\n'
+            '<article class="card%s" data-cat="%s" data-season="%s"\n'
             '         data-name="%s" data-brand="%s" data-stock="%s"\n'
-            '         data-price="%s" data-label="%s"%s>\n'
-            '  <div class="shot"><img src="%s" alt="%s" loading="lazy" width="1000" height="1333">\n'
+            '         data-price="%s" data-label="%s"%s%s>\n'
+            '  <div class="shot"><img src="%s" alt="%s" loading="lazy" width="1000" height="1333">%s\n'
             '    <span class="tick" aria-hidden="true">&#10003;</span></div>\n'
             '  <div class="gallery">%s</div>\n'
             '  <div class="meta">\n'
@@ -506,12 +533,13 @@ def main():
             '    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>\n'
             '    <p class="price"><span class="pL">%s</span>'
             '<b>%s</b><span class="pR">%s</span></p>\n'
-            '    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>\n'
+            '    %s\n'
             '  </div>\n'
             '</article>'
-            % (e(it["cat"]), e(sea), e(it["name"]), e(it["brand"]), e(it["stock"]),
-               e(it["price"]), e(it["label"]), dattr, big[0], e(it["name"]),
-               gal, e(it["brand"]), e(it["name"]), more, sz, it["old"], e(it["label"]), it["off"]))
+            % (scls, e(it["cat"]), e(sea), e(it["name"]), e(it["brand"]), e(it["stock"]),
+               e(it["price"]), e(it["label"]), dattr, sattr, big[0], e(it["name"]), stick,
+               gal, e(it["brand"]), e(it["name"]), more, ("" if sold else sz),
+               it["old"], e(it["label"]), it["off"], tail))
 
     page = TEMPLATE.replace("{{TILES}}", "\n".join(tiles)) \
                    .replace("{{CARDS}}", "\n".join(cards)) \
@@ -706,6 +734,21 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 .price em.off { font-style:normal; font-size:12px; letter-spacing:.03em;
                 background:#2f7d4f; color:#fff; border-radius:999px; padding:3px 9px;
                 white-space:nowrap; }
+.card.sold .shot img { filter:saturate(.55); opacity:.9; }
+.card.sold .shot { position:relative; }
+.card.sold .gallery { display:none; }
+.soldtag { position:absolute; top:10px; left:10px; z-index:3;
+           font-family:var(--body); font-size:9.5px; letter-spacing:.26em;
+           text-transform:uppercase; background:var(--bg); color:var(--del);
+           border:1px solid var(--del); border-radius:2px; padding:5px 10px; }
+.soldline { margin:4px 0 0; font-size:11.5px; letter-spacing:.18em;
+            text-transform:uppercase; color:var(--del); text-align:center; }
+.card.sold .price { color:var(--muted); }
+.soldhead { grid-column:1/-1; margin:26px 0 2px; text-align:center;
+            font-size:10px; letter-spacing:.3em; text-transform:uppercase;
+            color:var(--muted); }
+.soldhead span { display:inline-block; border-top:1px solid var(--line);
+                 padding-top:10px; min-width:230px; }
 .more { align-self:flex-start; font:inherit; font-size:11.5px; letter-spacing:.06em;
         background:none; border:0; padding:0; margin:-2px 0 0; cursor:pointer;
         color:var(--gold); border-bottom:1px solid rgba(176,141,87,.45); }
@@ -952,7 +995,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   }
 
   cards.forEach(function(c){
-    c.querySelector('.pick').addEventListener('click',function(){
+    var pk=c.querySelector('.pick');
+    if(pk) pk.addEventListener('click',function(){
       setPick(c,c.dataset.on!=='1');
     });
     var s=c.querySelector('[data-size]');
@@ -964,12 +1008,24 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   });
 
   function apply(){
-    var n=0;
+    var n=0, firstSold=null;
     cards.forEach(function(c){
       var on = c.dataset.cat===RAW[cur.cat]
                && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*');
-      c.hidden=!on; if(on) n++;
+      c.hidden=!on;
+      if(on){
+        if(c.dataset.sold==='1'){ if(!firstSold) firstSold=c; }
+        else n++;
+      }
     });
+    var hd=document.getElementById('soldhead');
+    if(!hd){
+      hd=document.createElement('p');
+      hd.id='soldhead'; hd.className='soldhead';
+      hd.innerHTML='<span>D\u00e9j\u00e0 vendus</span>';
+    }
+    if(firstSold) firstSold.parentNode.insertBefore(hd,firstSold);
+    else if(hd.parentNode) hd.parentNode.removeChild(hd);
     count.textContent=n+(n>1?' modèles':' modèle');
     [].slice.call(filters.children).forEach(function(ch){
       ch.setAttribute('aria-pressed',String(ch.dataset.f===cur.f));
