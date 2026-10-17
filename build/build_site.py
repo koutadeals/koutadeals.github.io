@@ -50,7 +50,7 @@ def fetch_rows():
     if not data.get("ok"):
         raise SystemExit("sheet read failed: %s" % data.get("error"))
     head = ["category","marque","stock","style","tailles","saison","matiere",
-            "c1","c2","c3","c4","prix","cur","photos"]
+            "c1","c2","c3","c4","ancien","prix","cur","photos"]
     out = []
     for row in data["rows"]:
         row = list(row) + [""] * (len(head) - len(row))
@@ -159,6 +159,23 @@ def index_photos():
 
 STYLES_N  = []        # every product name, normalised, longest first
 STYLE_DUP = set()     # names used by more than one product
+
+def old_price_html(anc, prix, cur):
+    """the crossed-out price and the green badge, when there is a real discount"""
+    def num(s):
+        s = re.sub(r"[^0-9.,]", "", s or "").replace(",", ".")
+        try:
+            return float(s)
+        except Exception:
+            return 0.0
+    a, p = num(anc), num(prix)
+    if not anc or a <= p or p <= 0:
+        return ""
+    out = "<s>%s %s</s>" % (e(anc), e(cur))
+    off = int(round((1 - p / a) * 100))
+    if off >= 1:
+        out += "<em class=\"off\">-%d&nbsp;%%</em>" % off
+    return out
 
 def match_photos(style, brand, files):
     """The photos of ONE product.  The longest product name wins, and when
@@ -364,6 +381,7 @@ def main():
                 problems.append("no _1 hero photo: %s" % style)
         prix = (r.get("prix") or "").strip()
         cur  = (r.get("cur") or "").strip() or "MAD"   # blank cell -> MAD
+        old_html = old_price_html((r.get("ancien") or "").strip(), prix, cur)
         tal   = (r.get("tailles") or "").strip()
         sizes = sizes_of(tal)
         note  = "" if (sizes or tal.lower() in ("", "unique", "taille unique", "u")) else tal
@@ -371,7 +389,7 @@ def main():
             cat=cat, brand=brand, name=style, note=note, stock=stock_n,
             sizes=sizes,
             season=(r.get("saison") or "").strip(),
-            price=prix, label=("%s %s" % (prix, cur) if prix else ""),
+            price=prix, label=("%s %s" % (prix, cur) if prix else ""), old=old_html,
             pics=pics, ready=ready))
 
     # category order: biggest first, first-seen as tie-break
@@ -481,13 +499,13 @@ def main():
             '    <h3>%s</h3>\n'
             '    %s\n'
             '    <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>\n'
-            '    <p class="price">%s</p>\n'
+            '    <p class="price">%s%s</p>\n'
             '    <button class="pick" aria-pressed="false"><span>Ajouter</span></button>\n'
             '  </div>\n'
             '</article>'
             % (e(it["cat"]), e(sea), e(it["name"]), e(it["brand"]), e(it["stock"]),
                e(it["price"]), e(it["label"]), big[0], e(it["name"]),
-               gal, e(it["brand"]), e(it["name"]), sz, e(it["label"])))
+               gal, e(it["brand"]), e(it["name"]), sz, it["old"], e(it["label"])))
 
     page = TEMPLATE.replace("{{TILES}}", "\n".join(tiles)) \
                    .replace("{{CARDS}}", "\n".join(cards)) \
@@ -673,6 +691,10 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
              border:1px solid var(--line); border-radius:2px; padding:5px 8px; flex:1; min-width:0; }
 .price { font-family:var(--display); font-size:19px; color:var(--deep); margin:0;
          font-variant-numeric:tabular-nums; }
+.price s { color:#9b9089; font-size:15px; margin-right:10px; text-decoration-thickness:1px; }
+.price em.off { font-style:normal; font-size:12px; letter-spacing:.03em; background:#2f7d4f;
+                color:#fff; border-radius:999px; padding:3px 9px; margin-left:10px;
+                vertical-align:2px; }
 .pick { font:inherit; font-size:12.5px; letter-spacing:.08em; padding:10px; cursor:pointer;
         border:1px solid var(--gold); background:transparent; color:var(--gold); border-radius:2px; }
 .card[data-on="1"] .pick { background:var(--ok); border-color:var(--ok); color:var(--okfg); }
