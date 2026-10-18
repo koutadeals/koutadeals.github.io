@@ -2004,7 +2004,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 </article>
 <article class="card" data-cat="Mode" data-season=""
          data-name="Robe courte en mélange de viscose" data-brand="MICHAEL KORS" data-stock="1"
-         data-price="1,200" data-label="1,200 MAD" data-slug="robe-courte-en-m-lange-de-viscose-michael-kors">
+         data-price="1200" data-label="1,200 MAD" data-slug="robe-courte-en-m-lange-de-viscose-michael-kors">
   <div class="shot"><img src="img/robe-courte-en-m-lange-de-viscose-michael-kors-1.jpg" alt="Robe courte en mélange de viscose" loading="lazy" width="1000" height="1333">
     <button class="shr" type="button" aria-label="Partager cet article"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><line x1="8.3" y1="10.8" x2="15.7" y2="6.2"/><line x1="8.3" y1="13.2" x2="15.7" y2="17.8"/></svg></button>
     <span class="tick" aria-hidden="true">&#10003;</span></div>
@@ -2031,7 +2031,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <button class="more" type="button">En savoir plus</button>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="38">38</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
-    <p class="price"><span class="pL"></span><b>600 MAD</b><span class="pR"></span></p>
+    <p class="price"><span class="pL"><s>1,600 MAD</s></span><b>600 MAD</b><span class="pR"><em class="off">-62&nbsp;%</em></span></p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
@@ -2064,7 +2064,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <button class="more" type="button">En savoir plus</button>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="38">38</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
-    <p class="price"><span class="pL"></span><b>700 MAD</b><span class="pR"></span></p>
+    <p class="price"><span class="pL"><s>1,600 MAD</s></span><b>700 MAD</b><span class="pR"><em class="off">-56&nbsp;%</em></span></p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
@@ -2081,7 +2081,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <button class="more" type="button">En savoir plus</button>
     <div class="opts"><label class="sz"><span>Taille</span><select data-size><option value="S">S</option></select></label><div class="qty"><button type="button" class="qb" data-dec aria-label="Moins">&minus;</button><span data-qty>1</span><button type="button" class="qb" data-inc aria-label="Plus">+</button></div></div>
     <p class="smax" data-max hidden>Stock limit&eacute;&nbsp;: quantit&eacute; maximale atteinte.</p>
-    <p class="price"><span class="pL"></span><b>350 MAD</b><span class="pR"></span></p>
+    <p class="price"><span class="pL"><s>1,050 MAD</s></span><b>350 MAD</b><span class="pR"><em class="off">-67&nbsp;%</em></span></p>
     <button class="pick" aria-pressed="false"><span>Ajouter</span></button>
   </div>
 </article>
@@ -3005,7 +3005,11 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     var w=c.querySelector('[data-max]'); if(w) w.hidden=!(n>=mx&&mx<99);
     refresh();
   }
-  function lineTotal(c){ return (parseFloat(c.dataset.price)||0)*qtyOf(c); }
+  function lineTotal(c){
+    var raw=String(c.dataset.price||'').replace(/[\s\u00a0\u202f]/g,'')
+                                        .replace(/,(?=\d{3}(\D|$))/g,'');
+    return (parseFloat(raw)||0)*qtyOf(c);
+  }
   function hasSize(c){ return !!c.querySelector('[data-size]'); }
 
   function message(list){
