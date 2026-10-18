@@ -69,6 +69,12 @@ WA2  = "+34 611 392 655"
 WA3  = "+212 661 793 236"
 SITE = "https://koutadeals.com"
 SHARE_TXT = SITE
+SHARE_ICON = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+              'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" '
+              'aria-hidden="true"><circle cx="18" cy="5" r="2.6"/>'
+              '<circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/>'
+              '<line x1="8.3" y1="10.8" x2="15.7" y2="6.2"/>'
+              '<line x1="8.3" y1="13.2" x2="15.7" y2="17.8"/></svg>')
 SHARE_IMG = "share-1.jpg"          # the picture WhatsApp shows for the link
 SHARE_V   = "1"                  # bump when the picture changes (forces a refresh)
 SHARE_PHOTOS = [                 # the five products on that picture, left to right
@@ -116,7 +122,9 @@ def sizes_of(cell):
     for p in parts:
         k = p.casefold()
         if k not in seen:
-            seen.add(k); out.append(p)
+            seen.add(k)
+            # 90b -> 90B, m -> M, xl -> XL;  "Taille unique" is left alone
+            out.append(p.upper() if (" " not in p and len(p) <= 4) else p)
     return out
 
 def e(s):
@@ -467,6 +475,17 @@ def main():
             '  <span class="tgo" aria-hidden="true">&rsaquo;</span>\n'
             '</a>' % (n, href, e(c[:1].upper() + c[1:]), e(sub)))
 
+    # ---- a short address for every product, used by the share link
+    taken = {}
+    for it in items:
+        s = slug(it["name"] + "-" + it["brand"])
+        if s in taken:
+            taken[s] += 1
+            s = "%s-%d" % (s, taken[s])
+        else:
+            taken[s] = 1
+        it["slug"] = s
+
     # ---- product cards
     cards = []
     for it in items:
@@ -522,8 +541,9 @@ def main():
         cards.append(
             '<article class="card%s" data-cat="%s" data-season="%s"\n'
             '         data-name="%s" data-brand="%s" data-stock="%s"\n'
-            '         data-price="%s" data-label="%s"%s%s>\n'
+            '         data-price="%s" data-label="%s" data-slug="%s"%s%s>\n'
             '  <div class="shot"><img src="%s" alt="%s" loading="lazy" width="1000" height="1333">%s\n'
+            '    <button class="shr" type="button" aria-label="Partager cet article">%s</button>\n'
             '    <span class="tick" aria-hidden="true">&#10003;</span></div>\n'
             '  <div class="gallery">%s</div>\n'
             '  <div class="meta">\n'
@@ -537,7 +557,8 @@ def main():
             '  </div>\n'
             '</article>'
             % (scls, e(it["cat"]), e(sea), e(it["name"]), e(it["brand"]), e(it["stock"]),
-               e(it["price"]), e(it["label"]), dattr, sattr, big[0], e(it["name"]), stick,
+               e(it["price"]), e(it["label"]), e(it["slug"]), dattr, sattr,
+               big[0], e(it["name"]), stick, SHARE_ICON,
                gal, e(it["brand"]), e(it["name"]), more, ("" if sold else sz),
                it["old"], e(it["label"]), it["off"], tail))
 
@@ -556,6 +577,27 @@ def main():
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
     open(os.path.join(OUT, ".nojekyll"), "w").close()
+
+    # ---- one small page per product, so a shared link carries its own photo
+    pdir = os.path.join(OUT, "p")
+    shutil.rmtree(pdir, ignore_errors=True)
+    for it in items:
+        if not it.get("slug") or not it["_big"]:
+            continue
+        title = it["name"] + ((" \u2014 " + it["brand"]) if it["brand"] else "")
+        bits  = [it["label"]] if it["label"] else []
+        if it["descr"]:
+            bits.append(it["descr"])
+        desc  = (" \u00b7 ".join(bits) or "Kouta Deals")[:200]
+        go    = SITE + "/#/p/" + it["slug"]
+        here  = os.path.join(pdir, it["slug"])
+        os.makedirs(here, exist_ok=True)
+        with open(os.path.join(here, "index.html"), "w", encoding="utf-8") as f:
+            f.write(PRODUCT_PAGE.format(
+                title=e(title), desc=e(desc),
+                url=e(SITE + "/p/" + it["slug"] + "/"),
+                img=e(SITE + "/" + it["_big"][0]), alt=e(it["name"]),
+                price=e(it["label"]), go=e(go), gojs=_json.dumps(go)))
     if all(os.path.exists(os.path.join(PHOTOS, n)) for n in SHARE_PHOTOS):
         write_share_card(OUT)            # only when the five share photos are there
 
@@ -587,6 +629,42 @@ def main():
         for p in problems:
             print("  - " + p)
 
+
+PRODUCT_PAGE = u"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{title} &middot; Kouta Deals</title>
+<meta name="description" content="{desc}">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Kouta Deals">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:image" content="{img}">
+<meta property="og:image:secure_url" content="{img}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="1333">
+<meta property="og:image:alt" content="{alt}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="{img}">
+<meta http-equiv="refresh" content="0; url={go}">
+<script>location.replace({gojs});</script>
+<style>body{{margin:0;background:#FBF6F1;color:#3E322C;padding:40px 24px;
+  font-family:Georgia,"Times New Roman",serif;text-align:center}}
+a{{color:#B08D57}}</style>
+</head>
+<body>
+<p>{title}<br>{price}<br><a href="{go}">Voir sur Kouta Deals</a></p>
+</body>
+</html>
+"""
 
 TEMPLATE = r"""<!doctype html>
 <html lang="fr">
@@ -734,6 +812,15 @@ h3 { font-family:var(--display); font-weight:400; font-size:16px; line-height:1.
 .price em.off { font-style:normal; font-size:12px; letter-spacing:.03em;
                 background:#2f7d4f; color:#fff; border-radius:999px; padding:3px 9px;
                 white-space:nowrap; }
+.shr { position:absolute; top:10px; right:10px; z-index:4; width:36px; height:36px;
+       display:grid; place-items:center; padding:0; border-radius:50%;
+       background:var(--surface); border:1px solid var(--line); color:var(--fg);
+       cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.shr svg { width:17px; height:17px; }
+.shr:hover { border-color:var(--gold); color:var(--gold); }
+.shr:active { transform:scale(.94); }
+.card.sold .shr { display:none; }
+.card.lit { box-shadow:0 0 0 2px var(--gold); }
 .card.sold .shot img { filter:saturate(.55); opacity:.9; }
 .card.sold .shot { position:relative; }
 .card.sold .gallery { display:none; }
@@ -1071,9 +1158,43 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       if(i>=0 && i<RAW.length) return openCat(i);
       return openHome();
     }
+    if(h.indexOf('#/p/')===0){
+      var sg=decodeURIComponent(h.slice(4)).replace(/[^A-Za-z0-9-]/g,'');
+      var card=sg?document.querySelector('.card[data-slug="'+sg+'"]'):null;
+      if(card){
+        var ci=RAW.indexOf(card.getAttribute('data-cat'));
+        openCat(ci<0?0:ci);
+        setTimeout(function(){
+          try{ card.scrollIntoView({block:'center'}); }catch(e){ card.scrollIntoView(); }
+          card.classList.add('lit');
+          setTimeout(function(){ card.classList.remove('lit'); },2600);
+        },80);
+        return;
+      }
+      return openHome();
+    }
     if(h==='#/panier') return openCart();
     openHome();
   }
+
+  /* ---- share one article ---- */
+  document.addEventListener('click',function(ev){
+    var b=(ev.target&&ev.target.closest)?ev.target.closest('.shr'):null;
+    if(!b) return;
+    ev.preventDefault(); ev.stopPropagation();
+    var c=b.closest('.card'); if(!c) return;
+    var nm=c.getAttribute('data-name')||'';
+    var br=c.getAttribute('data-brand')||'';
+    var pr=c.getAttribute('data-label')||'';
+    var sg=c.getAttribute('data-slug')||'';
+    var url='{{SITE}}/p/'+sg+'/';
+    var txt=nm+(br?' \u2014 '+br:'')+(pr?'\n'+pr:'');
+    if(navigator.share){
+      navigator.share({title:nm,text:txt,url:url})['catch'](function(){});
+    }else{
+      window.open('https://wa.me/?text='+encodeURIComponent(txt+'\n'+url),'_blank','noopener');
+    }
+  });
   window.addEventListener('hashchange',route);
   route();
 })();
