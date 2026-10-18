@@ -1882,6 +1882,56 @@
 "img/pantoufles-esprit-t.jpg"
 ]
 },
+"Carnet de notes en peluche|": {
+"big": [
+"img/carnet-de-notes-en-peluche-1.jpg",
+"img/carnet-de-notes-en-peluche-1-2.jpg",
+"img/carnet-de-notes-en-peluche-2.jpg",
+"img/carnet-de-notes-en-peluche-3.jpg",
+"img/carnet-de-notes-en-peluche-4.jpg",
+"img/carnet-de-notes-en-peluche-5.jpg",
+"img/carnet-de-notes-en-peluche-6.jpg",
+"img/carnet-de-notes-en-peluche.jpg"
+],
+"thumb": [
+"img/carnet-de-notes-en-peluche-1-t.jpg",
+"img/carnet-de-notes-en-peluche-1-2-t.jpg",
+"img/carnet-de-notes-en-peluche-2-t.jpg",
+"img/carnet-de-notes-en-peluche-3-t.jpg",
+"img/carnet-de-notes-en-peluche-4-t.jpg",
+"img/carnet-de-notes-en-peluche-5-t.jpg",
+"img/carnet-de-notes-en-peluche-6-t.jpg",
+"img/carnet-de-notes-en-peluche-t.jpg"
+]
+},
+"Ensemble 3 pièces|Primark": {
+"big": [
+"img/ensemble-3-pi-ces-primark-1.jpg",
+"img/ensemble-3-pi-ces-primark-2.jpg",
+"img/ensemble-3-pi-ces-primark-3.jpg",
+"img/ensemble-3-pi-ces-primark-4.jpg",
+"img/ensemble-3-pi-ces-primark-6.jpg"
+],
+"thumb": [
+"img/ensemble-3-pi-ces-primark-1-t.jpg",
+"img/ensemble-3-pi-ces-primark-2-t.jpg",
+"img/ensemble-3-pi-ces-primark-3-t.jpg",
+"img/ensemble-3-pi-ces-primark-4-t.jpg",
+"img/ensemble-3-pi-ces-primark-6-t.jpg"
+]
+},
+"Kit Coloriage|Primark": {
+"big": [
+"img/kit-coloriage-primark-1.jpg",
+"img/kit-coloriage-primark-1-2.jpg",
+"img/kit-coloriage-primark.jpg"
+],
+"thumb": [
+"img/kit-coloriage-primark-1-t.jpg",
+"img/kit-coloriage-primark-1-2-t.jpg",
+"img/kit-coloriage-primark-t.jpg"
+]
+},
 "Kit de flacons de voyage|Primark": {
 "big": [
 "img/kit-de-flacons-de-voyage-primark-1.jpg",
@@ -1915,40 +1965,6 @@
 "thumb": [
 "img/tiquette-de-valise-1.jpg"
 ]
-},
-"Carnet de notes en peluche|": {
-"big": [
-"img/carnet-de-notes-en-peluche-1.jpg",
-"img/carnet-de-notes-en-peluche-1-2.jpg",
-"img/carnet-de-notes-en-peluche-2.jpg",
-"img/carnet-de-notes-en-peluche-3.jpg",
-"img/carnet-de-notes-en-peluche-4.jpg",
-"img/carnet-de-notes-en-peluche-5.jpg",
-"img/carnet-de-notes-en-peluche-6.jpg",
-"img/carnet-de-notes-en-peluche.jpg"
-],
-"thumb": [
-"img/carnet-de-notes-en-peluche-1-t.jpg",
-"img/carnet-de-notes-en-peluche-1-2-t.jpg",
-"img/carnet-de-notes-en-peluche-2-t.jpg",
-"img/carnet-de-notes-en-peluche-3-t.jpg",
-"img/carnet-de-notes-en-peluche-4-t.jpg",
-"img/carnet-de-notes-en-peluche-5-t.jpg",
-"img/carnet-de-notes-en-peluche-6-t.jpg",
-"img/carnet-de-notes-en-peluche-t.jpg"
-]
-},
-"Kit Coloriage|Primark": {
-"big": [
-"img/kit-coloriage-primark-1.jpg",
-"img/kit-coloriage-primark-1-2.jpg",
-"img/kit-coloriage-primark.jpg"
-],
-"thumb": [
-"img/kit-coloriage-primark-1-t.jpg",
-"img/kit-coloriage-primark-1-2-t.jpg",
-"img/kit-coloriage-primark-t.jpg"
-]
 }
 },
 "tiles": {
@@ -1961,7 +1977,7 @@
 "Dessous & Lingerie": "img/body-bretelles-en-dentelle-women-s-secret-1-tile.jpg",
 "Plage & Piscine": "img/drap-de-plage-fran-oise-saget-1-tile.jpg",
 "L'Univers Chaussures": "img/chaussons-undiz-tile.jpg",
-"Voyage & Bagages": "img/kit-de-flacons-de-voyage-primark-1-tile.jpg",
-"Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg"
+"Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg",
+"Voyage & Bagages": "img/kit-de-flacons-de-voyage-primark-1-tile.jpg"
 }
 }
