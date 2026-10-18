@@ -170,13 +170,33 @@ def index_photos():
 STYLES_N  = []        # every product name, normalised, longest first
 STYLE_DUP = set()     # names used by more than one product
 
+def money_num(s):
+    """The number inside a price cell, however it was typed.
+    '1,200' and '3 500' and '1.200' -> 1200 / 3500 / 1200;
+    '99,50' -> 99.5;  'MAD' or empty -> "".
+    A separator followed by exactly three digits is a thousands separator,
+    anything else is the decimal point."""
+    t = re.sub(r"[^0-9.,]", "", s or "")
+    if not re.search(r"\d", t):
+        return ""
+    m = re.search(r"[.,](\d+)$", t)
+    if m:
+        head, tail = re.sub(r"[.,]", "", t[:m.start()]), m.group(1)
+        t = (head + tail) if (len(tail) == 3 and head) else (head + "." + tail)
+    else:
+        t = re.sub(r"[.,]", "", t)
+    try:
+        v = float(t)
+    except ValueError:
+        return ""
+    return str(int(v)) if v == int(v) else ("%.2f" % v)
+
 def old_price_html(anc, prix, cur):
     """left: the old price crossed out.  right: the green badge.  ("", "") when
     there is no real discount"""
     def num(s):
-        s = re.sub(r"[^0-9.,]", "", s or "").replace(",", ".")
         try:
-            return float(s)
+            return float(money_num(s) or 0)
         except Exception:
             return 0.0
     a, p = num(anc), num(prix)
@@ -398,7 +418,8 @@ def main():
             cat=cat, brand=brand, name=style, note=note, stock=stock_n,
             sizes=sizes,
             season=(r.get("saison") or "").strip(),
-            price=prix, label=("%s %s" % (prix, cur) if prix else ""), old=old_html, off=off_html,
+            price=money_num(prix), label=("%s %s" % (prix, cur) if prix else ""),
+            old=old_html, off=off_html,
             descr=(r.get("descr") or "").strip()[:400],
             sold=sold, rowno=len(items),
             pics=pics, ready=ready))
@@ -1005,7 +1026,11 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     var w=c.querySelector('[data-max]'); if(w) w.hidden=!(n>=mx&&mx<99);
     refresh();
   }
-  function lineTotal(c){ return (parseFloat(c.dataset.price)||0)*qtyOf(c); }
+  function lineTotal(c){
+    var raw=String(c.dataset.price||'').replace(/[\s\u00a0\u202f]/g,'')
+                                        .replace(/,(?=\d{3}(\D|$))/g,'');
+    return (parseFloat(raw)||0)*qtyOf(c);
+  }
   function hasSize(c){ return !!c.querySelector('[data-size]'); }
 
   function message(list){
