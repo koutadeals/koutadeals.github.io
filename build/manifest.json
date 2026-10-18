@@ -1864,6 +1864,18 @@
 "img/chaussons-undiz.jpg"
 ]
 },
+"Chaussons Mermaidiz|Undiz": {
+"big": [
+"img/chaussons-mermaidiz-undiz-1.jpg",
+"img/chaussons-mermaidiz-undiz-2.jpg",
+"img/chaussons-mermaidiz-undiz-3.jpg"
+],
+"thumb": [
+"img/chaussons-mermaidiz-undiz-1-t.jpg",
+"img/chaussons-mermaidiz-undiz-2-t.jpg",
+"img/chaussons-mermaidiz-undiz-3-t.jpg"
+]
+},
 "Pantoufles|Undiz": {
 "big": [
 "img/pantoufles-undiz-1.jpg",
