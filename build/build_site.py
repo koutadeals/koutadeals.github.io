@@ -1187,7 +1187,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     var br=c.getAttribute('data-brand')||'';
     var pr=c.getAttribute('data-label')||'';
     var sg=c.getAttribute('data-slug')||'';
-    var url='{{SITE}}/#/p/'+sg;
+    var url='{{SITE}}/p/'+sg+'/';
     var txt=nm+(br?' \u2014 '+br:'')+(pr?'\n'+pr:'');
     if(navigator.share){
       navigator.share({title:nm,text:txt,url:url})['catch'](function(){});
