@@ -1496,6 +1496,18 @@
 "img/soutien-gorge-corbeille-soleil-sucr-1-t.jpg"
 ]
 },
+"Soutien-gorge EDC|Esprit": {
+"big": [
+"img/soutien-gorge-edc-esprit-1.jpg",
+"img/soutien-gorge-edc-esprit-3.jpg",
+"img/soutien-gorge-edc-esprit-4.jpg"
+],
+"thumb": [
+"img/soutien-gorge-edc-esprit-1-t.jpg",
+"img/soutien-gorge-edc-esprit-3-t.jpg",
+"img/soutien-gorge-edc-esprit-4-t.jpg"
+]
+},
 "Soutien-Gorge Femme avec Armatures Generous Classique|Dim": {
 "big": [
 "img/soutien-gorge-femme-avec-armatures-generous-classique-dim-2.jpg",
@@ -2038,6 +2050,14 @@
 "img/kit-coloriage-primark-1-t.jpg",
 "img/kit-coloriage-primark-1-2-t.jpg",
 "img/kit-coloriage-primark-t.jpg"
+]
+},
+"Tête d’herbe à pousser|": {
+"big": [
+"img/t-te-d-herbe-pousser-1.jpg"
+],
+"thumb": [
+"img/t-te-d-herbe-pousser-1-t.jpg"
 ]
 },
 "Kit de flacons de voyage|Primark": {
