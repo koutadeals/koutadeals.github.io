@@ -135,21 +135,47 @@ def e(s):
     return html.escape(str(s if s is not None else ""), quote=True)
 
 # ---------------------------------------------------------------- read data
+def fetch_covers():
+    """The Sheet's "Manage categories" tab, live, when running on GitHub.
+    Returns a list of [category, hide, cover photo, phrase], or None when the
+    Sheet cannot be reached, so the old file can take over."""
+    if not SHEET_URL:
+        return None
+    body = _json.dumps({"secret": SHEET_SECRET, "action": "covers"}).encode()
+    req  = _url.Request(SHEET_URL, data=body, headers={"Content-Type": "application/json"})
+    try:
+        with _url.urlopen(req, timeout=120) as r:
+            data = _json.loads(r.read().decode())
+    except Exception as e:
+        print("Manage categories: could not read the Sheet (%s)" % e)
+        return None
+    if not data.get("ok"):
+        print("Manage categories: the Sheet refused (%s)" % data.get("error"))
+        return None
+    return data.get("rows") or []
+
 def read_covers():
-    """category -> (cover style name, tagline), from the Sheet's Manage categories tab."""
+    """category -> (cover style name, phrase), from the Sheet's Manage categories
+    tab.  build/covers.tsv is only a spare, used when the Sheet is out of reach."""
     cov, tag = {}, {}
-    if not os.path.exists(COVERS):
-        return cov, tag
-    with open(COVERS, encoding="utf-8") as f:
-        for line in f:
-            parts = line.rstrip("\n").split("\t")
-            if not parts or not parts[0].strip():
-                continue
-            cat = parts[0].strip()
-            if len(parts) >= 2 and parts[1].strip():
-                cov[cat] = parts[1].strip()
-            if len(parts) >= 3 and parts[2].strip():
-                tag[cat] = parts[2].strip()
+    rows = fetch_covers()
+    if rows is None:
+        if not os.path.exists(COVERS):
+            return cov, tag
+        rows = []
+        with open(COVERS, encoding="utf-8") as f:
+            for line in f:
+                p = line.rstrip("\n").split("\t")
+                p += [""] * (3 - len(p))
+                rows.append([p[0], "", p[1], p[2]])   # the file has no "hide" column
+    for r in rows:
+        r = [str(x or "").strip() for x in list(r) + [""] * 4][:4]
+        if not r[0]:
+            continue
+        if r[2]:
+            cov[r[0]] = r[2]
+        if r[3]:
+            tag[r[0]] = r[3]
     return cov, tag
 
 def read_sheet():
