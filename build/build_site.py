@@ -59,6 +59,10 @@ def fetch_rows():
 
 SOLD_MAX = 20                  # sold pieces kept on the page, per category
 
+# Categories where the shopper can filter by size.  Add a category name here
+# (exactly as it is written in the Sheet) to switch the size filter on for it.
+SIZE_FILTER_CATS = ["Nuit & Cocooning"]
+
 BIG_W,  BIG_Q  = 1000, 82      # main photo / what a thumbnail swaps in
 THUMB_W, THUMB_Q = 220, 78     # the small strip under the photo
 TILE_W, TILE_Q = 700, 80       # category menu cover
@@ -587,6 +591,7 @@ def main():
                    .replace("{{CARDS}}", "\n".join(cards)) \
                    .replace("{{CATS}}",  ", ".join(repr(c[:1].upper() + c[1:]) for c in cats)) \
                    .replace("{{RAW}}",   ", ".join(repr(c) for c in cats)) \
+                   .replace("{{SZCATS}}", ", ".join(repr(c) for c in SIZE_FILTER_CATS)) \
                    .replace("{{WA1R}}",  WA1) \
                    .replace("{{WA}}",    WA) \
                    .replace("{{WA2}}",   WA2) \
@@ -787,6 +792,18 @@ footer .fnote { max-width:34em; margin-inline:auto; }
 .chip { font:inherit; font-size:12.5px; letter-spacing:.06em; padding:6px 13px; border-radius:999px;
         border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; }
 .chip[aria-pressed="true"] { background:var(--gold); border-color:var(--gold); color:#fff; }
+.fby { padding:14px 0 2px; }
+.fbyh { margin:0 0 10px; text-align:center; font-size:10.5px; letter-spacing:.3em;
+        text-transform:uppercase; color:var(--muted); }
+.frow { display:flex; align-items:center; gap:12px; padding:5px 0; }
+.flab { flex:0 0 58px; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+        color:var(--muted); }
+.frow .filters { flex:1 1 auto; flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px;
+                 scrollbar-width:none; }
+.frow .filters::-webkit-scrollbar { display:none; }
+.fclr { display:block; margin:10px auto 0; background:none; border:0; font:inherit;
+        font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+        color:var(--gold); cursor:pointer; }
 .count { text-align:center; font-size:12px; color:var(--muted); letter-spacing:.08em; padding-top:14px; }
 
 .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:20px; padding-block:18px; }
@@ -958,6 +975,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       <h2 class="ctitle" id="ctitle"></h2>
       <div class="filters" id="filters"></div>
     </div>
+    <div class="fby" id="fby" hidden>
+      <p class="fbyh">Filtrer par</p>
+      <div class="frow" id="frowsz" hidden><span class="flab">Taille</span>
+        <div class="filters" id="szfilters"></div></div>
+      <div class="frow" id="frowse" hidden><span class="flab">Saison</span></div>
+      <button class="fclr" id="fclr" type="button" hidden>Tout afficher</button>
+    </div>
     <p class="count" id="count"></p>
     <div class="grid" id="grid">
 {{CARDS}}</div>
@@ -984,7 +1008,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 </div>
 <script>
 (function(){
-  var WA='{{WA}}', CUR='MAD', CATS=[{{CATS}}], RAW=[{{RAW}}];
+  var WA='{{WA}}', CUR='MAD', CATS=[{{CATS}}], RAW=[{{RAW}}], SZCATS=[{{SZCATS}}];
   var SEAS=['Été', 'Demi-saison', 'Hiver'];
   var home=document.getElementById('home'), catv=document.getElementById('cat'),
       cartv=document.getElementById('cart');
@@ -995,7 +1019,24 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       cartfoot=document.getElementById('cartfoot'), cempty=document.getElementById('cempty'),
       cnote=document.getElementById('cnote'), checkout=document.getElementById('checkout');
   var sumbar=document.getElementById('sumbar'), sum=document.getElementById('sum');
-  var cur={cat:0, f:'all'};
+  var fby=document.getElementById('fby'), szf=document.getElementById('szfilters'),
+      frowsz=document.getElementById('frowsz'), frowse=document.getElementById('frowse'),
+      fclr=document.getElementById('fclr'), seasonHome=filters.parentNode;
+  var cur={cat:0, f:'all', sz:''};
+
+  /* the sizes a card offers, read from its own size picker */
+  function sizesOf(c){
+    return [].slice.call(c.querySelectorAll('[data-size] option')).map(function(o){ return o.value; });
+  }
+  var SZORDER=['XS','S','M','L','XL','XXL'];
+  function szcmp(a,b){
+    var ia=SZORDER.indexOf(a), ib=SZORDER.indexOf(b);
+    if(ia>=0&&ib>=0) return ia-ib;
+    if(ia>=0) return -1;
+    if(ib>=0) return 1;
+    return a.localeCompare(b,'fr',{numeric:true});
+  }
+  fclr.addEventListener('click',function(){ cur.sz=''; apply(); });
 
   function money(n){ return n.toLocaleString('fr-FR')+' '+CUR; }
 
@@ -1123,7 +1164,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     var n=0, firstSold=null;
     cards.forEach(function(c){
       var on = c.dataset.cat===RAW[cur.cat]
-               && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*');
+               && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*')
+               && (!cur.sz||sizesOf(c).indexOf(cur.sz)>=0);
       c.hidden=!on;
       if(on){
         if(c.dataset.sold==='1'){ if(!firstSold) firstSold=c; }
@@ -1142,10 +1184,14 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     [].slice.call(filters.children).forEach(function(ch){
       ch.setAttribute('aria-pressed',String(ch.dataset.f===cur.f));
     });
+    [].slice.call(szf.children).forEach(function(ch){
+      ch.setAttribute('aria-pressed',String(ch.dataset.sz===cur.sz));
+    });
+    fclr.hidden=!cur.sz;
   }
 
   function openCat(i){
-    cur.cat=i; cur.f='all';
+    cur.cat=i; cur.f='all'; cur.sz='';
     ctitle.textContent=CATS[i];
     var present=SEAS.filter(function(s){
       return cards.some(function(c){ return c.dataset.cat===RAW[i] && c.dataset.season===s; });
@@ -1158,6 +1204,32 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
         b.addEventListener('click',function(){ cur.f=f; apply(); });
         filters.appendChild(b);
       });
+    }
+    /* the size filter, only in the categories that ask for it */
+    szf.innerHTML='';
+    if(SZCATS.indexOf(RAW[i])>=0){
+      var seen=[];
+      cards.forEach(function(c){
+        if(c.dataset.cat!==RAW[i]||c.dataset.sold==='1') return;
+        sizesOf(c).forEach(function(s){ if(s&&seen.indexOf(s)<0) seen.push(s); });
+      });
+      seen.sort(szcmp);
+      if(seen.length>1){
+        [''].concat(seen).forEach(function(s){
+          var b=document.createElement('button'); b.className='chip'; b.type='button';
+          b.dataset.sz=s; b.textContent=(s===''?'Toutes':s);
+          b.addEventListener('click',function(){ cur.sz=s; apply(); });
+          szf.appendChild(b);
+        });
+      }
+      frowse.appendChild(filters);
+      frowsz.hidden=(seen.length<=1);
+      frowse.hidden=(filters.children.length===0);
+      fby.hidden=(frowsz.hidden&&frowse.hidden);
+      count.hidden=!fby.hidden;
+    } else {
+      seasonHome.appendChild(filters);
+      fby.hidden=true; count.hidden=false;
     }
     apply();
     home.hidden=true; cartv.hidden=true; catv.hidden=false;
