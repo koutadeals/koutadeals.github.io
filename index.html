@@ -98,15 +98,15 @@ footer .fnote { max-width:34em; margin-inline:auto; }
 .chip { font:inherit; font-size:12.5px; letter-spacing:.06em; padding:6px 13px; border-radius:999px;
         border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; }
 .chip[aria-pressed="true"] { background:var(--gold); border-color:var(--gold); color:#fff; }
+.chip { white-space:nowrap; }
 .fby { padding:14px 0 2px; }
 .fbyh { margin:0 0 10px; text-align:center; font-size:10.5px; letter-spacing:.3em;
         text-transform:uppercase; color:var(--muted); }
-.frow { display:flex; align-items:center; gap:12px; padding:5px 0; }
-.flab { flex:0 0 58px; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
-        color:var(--muted); }
-.frow .filters { flex:1 1 auto; flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px;
-                 scrollbar-width:none; }
-.frow .filters::-webkit-scrollbar { display:none; }
+.frow { display:flex; align-items:flex-start; gap:6px; padding:4px 0; }
+.flab { flex:0 0 auto; min-width:40px; font-size:9.5px; letter-spacing:.2em;
+        text-transform:uppercase; color:var(--muted); padding-top:8px; }
+.frow .filters { flex:1 1 auto; flex-wrap:wrap; gap:6px; }
+.fby .chip { padding:6px 11px; font-size:12px; }
 .fclr { display:block; margin:10px auto 0; background:none; border:0; font:inherit;
         font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
         color:var(--gold); cursor:pointer; }
