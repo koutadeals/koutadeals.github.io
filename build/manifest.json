@@ -2118,6 +2118,22 @@
 "img/tiquette-de-valise-1.jpg"
 ]
 },
+"Panneau métallique Vintage|Angenerm": {
+"big": [
+"img/panneau-m-tallique-vintage-angenerm-1.jpg",
+"img/panneau-m-tallique-vintage-angenerm-2.jpg",
+"img/panneau-m-tallique-vintage-angenerm-3.jpg",
+"img/panneau-m-tallique-vintage-angenerm-4.jpg",
+"img/panneau-m-tallique-vintage-angenerm-5.jpg"
+],
+"thumb": [
+"img/panneau-m-tallique-vintage-angenerm-1-t.jpg",
+"img/panneau-m-tallique-vintage-angenerm-2-t.jpg",
+"img/panneau-m-tallique-vintage-angenerm-3-t.jpg",
+"img/panneau-m-tallique-vintage-angenerm-4-t.jpg",
+"img/panneau-m-tallique-vintage-angenerm-5-t.jpg"
+]
+},
 "Plaid en polaire|": {
 "big": [
 "img/plaid-en-polaire-1-2.jpg",
@@ -2159,7 +2175,7 @@
 "Plage & Piscine": "img/drap-de-plage-fran-oise-saget-1-tile.jpg",
 "Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg",
 "Voyage & Bagages": "img/kit-de-flacons-de-voyage-primark-1-tile.jpg",
-"Maison": "img/plaid-en-polaire-1-2.jpg",
+"Maison": "img/panneau-m-tallique-vintage-angenerm-1-tile.jpg",
 "Homme": "img/pyjama-milano-milano-1.jpg"
 }
 }
