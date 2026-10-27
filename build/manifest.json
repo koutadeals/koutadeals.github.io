@@ -2243,6 +2243,26 @@
 "img/pyjama-milano-milano-3-t.jpg",
 "img/pyjama-milano-milano-4-t.jpg"
 ]
+},
+"leggings scrunch|Calzedonia": {
+"big": [
+"img/leggings-scrunch-calzedonia-1.jpg",
+"img/leggings-scrunch-calzedonia-2.jpg",
+"img/leggings-scrunch-calzedonia-3.jpg",
+"img/leggings-scrunch-calzedonia-4.jpg",
+"img/leggings-scrunch-calzedonia-5.jpg",
+"img/leggings-scrunch-calzedonia-6.jpg",
+"img/leggings-scrunch-calzedonia-7.jpg"
+],
+"thumb": [
+"img/leggings-scrunch-calzedonia-1-t.jpg",
+"img/leggings-scrunch-calzedonia-2-t.jpg",
+"img/leggings-scrunch-calzedonia-3-t.jpg",
+"img/leggings-scrunch-calzedonia-4-t.jpg",
+"img/leggings-scrunch-calzedonia-5-t.jpg",
+"img/leggings-scrunch-calzedonia-6-t.jpg",
+"img/leggings-scrunch-calzedonia-7-t.jpg"
+]
 }
 },
 "tiles": {
@@ -2258,6 +2278,7 @@
 "Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg",
 "Voyage & Bagages": "img/kit-de-flacons-de-voyage-primark-1-tile.jpg",
 "Maison": "img/panneau-m-tallique-vintage-angenerm-1-tile.jpg",
-"Homme": "img/pyjama-milano-milano-1.jpg"
+"Homme": "img/pyjama-milano-milano-1.jpg",
+"Sport & Fitness": "img/leggings-scrunch-calzedonia-1-tile.jpg"
 }
 }
