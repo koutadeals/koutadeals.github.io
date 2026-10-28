@@ -2230,18 +2230,16 @@
 "img/plaid-en-polaire-3-t.jpg"
 ]
 },
-"Pyjama Milano|Milano": {
+"ACTIVE - Leggings - Trousers - f bubblegum pink|Calzedonia": {
 "big": [
-"img/pyjama-milano-milano-1.jpg",
-"img/pyjama-milano-milano-2.jpg",
-"img/pyjama-milano-milano-3.jpg",
-"img/pyjama-milano-milano-4.jpg"
+"img/active-leggings-trousers-f-bubblegum-pink-calzedonia-1.jpg",
+"img/active-leggings-trousers-f-bubblegum-pink-calzedonia-2.jpg",
+"img/active-leggings-trousers-f-bubblegum-pink-calzedonia-3.jpg"
 ],
 "thumb": [
-"img/pyjama-milano-milano-1-t.jpg",
-"img/pyjama-milano-milano-2-t.jpg",
-"img/pyjama-milano-milano-3-t.jpg",
-"img/pyjama-milano-milano-4-t.jpg"
+"img/active-leggings-trousers-f-bubblegum-pink-calzedonia-1-t.jpg",
+"img/active-leggings-trousers-f-bubblegum-pink-calzedonia-2-t.jpg",
+"img/active-leggings-trousers-f-bubblegum-pink-calzedonia-3-t.jpg"
 ]
 },
 "leggings scrunch|Calzedonia": {
@@ -2263,6 +2261,20 @@
 "img/leggings-scrunch-calzedonia-6-t.jpg",
 "img/leggings-scrunch-calzedonia-7-t.jpg"
 ]
+},
+"Pyjama Milano|Milano": {
+"big": [
+"img/pyjama-milano-milano-1.jpg",
+"img/pyjama-milano-milano-2.jpg",
+"img/pyjama-milano-milano-3.jpg",
+"img/pyjama-milano-milano-4.jpg"
+],
+"thumb": [
+"img/pyjama-milano-milano-1-t.jpg",
+"img/pyjama-milano-milano-2-t.jpg",
+"img/pyjama-milano-milano-3-t.jpg",
+"img/pyjama-milano-milano-4-t.jpg"
+]
 }
 },
 "tiles": {
@@ -2278,7 +2290,7 @@
 "Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg",
 "Voyage & Bagages": "img/kit-de-flacons-de-voyage-primark-1-tile.jpg",
 "Maison": "img/panneau-m-tallique-vintage-angenerm-1-tile.jpg",
-"Homme": "img/pyjama-milano-milano-1.jpg",
-"Sport & Fitness": "img/leggings-scrunch-calzedonia-1-tile.jpg"
+"Sport & Fitness": "img/active-leggings-trousers-f-bubblegum-pink-calzedonia-1-tile.jpg",
+"Homme": "img/pyjama-milano-milano-1.jpg"
 }
 }
