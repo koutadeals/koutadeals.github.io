@@ -2180,6 +2180,18 @@
 "img/t-te-d-herbe-pousser-1-t.jpg"
 ]
 },
+"Ensemble de 4 flacons de voyage|Primark": {
+"big": [
+"img/ensemble-de-4-flacons-de-voyage-primark-1.jpg",
+"img/ensemble-de-4-flacons-de-voyage-primark-2.jpg",
+"img/ensemble-de-4-flacons-de-voyage-primark-3.jpg"
+],
+"thumb": [
+"img/ensemble-de-4-flacons-de-voyage-primark-1-t.jpg",
+"img/ensemble-de-4-flacons-de-voyage-primark-2-t.jpg",
+"img/ensemble-de-4-flacons-de-voyage-primark-3-t.jpg"
+]
+},
 "Kit de flacons de voyage|Primark": {
 "big": [
 "img/kit-de-flacons-de-voyage-primark-1.jpg",
@@ -2302,7 +2314,7 @@
 "Chaussettes": "img/pack-chaussettes-women-s-secret-1-tile.jpg",
 "Plage & Piscine": "img/drap-de-plage-fran-oise-saget-1-tile.jpg",
 "Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg",
-"Voyage & Bagages": "img/kit-de-flacons-de-voyage-primark-1-tile.jpg",
+"Voyage & Bagages": "img/ensemble-de-4-flacons-de-voyage-primark-1-tile.jpg",
 "Maison": "img/panneau-m-tallique-vintage-angenerm-1-tile.jpg",
 "Sport & Fitness": "img/active-leggings-trousers-f-bubblegum-pink-calzedonia-1-tile.jpg",
 "Homme": "img/pyjama-milano-milano-1.jpg"
