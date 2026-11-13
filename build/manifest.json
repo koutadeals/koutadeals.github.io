@@ -904,16 +904,6 @@
 "img/lot-2-tabliers-moment-partag-fran-oise-saget-1.jpg"
 ]
 },
-"Lot 2 Torchons|Primark": {
-"big": [
-"img/lot-2-torchons-primark-3.jpg",
-"img/lot-2-torchons-primark-1.jpg"
-],
-"thumb": [
-"img/lot-2-torchons-primark-3-t.jpg",
-"img/lot-2-torchons-primark-1-t.jpg"
-]
-},
 "Lot 2 Torchons Côtes de Bretagne|Françoise Saget": {
 "big": [
 "img/lot-2-torchons-c-tes-de-bretagne-fran-oise-saget-1.jpg",
@@ -1054,6 +1044,16 @@
 ],
 "thumb": [
 "img/torchon-de-cuisine-gourmandise-douceur-d-int-rieur-1.jpg"
+]
+},
+"Lot 2 Torchons|Primark": {
+"big": [
+"img/lot-2-torchons-primark-3.jpg",
+"img/lot-2-torchons-primark-1.jpg"
+],
+"thumb": [
+"img/lot-2-torchons-primark-3-t.jpg",
+"img/lot-2-torchons-primark-1-t.jpg"
 ]
 },
 "Nappe Toile Cirée Déco Carlita|Douceur d'intérieur": {
@@ -1618,18 +1618,6 @@
 "img/robe-courte-en-m-lange-de-viscose-michael-kors-2-t.jpg"
 ]
 },
-"Robe courte et volantée marine Nina|Maison 123": {
-"big": [
-"img/robe-courte-et-volant-e-marine-nina-maison-123-3.jpg",
-"img/robe-courte-et-volant-e-marine-nina-maison-123-1.jpg",
-"img/robe-courte-et-volant-e-marine-nina-maison-123-2.jpg"
-],
-"thumb": [
-"img/robe-courte-et-volant-e-marine-nina-maison-123-3-t.jpg",
-"img/robe-courte-et-volant-e-marine-nina-maison-123-1-t.jpg",
-"img/robe-courte-et-volant-e-marine-nina-maison-123-2-t.jpg"
-]
-},
 "Robe Kuralaga|Hugo": {
 "big": [
 "img/robe-hugo-1.jpg",
@@ -1676,6 +1664,18 @@
 "img/robe-sage-denim-dress-femme-bleu-levi-s-2-t.jpg",
 "img/robe-sage-denim-dress-femme-bleu-levi-s-3-t.jpg",
 "img/robe-sage-denim-dress-femme-bleu-levi-s-4-t.jpg"
+]
+},
+"Robe courte et volantée marine Nina|Maison 123": {
+"big": [
+"img/robe-courte-et-volant-e-marine-nina-maison-123-3.jpg",
+"img/robe-courte-et-volant-e-marine-nina-maison-123-1.jpg",
+"img/robe-courte-et-volant-e-marine-nina-maison-123-2.jpg"
+],
+"thumb": [
+"img/robe-courte-et-volant-e-marine-nina-maison-123-3-t.jpg",
+"img/robe-courte-et-volant-e-marine-nina-maison-123-1-t.jpg",
+"img/robe-courte-et-volant-e-marine-nina-maison-123-2-t.jpg"
 ]
 },
 "Bas Noirs Autofixants|Calzedonia": {
