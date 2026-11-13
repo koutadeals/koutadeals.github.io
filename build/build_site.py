@@ -178,6 +178,111 @@ def read_covers():
             tag[r[0]] = r[3]
     return cov, tag
 
+AVIS_MAX = 6                   # reviews kept on the home page, newest first
+
+AVIS_TICK = ('<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8'
+             ' 0 008 0zm-1 11.5L3.5 8 4.9 6.6 7 8.7l4.1-4.1 1.4 1.4L7 11.5z"/></svg>')
+
+AVIS_WA = ("Bonjour Kouta Deals ! Voici mon avis :\n\n"
+           "Ma note : ___ / 5\n"
+           "Mon pr\u00e9nom : ___\n"
+           "Ma ville : ___\n"
+           "Mon message : ___")
+
+def fetch_avis():
+    """The Sheet's "Avis" tab, live.  A row is
+    [date, note, prenom, ville, texte, produit, verifie, publier, memo]."""
+    if not SHEET_URL:
+        return []
+    body = _json.dumps({"secret": SHEET_SECRET, "action": "avis"}).encode()
+    req  = _url.Request(SHEET_URL, data=body, headers={"Content-Type": "application/json"})
+    try:
+        with _url.urlopen(req, timeout=120) as r:
+            data = _json.loads(r.read().decode())
+    except Exception as ex:
+        print("Avis: could not read the Sheet (%s)" % ex)
+        return []
+    if not data.get("ok"):
+        print("Avis: the Sheet refused (%s)" % data.get("error"))
+        return []
+    return data.get("rows") or []
+
+def _avis_when(s):
+    """dd/mm/yyyy -> a sortable tuple; anything unreadable sorts last."""
+    m = re.match(r"\s*(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{2,4})\s*$", s or "")
+    if not m:
+        return (0, 0, 0)
+    d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    if y < 100:
+        y += 2000
+    return (y, mo, d)
+
+def _avis_stars(n):
+    out = '<span class="stars">' + "&#9733;" * n
+    if n < 5:
+        out += '<span class="off">' + "&#9733;" * (5 - n) + "</span>"
+    return out + "</span>"
+
+def build_avis(rows, shots):
+    """The "Elles parlent de nous" block.  Returns "" when nothing is published,
+    so the home page stays exactly as it was."""
+    keep = []
+    for r in rows:
+        r = [str(x or "").strip() for x in list(r) + [""] * 9][:9]
+        if r[7].upper() != "X":          # column H, Publier
+            continue
+        if not r[4] or not r[2]:         # a review needs a text and a first name
+            continue
+        try:
+            n = int(re.sub(r"[^0-9]", "", r[1]) or "5")
+        except ValueError:
+            n = 5
+        n = max(1, min(5, n))
+        keep.append(dict(when=_avis_when(r[0]), n=n, who=r[2], city=r[3],
+                         text=r[4], prod=r[5], ver=(r[6].upper() == "X")))
+    if not keep:
+        return ""
+    keep.sort(key=lambda a: a["when"], reverse=True)
+    keep = keep[:AVIS_MAX]
+
+    avg  = sum(a["n"] for a in keep) / float(len(keep))
+    note = ("%.1f" % avg).replace(".0", "").replace(".", ",")
+    cnt  = "%d avis publi%s" % (len(keep), "\u00e9s" if len(keep) > 1 else "\u00e9")
+
+    cards = []
+    for a in keep:
+        shot = ""
+        hit  = shots.get(norm(a["prod"])) if a["prod"] else None
+        if hit:
+            shot = ('<div class="aprod"><img src="%s" alt="" loading="lazy" width="50" height="66">'
+                    '<div><div class="pn">%s</div><div class="pp">%s</div></div></div>'
+                    % (hit[1], e(hit[0]), e(hit[2])))
+        badge = ('<span class="aver">%s Achat v&eacute;rifi&eacute;</span>' % AVIS_TICK) if a["ver"] else ""
+        city  = ('<span>%s</span>' % e(a["city"])) if a["city"] else ""
+        text  = "<br>".join(e(p) for p in a["text"].splitlines() if p.strip())
+        cards.append('<article class="acard">%s<p class="q">%s</p>%s'
+                     '<div class="afoot"><div class="aname">%s%s</div>%s</div></article>'
+                     % (_avis_stars(a["n"]), text, shot, e(a["who"]), city, badge))
+
+    return ('<section class="avis">\n'
+            '  <div class="avishead">\n'
+            '    <p class="eyebrow">Avis clientes</p>\n'
+            '    <h2>Elles parlent de nous</h2>\n'
+            '    <p class="sub">Quelques mots de celles qui nous ont fait confiance</p>\n'
+            '    <div class="score">%s<span class="n">%s</span>'
+            '<span class="c">sur %s</span></div>\n'
+            '  </div>\n'
+            '  <div class="agrid">\n%s\n  </div>\n'
+            '  <div class="avisfoot">\n'
+            '    <a class="sharebtn" href="https://wa.me/%s?text=%s" target="_blank" rel="noopener">'
+            'Partager mon avis</a>\n'
+            '    <p>Votre message nous arrive sur WhatsApp. '
+            'Nous publions les avis apr&egrave;s votre accord.</p>\n'
+            '  </div>\n'
+            '</section>\n'
+            % (_avis_stars(int(round(avg))), note, cnt, "\n".join(cards),
+               WA, quote(AVIS_WA, safe="")))
+
 def read_sheet():
     rows = []
     with open(SHEET, encoding="utf-8") as f:
@@ -613,11 +718,26 @@ def main():
                gal, e(it["brand"]), e(it["name"]), more, ("" if sold else sz),
                it["old"], e(it["label"]), it["off"], tail))
 
+    # ---- the reviews, read live from the Sheet's Avis tab
+    avis_shots = {}
+    for it in items:
+        thm = it.get("_thm") or it.get("_big") or []
+        if thm:
+            avis_shots[norm(it["name"])] = (it["brand"], thm[0], it["name"])
+    try:
+        avis_html = build_avis(fetch_avis(), avis_shots)
+    except Exception as ex:
+        print("Avis: not shown (%s)" % ex)
+        avis_html = ""
+    if avis_html:
+        print("Avis: %d review(s) on the home page" % avis_html.count('class="acard"'))
+
     page = TEMPLATE.replace("{{TILES}}", "\n".join(tiles)) \
                    .replace("{{CARDS}}", "\n".join(cards)) \
                    .replace("{{CATS}}",  ", ".join(repr(c[:1].upper() + c[1:]) for c in cats)) \
                    .replace("{{RAW}}",   ", ".join(repr(c) for c in cats)) \
                    .replace("{{SZCATS}}", ", ".join(repr(c) for c in SIZE_FILTER_CATS)) \
+                   .replace("{{AVIS}}", avis_html) \
                    .replace("{{WA1R}}",  WA1) \
                    .replace("{{WA}}",    WA) \
                    .replace("{{WA2}}",   WA2) \
@@ -791,6 +911,45 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .tnum { font-family:var(--display); font-style:italic; font-size:13.5px; color:var(--gold);
         padding:0; letter-spacing:0; text-transform:none; line-height:1.3; }
 .tgo { flex:0 0 auto; color:var(--gold); font-size:24px; line-height:1; }
+
+/* avis clientes */
+.avis { padding-block:6px 10px; border-top:1px solid var(--line); margin-top:22px; }
+.avishead { text-align:center; padding-block:30px 2px; }
+.avishead h2 { font-family:var(--display); font-weight:400; letter-spacing:.09em;
+               font-size:clamp(22px,6vw,31px); line-height:1.15; color:var(--deep); margin:13px 0 7px; }
+.avishead .sub { font-family:var(--display); font-style:italic; color:var(--muted);
+                 font-size:14.5px; margin:0; }
+.score { display:flex; align-items:center; justify-content:center; gap:11px; margin:12px 0 0;
+         flex-wrap:wrap; }
+.score .n { font-family:var(--display); font-size:19px; color:var(--deep);
+            font-variant-numeric:tabular-nums; }
+.score .c { font-size:12.5px; color:var(--muted); }
+.stars { color:var(--gold); font-size:14px; letter-spacing:.16em; line-height:1; white-space:nowrap; }
+.stars .off { color:var(--line); }
+.agrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(296px,1fr)); gap:18px;
+         padding-block:20px 6px; }
+.acard { background:var(--surface); border:1px solid var(--line); border-radius:3px;
+         padding:19px 19px 16px; display:flex; flex-direction:column; gap:13px; }
+.acard .q { position:relative; margin:0; font-size:14px; line-height:1.72; color:var(--fg); }
+.acard .q::before { content:"\201C"; font-family:var(--display); color:var(--gold);
+                    font-size:30px; line-height:0; position:relative; top:8px; margin-right:3px; }
+.aprod { display:flex; align-items:center; gap:11px; border-top:1px solid var(--line); padding-top:13px; }
+.aprod img { width:50px; height:66px; object-fit:cover; border-radius:2px;
+             border:1px solid var(--line); display:block; }
+.aprod .pn { font-size:9.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold);
+             line-height:1.6; }
+.aprod .pp { font-family:var(--display); font-size:14.5px; color:var(--deep); line-height:1.25; }
+.afoot { display:flex; align-items:center; justify-content:space-between; gap:10px;
+         margin-top:auto; padding-top:3px; }
+.aname { font-family:var(--display); font-size:15.5px; color:var(--deep); }
+.aname span { font-family:var(--body); font-size:11.5px; color:var(--muted); display:block;
+              letter-spacing:.02em; }
+.aver { display:inline-flex; align-items:center; gap:6px; font-size:9.5px; letter-spacing:.17em;
+        text-transform:uppercase; color:var(--muted); border:1px solid var(--line);
+        border-radius:999px; padding:5px 11px; white-space:nowrap; }
+.aver svg { width:11px; height:11px; fill:var(--ok); flex:0 0 auto; }
+.avisfoot { text-align:center; padding-block:16px 6px; }
+.avisfoot p { margin:11px 0 0; font-size:12.5px; color:var(--muted); }
 
 /* share + footer */
 .share { text-align:center; border-top:1px solid var(--line); padding-block:24px 4px; }
@@ -980,6 +1139,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     </header>
     <nav class="tiles">
 {{TILES}}</nav>
+{{AVIS}}
     <div class="share">
       <a class="sharebtn" href="https://wa.me/?text={{SHARE}}" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.2.4-.2.6-.1l2.1 1c.3.1.5.2.5.4.1.1.1.6-.1 1.1z"/></svg>
