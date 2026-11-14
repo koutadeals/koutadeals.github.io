@@ -223,12 +223,19 @@ def _avis_stars(n):
         out += '<span class="off">' + "&#9733;" * (5 - n) + "</span>"
     return out + "</span>"
 
+def avis_shots_js(shots):
+    """the product photos a live review may need, as a small JS object"""
+    return _json.dumps(dict((k, [v[0], v[1], v[2]]) for k, v in shots.items()),
+                       ensure_ascii=True)
+
 def build_avis(rows, shots):
-    """The "Elles parlent de nous" block.  Returns "" when nothing is published,
-    so the home page stays exactly as it was."""
+    """The "Elles parlent de nous" block.  The section is always on the page
+    now: the invitation to write has to be visible even when nothing has been
+    published yet.  The reviews below are only what the page starts with --
+    the page then reads the live ones at each visit."""
     keep = []
     for r in rows:
-        r = [str(x or "").strip() for x in list(r) + [""] * 9][:9]
+        r = [str(x or "").strip() for x in list(r) + [""] * 10][:10]
         if r[7].upper() != "X":          # column H, Publier
             continue
         if not r[4] or not r[2]:         # a review needs a text and a first name
@@ -239,15 +246,22 @@ def build_avis(rows, shots):
             n = 5
         n = max(1, min(5, n))
         keep.append(dict(when=_avis_when(r[0]), n=n, who=r[2], city=r[3],
-                         text=r[4], prod=r[5], ver=(r[6].upper() == "X")))
-    if not keep:
-        return ""
+                         text=r[4], prod=r[5], ver=(r[6].upper() == "X"),
+                         photo=r[9]))
     keep.sort(key=lambda a: a["when"], reverse=True)
     keep = keep[:AVIS_MAX]
 
-    avg  = sum(a["n"] for a in keep) / float(len(keep))
-    note = ("%.1f" % avg).replace(".0", "").replace(".", ",")
-    cnt  = "%d avis publi%s" % (len(keep), "\u00e9s" if len(keep) > 1 else "\u00e9")
+    if keep:
+        avg   = sum(a["n"] for a in keep) / float(len(keep))
+        note  = ("%.1f" % avg).replace(".0", "").replace(".", ",")
+        cnt   = "%d avis publi%s" % (len(keep), "\u00e9s" if len(keep) > 1 else "\u00e9")
+        score = ('<div class="score">%s<span class="n">%s</span>'
+                 '<span class="c">sur %s</span></div>'
+                 % (_avis_stars(int(round(avg))), note, cnt))
+        sub   = "Quelques mots de celles qui nous ont fait confiance"
+    else:
+        score = '<div class="score" hidden></div>'
+        sub   = "Vous avez command&eacute; chez nous&nbsp;? Votre avis nous aiderait beaucoup."
 
     cards = []
     for a in keep:
@@ -257,31 +271,30 @@ def build_avis(rows, shots):
             shot = ('<div class="aprod"><img src="%s" alt="" loading="lazy" width="50" height="66">'
                     '<div><div class="pn">%s</div><div class="pp">%s</div></div></div>'
                     % (hit[1], e(hit[0]), e(hit[2])))
+        pic   = ('<div class="aphoto"><img src="%s" alt="" loading="lazy"></div>'
+                 % e(a["photo"])) if a["photo"] else ""
         badge = ('<span class="aver">%s Achat v&eacute;rifi&eacute;</span>' % AVIS_TICK) if a["ver"] else ""
         city  = ('<span>%s</span>' % e(a["city"])) if a["city"] else ""
         text  = "<br>".join(e(p) for p in a["text"].splitlines() if p.strip())
-        cards.append('<article class="acard">%s<p class="q">%s</p>%s'
+        cards.append('<article class="acard">%s<p class="q">%s</p>%s%s'
                      '<div class="afoot"><div class="aname">%s%s</div>%s</div></article>'
-                     % (_avis_stars(a["n"]), text, shot, e(a["who"]), city, badge))
+                     % (_avis_stars(a["n"]), text, pic, shot, e(a["who"]), city, badge))
 
-    return ('<section class="avis">\n'
+    return ('<section class="avis" id="avisSec">\n'
             '  <div class="avishead">\n'
             '    <p class="eyebrow">Avis clientes</p>\n'
             '    <h2>Elles parlent de nous</h2>\n'
-            '    <p class="sub">Quelques mots de celles qui nous ont fait confiance</p>\n'
-            '    <div class="score">%s<span class="n">%s</span>'
-            '<span class="c">sur %s</span></div>\n'
+            '    <p class="sub" id="avisSub">%s</p>\n'
+            '    %s\n'
             '  </div>\n'
             '  <div class="agrid">\n%s\n  </div>\n'
             '  <div class="avisfoot">\n'
-            '    <a class="sharebtn" href="https://wa.me/%s?text=%s" target="_blank" rel="noopener">'
-            'Partager mon avis</a>\n'
-            '    <p>Votre message nous arrive sur WhatsApp. '
-            'Nous publions les avis apr&egrave;s votre accord.</p>\n'
+            '    <a class="sharebtn" href="avis.html">Partager un avis</a>\n'
+            '    <p>Votre message arrive directement &agrave; Kouta Deals.<br>'
+            'Nous le publions apr&egrave;s lecture.</p>\n'
             '  </div>\n'
             '</section>\n'
-            % (_avis_stars(int(round(avg))), note, cnt, "\n".join(cards),
-               WA, quote(AVIS_WA, safe="")))
+            % (sub, score, "\n".join(cards)))
 
 def read_sheet():
     rows = []
@@ -738,6 +751,8 @@ def main():
                    .replace("{{RAW}}",   ", ".join(repr(c) for c in cats)) \
                    .replace("{{SZCATS}}", ", ".join(repr(c) for c in SIZE_FILTER_CATS)) \
                    .replace("{{AVIS}}", avis_html) \
+                   .replace("{{SHOTS}}", avis_shots_js(avis_shots)) \
+                   .replace("{{API}}",  SHEET_URL) \
                    .replace("{{WA1R}}",  WA1) \
                    .replace("{{WA}}",    WA) \
                    .replace("{{WA2}}",   WA2) \
@@ -749,6 +764,10 @@ def main():
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
     open(os.path.join(OUT, ".nojekyll"), "w").close()
+
+    # ---- the page a customer writes her review on
+    with open(os.path.join(OUT, "avis.html"), "w", encoding="utf-8") as f:
+        f.write(AVIS_PAGE.replace("{{API}}", SHEET_URL))
 
     # ---- one small page per product, so a shared link carries its own photo
     pdir = os.path.join(OUT, "p")
@@ -834,6 +853,232 @@ a{{color:#B08D57}}</style>
 </head>
 <body>
 <p>{title}<br>{price}<br><a href="{go}">Voir sur Kouta Deals</a></p>
+</body>
+</html>
+"""
+
+AVIS_PAGE = r"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kouta Deals &mdash; Votre avis</title>
+<meta name="theme-color" content="#FBF6F1">
+<meta name="robots" content="noindex">
+<meta name="format-detection" content="telephone=no">
+<style>
+:root{--bg:#FBF6F1;--surface:#FFFFFF;--fg:#3E322C;--muted:#8A7263;--line:#E6D7C8;
+ --gold:#B08D57;--deep:#4A3B33;--ok:#1F7A4D;--del:#C0392B;
+ --display:"Caladea",Georgia,"Times New Roman",serif;
+ --body:"Carlito","Segoe UI",system-ui,sans-serif;}
+@media (prefers-color-scheme:dark){:root{--bg:#1A1512;--surface:#231C18;--fg:#EFE4DA;
+ --muted:#B8A392;--line:#3A2E27;--gold:#D4AF78;--deep:#F3E9E0;--ok:#2E9A63;
+ --del:#F0857A;color-scheme:dark;}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);margin:0;padding:0 16px 44px}
+.wrap{max-width:430px;margin:0 auto}
+header{text-align:center;padding-block:28px 8px}
+.eyebrow{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:27px;letter-spacing:.09em;
+   color:var(--deep);margin:13px 0 7px}
+.tag{font-family:var(--display);font-style:italic;color:var(--muted);font-size:14px;margin:0}
+.rule{width:54px;height:1px;background:var(--gold);margin:16px auto}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:18px}
+.ok{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--ok);margin:0 0 15px}
+.ok svg{width:14px;height:14px;fill:var(--ok);flex:0 0 auto}
+.prod{background:var(--bg);border:1px solid var(--line);border-radius:3px;
+      padding:10px 12px;margin:0 0 15px}
+.prod .pn{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+.prod .pp{font-family:var(--display);font-size:15px;color:var(--deep);line-height:1.3}
+label{display:block;margin-bottom:15px}
+.l{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+   display:block;margin-bottom:7px}
+input,textarea{font:inherit;font-size:15px;color:var(--fg);background:var(--bg);
+  border:1px solid var(--line);border-radius:2px;padding:10px;width:100%}
+textarea{min-height:112px;line-height:1.6;resize:vertical}
+.two{display:flex;gap:10px}
+.two label{flex:1;min-width:0}
+.stars{display:flex;gap:4px}
+.stars button{font:inherit;font-size:31px;line-height:1;background:none;border:0;
+  padding:0 3px;color:var(--line);cursor:pointer}
+.stars button.on{color:var(--gold)}
+.cnt{font-size:11px;color:var(--muted);text-align:right;margin:6px 0 0}
+.ph{display:flex;align-items:center;gap:11px;border:1px dashed var(--line);border-radius:3px;
+    padding:11px 12px;background:var(--bg);cursor:pointer;margin-bottom:15px}
+.ph .plus{width:32px;height:32px;border-radius:50%;border:1px solid var(--gold);
+  color:var(--gold);display:grid;place-items:center;font-size:18px;flex:0 0 auto}
+.ph b{font-weight:400;font-size:13px;display:block}
+.ph i{font-style:normal;font-size:11.5px;color:var(--muted)}
+.ph img{width:46px;height:46px;object-fit:cover;border-radius:2px;flex:0 0 auto}
+.hid{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.send{font:inherit;font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--deep);color:var(--bg);border:0;border-radius:2px;padding:15px 0;
+  width:100%;cursor:pointer}
+.send[disabled]{opacity:.5}
+.note{font-size:11.5px;color:var(--muted);line-height:1.65;margin:14px 0 0}
+.warn{font-size:11.5px;color:var(--muted);line-height:1.65;margin:13px 0 0;
+  border-left:2px solid var(--line);padding-left:10px}
+.msg{margin:14px 0 0;font-size:13px;line-height:1.6;color:var(--del)}
+.done{text-align:center;padding:26px 8px}
+.done h2{font-family:var(--display);font-weight:400;font-size:22px;color:var(--deep);margin:0 0 11px}
+.done p{font-size:13.5px;color:var(--muted);line-height:1.7;margin:0 0 20px}
+.back{display:inline-block;font-family:var(--display);font-size:15px;color:var(--deep);
+  text-decoration:none;border:1px solid var(--line);border-radius:2px;padding:11px 22px}
+.back:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Kouta Deals</p>
+    <h1>VOTRE AVIS</h1>
+    <p class="tag" id="sub">Merci de prendre un instant pour nous &eacute;crire</p>
+    <div class="rule"></div>
+  </header>
+
+  <form class="box" id="f" novalidate>
+    <p class="ok" id="ver" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm-1 11.5L3.5 8 4.9 6.6 7 8.7l4.1-4.1 1.4 1.4L7 11.5z"/></svg> Achat v&eacute;rifi&eacute;</p>
+    <div class="prod" id="prod" hidden></div>
+
+    <label><span class="l">Votre note</span><span class="stars" id="st"></span></label>
+
+    <div class="two">
+      <label><span class="l">Pr&eacute;nom</span><input id="who" maxlength="40" autocomplete="given-name"></label>
+      <label><span class="l">Ville</span><input id="city" maxlength="40"></label>
+    </div>
+
+    <label><span class="l">Votre avis</span>
+      <textarea id="txt" maxlength="300" placeholder="Dites-nous ce que vous avez pens&eacute; de Kouta Deals"></textarea>
+      <span class="cnt"><span id="c">0</span> / 300</span>
+    </label>
+
+    <div class="ph" id="phb"><span class="plus">+</span><div><b>Ajouter une photo</b><i>facultatif &middot; une seule photo</i></div></div>
+    <input type="file" accept="image/*" id="file" class="hid">
+    <input class="hid" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <button class="send" type="submit" id="go">Publier mon avis</button>
+    <p class="msg" id="m"></p>
+    <p class="warn">Les liens internet, les adresses e-mail et les num&eacute;ros de t&eacute;l&eacute;phone ne sont pas accept&eacute;s.</p>
+    <p class="note" id="nt"></p>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <h2 id="dt"></h2>
+    <p id="dp"></p>
+    <a class="back" href="./">Retour &agrave; la boutique</a>
+  </div>
+</div>
+<script>
+(function(){
+  var API = '{{API}}';
+  var t0  = Date.now();
+  var tok = '';
+  try { tok = (new URLSearchParams(location.search).get('t') || '').trim(); } catch(e){}
+  var note = 5, photo = '';
+  function el(i){ return document.getElementById(i); }
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function bad(s){ el('m').textContent = s; }
+
+  var st = el('st');
+  for (var i=1;i<=5;i++){
+    var b = document.createElement('button');
+    b.type='button'; b.setAttribute('data-n',i); b.textContent='★';
+    b.setAttribute('aria-label', i + ' sur 5');
+    st.appendChild(b);
+  }
+  function paint(){
+    for (var k=0;k<st.children.length;k++){
+      st.children[k].className = ((k+1) <= note) ? 'on' : '';
+    }
+  }
+  st.addEventListener('click', function(e){
+    var n = e.target && e.target.getAttribute && e.target.getAttribute('data-n');
+    if (n) { note = parseInt(n,10); paint(); }
+  });
+  paint();
+
+  var txt = el('txt');
+  txt.addEventListener('input', function(){ el('c').textContent = txt.value.length; });
+
+  function post(body){
+    return fetch(API, { method:'POST',
+      headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+      body: JSON.stringify(body) }).then(function(r){ return r.json(); });
+  }
+
+  if (tok) {
+    el('ver').hidden = false;
+    el('nt').textContent = 'Votre avis sera publié tout de suite, avec la mention « Achat vérifié ».';
+    post({ action:'avisInfo', t:tok }).then(function(j){
+      if (!j || !j.ok) { bad((j && j.error) || 'Ce lien n’est pas valable.'); return; }
+      if (j.who) {
+        el('who').value = j.who;
+        el('sub').textContent = 'Bonjour ' + j.who + ', merci de prendre un instant pour nous écrire';
+      }
+      if (j.prod) {
+        el('prod').hidden = false;
+        el('prod').innerHTML = '<div class="pn">Votre commande</div><div class="pp">' + esc(j.prod) + '</div>';
+      }
+    })['catch'](function(){});
+  } else {
+    el('nt').textContent = 'Votre message arrive directement à Kouta Deals. Il est publié après lecture.';
+  }
+
+  var file = el('file');
+  el('phb').addEventListener('click', function(){ file.click(); });
+  file.addEventListener('change', function(){
+    var f = file.files && file.files[0];
+    if (!f) return;
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function(){
+      var mx = 1200, w = img.width, h = img.height;
+      if (w > mx || h > mx) { var k = Math.min(mx/w, mx/h); w = Math.round(w*k); h = Math.round(h*k); }
+      var cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      try { photo = cv.toDataURL('image/jpeg', 0.8); } catch(e){ photo = ''; }
+      URL.revokeObjectURL(url);
+      if (photo) {
+        el('phb').innerHTML = '<img src="' + photo + '" alt=""><div><b>Photo ajoutée</b>'
+          + '<i>toucher pour en choisir une autre</i></div>';
+      }
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); };
+    img.src = url;
+  });
+
+  el('f').addEventListener('submit', function(e){
+    e.preventDefault();
+    bad('');
+    var who = el('who').value.trim();
+    var body = txt.value.trim();
+    if (!who)  { bad('Merci d’indiquer votre prénom.'); return; }
+    if (body.length < 10) { bad('Merci d’écrire quelques mots de plus.'); return; }
+    var go = el('go');
+    go.disabled = true; go.textContent = 'Envoi…';
+    post({ action:'avisNew', t:tok, who:who, city:el('city').value.trim(),
+           text:body, note:note, photo:photo, hp:el('hp').value, ms:(Date.now()-t0) })
+      .then(function(j){
+        if (!j || !j.ok) {
+          bad((j && j.error) || 'Une erreur est survenue.');
+          go.disabled = false; go.textContent = 'Publier mon avis';
+          return;
+        }
+        el('f').hidden = true;
+        el('done').hidden = false;
+        el('dt').textContent = 'Merci !';
+        el('dp').textContent = j.live
+          ? 'Votre avis est en ligne. Vous le verrez sur la boutique dans un instant.'
+          : 'Votre message est bien arrivé chez Kouta Deals. Il sera publié après lecture.';
+      })['catch'](function(){
+        bad('Pas de réseau. Réessayez dans un instant.');
+        go.disabled = false; go.textContent = 'Publier mon avis';
+      });
+  });
+})();
+</script>
 </body>
 </html>
 """
@@ -950,6 +1195,9 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .aver svg { width:11px; height:11px; fill:var(--ok); flex:0 0 auto; }
 .avisfoot { text-align:center; padding-block:16px 6px; }
 .avisfoot p { margin:11px 0 0; font-size:12.5px; color:var(--muted); }
+.aphoto { margin:1px 0 0; }
+.aphoto img { width:100%; max-height:300px; object-fit:cover; display:block;
+              border:1px solid var(--line); border-radius:2px; }
 
 /* share + footer */
 .share { text-align:center; border-top:1px solid var(--line); padding-block:24px 4px; }
@@ -1516,6 +1764,63 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     try{ history.pushState({kdInfo:1},''); }catch(e){}
   });
   window.addEventListener('popstate',function(){ if(ov) shut(false); });
+})();
+</script>
+<script>
+/* The reviews are read live, so one sent through a personal link shows up by
+   itself, without waiting for the next publication.  If this call fails the
+   page simply keeps the reviews that were built into it. */
+(function(){
+  var API = '{{API}}';
+  var SEC = document.getElementById('avisSec');
+  if (!API || !SEC || !window.fetch) return;
+  var SHOTS = {{SHOTS}};
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,''); }
+  function when(d){ var m=/^\s*(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/.exec(d||'');
+                    if(!m) return 0; var y=+m[3]; if(y<100) y+=2000;
+                    return y*10000 + (+m[2])*100 + (+m[1]); }
+  function stars(n){ var s='<span class="stars">', i;
+    for(i=0;i<n;i++) s+='\u2605';
+    if(n<5){ s+='<span class="off">'; for(i=n;i<5;i++) s+='\u2605'; s+='</span>'; }
+    return s+'</span>'; }
+  var TICK='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm-1 11.5L3.5 8 4.9 6.6 7 8.7l4.1-4.1 1.4 1.4L7 11.5z"/></svg>';
+  fetch(API, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+               body: JSON.stringify({ action:'avisPub' }) })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(!j || !j.ok || !j.rows) return;
+      var rows = j.rows.filter(function(a){ return a && a.t && a.who; });
+      rows.sort(function(a,b){ return when(b.d) - when(a.d); });
+      rows = rows.slice(0, 6);
+      if(!rows.length) return;
+      var tot = 0, html = '';
+      rows.forEach(function(a){
+        var n = parseInt(a.n, 10); if(!(n>=1 && n<=5)) n = 5; tot += n;
+        var hit  = a.p ? SHOTS[norm(a.p)] : null;
+        var shot = hit ? ('<div class="aprod"><img src="'+hit[1]+'" alt="" loading="lazy" width="50" height="66">'
+                        + '<div><div class="pn">'+esc(hit[0])+'</div><div class="pp">'+esc(hit[2])+'</div></div></div>') : '';
+        var pic   = a.ph ? '<div class="aphoto"><img src="'+esc(a.ph)+'" alt="" loading="lazy"></div>' : '';
+        var city  = a.city ? '<span>'+esc(a.city)+'</span>' : '';
+        var badge = a.v ? '<span class="aver">'+TICK+' Achat v\u00e9rifi\u00e9</span>' : '';
+        html += '<article class="acard">' + stars(n) + '<p class="q">'
+              + esc(a.t).replace(/\n/g,'<br>') + '</p>' + pic + shot
+              + '<div class="afoot"><div class="aname">'+esc(a.who)+city+'</div>'+badge+'</div></article>';
+      });
+      var grid = SEC.querySelector('.agrid');
+      if (grid) grid.innerHTML = html;
+      var sc = SEC.querySelector('.score');
+      if (sc) {
+        var avg = tot / rows.length;
+        sc.innerHTML = stars(Math.round(avg))
+          + '<span class="n">' + (Math.round(avg*10)/10).toString().replace('.', ',') + '</span>'
+          + '<span class="c">sur ' + rows.length + ' avis publi'
+          + (rows.length > 1 ? '\u00e9s' : '\u00e9') + '</span>';
+        sc.hidden = false;
+      }
+      var sub = document.getElementById('avisSub');
+      if (sub) sub.innerHTML = 'Quelques mots de celles qui nous ont fait confiance';
+    })['catch'](function(){});
 })();
 </script>
 </body>
