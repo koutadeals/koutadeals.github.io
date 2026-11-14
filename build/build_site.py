@@ -751,6 +751,7 @@ def main():
                    .replace("{{RAW}}",   ", ".join(repr(c) for c in cats)) \
                    .replace("{{SZCATS}}", ", ".join(repr(c) for c in SIZE_FILTER_CATS)) \
                    .replace("{{AVIS}}", avis_html) \
+                   .replace("{{STORY}}", STORY_BLOCK) \
                    .replace("{{SHOTS}}", avis_shots_js(avis_shots)) \
                    .replace("{{API}}",  SHEET_URL) \
                    .replace("{{WA1R}}",  WA1) \
@@ -789,6 +790,10 @@ def main():
     os.makedirs(pdir, exist_ok=True)
     with open(os.path.join(pdir, "avis.html"), "w", encoding="utf-8") as f:
         f.write(AVIS_PAGE.replace("{{API}}", SHEET_URL))
+
+    # ---- the long "Notre histoire" page
+    with open(os.path.join(pdir, "histoire.html"), "w", encoding="utf-8") as f:
+        f.write(STORY_PAGE)
 
     if all(os.path.exists(os.path.join(PHOTOS, n)) for n in SHARE_PHOTOS):
         write_share_card(OUT)            # only when the five share photos are there
@@ -856,6 +861,130 @@ a{{color:#B08D57}}</style>
 <p>{title}<br>{price}<br><a href="{go}">Voir sur Kouta Deals</a></p>
 </body>
 </html>
+"""
+
+STORY_PAGE = r"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kouta Deals &mdash; Notre histoire</title>
+<meta name="description" content="Kouta Deals, c'est une histoire personnelle devenue une aventure &agrave; partager.">
+<meta name="theme-color" content="#FBF6F1">
+<link rel="canonical" href="https://koutadeals.com/p/histoire.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kouta Deals">
+<meta property="og:title" content="Kouta Deals - Notre histoire">
+<meta property="og:description" content="Une histoire personnelle, devenue une aventure a partager.">
+<meta property="og:url" content="https://koutadeals.com/p/histoire.html">
+<meta property="og:image" content="https://koutadeals.com/img/kouta-histoire.jpg">
+<style>
+:root{--bg:#FBF6F1;--surface:#FFFFFF;--fg:#3E322C;--muted:#8A7263;--line:#E6D7C8;
+ --gold:#B08D57;--deep:#4A3B33;
+ --display:"Caladea",Georgia,"Times New Roman",serif;
+ --body:"Carlito","Segoe UI",system-ui,sans-serif;}
+@media (prefers-color-scheme:dark){:root{--bg:#1A1512;--surface:#231C18;--fg:#EFE4DA;
+ --muted:#B8A392;--line:#3A2E27;--gold:#D4AF78;--deep:#F3E9E0;color-scheme:dark;}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);margin:0;padding:0 18px 52px}
+.wrap{max-width:660px;margin:0 auto}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+     border-bottom:1px solid var(--line);padding-block:14px 12px}
+.back{font:inherit;font-size:12.5px;color:var(--fg);text-decoration:none;border:1px solid var(--line);
+      border-radius:999px;padding:7px 14px;white-space:nowrap}
+.back:hover{border-color:var(--gold);color:var(--gold)}
+.bar b{font-family:var(--display);font-weight:400;font-size:15px;color:var(--deep);letter-spacing:.04em}
+header{text-align:center;padding-block:30px 6px}
+.eyebrow{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(25px,7vw,34px);letter-spacing:.09em;
+   line-height:1.14;color:var(--deep);margin:14px 0 9px}
+.tag{font-family:var(--display);font-style:italic;color:var(--muted);font-size:15px;margin:0;
+     line-height:1.5}
+.rule{width:54px;height:1px;background:var(--gold);margin:18px auto}
+.hero{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 35%;display:block;
+      border:1px solid var(--line);border-radius:3px;margin:6px 0 10px}
+@media (min-width:620px){.hero{aspect-ratio:16/9;object-position:center 41%}}
+h2{font-family:var(--display);font-weight:400;font-size:19.5px;letter-spacing:.03em;
+   color:var(--deep);margin:30px 0 10px;line-height:1.3}
+p{font-size:14.5px;line-height:1.8;margin:0 0 13px;color:var(--fg)}
+.end{text-align:center;padding-top:10px}
+.end .rule{margin:26px auto 20px}
+.end .q{font-family:var(--display);font-style:italic;font-size:16.5px;color:var(--deep);
+        line-height:1.6;margin:0 0 12px}
+.end .w{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:0}
+.foot{text-align:center;border-top:1px solid var(--line);margin-top:30px;padding-top:22px}
+.foot a{display:inline-block;font-family:var(--display);font-size:15px;color:var(--deep);
+        text-decoration:none;border:1px solid var(--line);border-radius:2px;padding:11px 24px}
+.foot a:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <a class="back" href="../">&larr;&nbsp; Retour &agrave; la boutique</a>
+    <b>Notre histoire</b>
+  </div>
+
+  <header>
+    <p class="eyebrow">Notre histoire</p>
+    <h1>KOUTA DEALS</h1>
+    <p class="tag">Une histoire personnelle. Des trouvailles &agrave; partager.</p>
+    <div class="rule"></div>
+  </header>
+
+  <img class="hero" src="../img/kouta-histoire.jpg" alt="Kaoutar, Kouta Deals" width="720" height="960">
+
+  <h2>Une histoire qui commence par un surnom&hellip;</h2>
+  <p>Kouta, c&rsquo;est le surnom que mes proches me donnent depuis l&rsquo;enfance. Mon pr&eacute;nom est
+  Kaoutar, mais au fil des ann&eacute;es, Kouta est devenu bien plus qu&rsquo;un petit nom affectueux&nbsp;:
+  une part de mon identit&eacute;, de mon histoire et de ma personnalit&eacute;.</p>
+  <p>C&rsquo;est tout naturellement que j&rsquo;ai choisi de lui donner une nouvelle vie en cr&eacute;ant
+  Kouta Deals.</p>
+
+  <h2>Le plaisir de d&eacute;couvrir</h2>
+  <p>&Agrave; l&rsquo;origine, il y a le plaisir de d&eacute;couvrir, de voyager, de d&eacute;nicher de belles
+  choses et de partager ses trouvailles. Au fil de mes voyages et de mes d&eacute;couvertes, j&rsquo;ai
+  d&eacute;velopp&eacute; un go&ucirc;t particulier pour les articles qui allient style, qualit&eacute;,
+  originalit&eacute; et prix int&eacute;ressants. J&rsquo;ai voulu transformer cette passion en une aventure
+  &agrave; partager.</p>
+
+  <h2>Une aventure &agrave; partager</h2>
+  <p>Kouta Deals est n&eacute;e de cette envie&nbsp;: proposer une s&eacute;lection d&rsquo;articles
+  soigneusement rep&eacute;r&eacute;s, de marques appr&eacute;ci&eacute;es et de belles opportunit&eacute;s,
+  pour accompagner les petits et grands moments du quotidien.</p>
+  <p>Mode, accessoires, voyage, bien-&ecirc;tre, maison et bien d&rsquo;autres d&eacute;couvertes&hellip;
+  Notre univers &eacute;volue au gr&eacute; des envies, des saisons et des trouvailles. Ici, pas de
+  fronti&egrave;res ni de r&egrave;gles&nbsp;: chacun peut trouver son bonheur.</p>
+  <p>Derri&egrave;re chaque s&eacute;lection, il y a surtout une envie de partager le plaisir de
+  d&eacute;couvrir, de se faire plaisir et de profiter de belles opportunit&eacute;s.</p>
+
+  <div class="end">
+    <div class="rule"></div>
+    <p class="q">Kouta Deals, c&rsquo;est une histoire personnelle<br>devenue une aventure &agrave; partager.</p>
+    <p class="w">Bienvenue dans mon univers</p>
+  </div>
+
+  <div class="foot">
+    <a href="../">D&eacute;couvrir la boutique</a>
+  </div>
+</div>
+</body>
+</html>
+"""
+
+STORY_BLOCK = """<section class="story">
+  <div class="sgrid">
+    <a class="sphoto" href="p/histoire.html" aria-label="Notre histoire"><img src="img/kouta-histoire.jpg" alt="Kaoutar, Kouta Deals" loading="lazy" width="720" height="960"></a>
+    <div class="stext">
+      <p class="eyebrow">Notre histoire</p>
+      <h2>Une histoire personnelle,<br>devenue une aventure &agrave; partager.</h2>
+      <p>Kouta, c&rsquo;est le surnom que mes proches me donnent depuis l&rsquo;enfance. Au fil de mes voyages, j&rsquo;ai pris go&ucirc;t aux articles qui allient style, qualit&eacute; et belles opportunit&eacute;s.</p>
+      <p>Kouta Deals est n&eacute;e de l&rsquo;envie de partager ces trouvailles. Ici, pas de fronti&egrave;res ni de r&egrave;gles&nbsp;: chacun peut trouver son bonheur.</p>
+      <a class="smore" href="p/histoire.html">Lire notre histoire</a>
+    </div>
+  </div>
+</section>
 """
 
 AVIS_PAGE = r"""<!doctype html>
@@ -1200,6 +1329,24 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .aphoto img { width:100%; max-height:300px; object-fit:cover; display:block;
               border:1px solid var(--line); border-radius:2px; }
 
+/* our story */
+.story { border-top:1px solid var(--line); padding-block:30px 4px; }
+.sgrid { display:grid; grid-template-columns:1fr; gap:18px; align-items:center; }
+@media (min-width:760px) { .sgrid { grid-template-columns:290px 1fr; gap:34px; } }
+.sphoto { display:block; line-height:0; border:1px solid var(--line); border-radius:3px;
+          overflow:hidden; background:var(--bg); }
+.sphoto img { width:100%; height:auto; aspect-ratio:4/3; object-fit:cover;
+              object-position:center 41%; display:block; }
+@media (min-width:760px) { .sphoto img { aspect-ratio:3/4; object-position:center 35%; } }
+.stext h2 { font-family:var(--display); font-weight:400; letter-spacing:.05em;
+            font-size:clamp(20px,5.4vw,27px); line-height:1.26; color:var(--deep);
+            margin:9px 0 13px; text-wrap:balance; }
+.stext p { margin:0 0 11px; font-size:14px; line-height:1.75; color:var(--fg); }
+.smore { display:inline-block; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+         color:var(--gold); text-decoration:none; padding-bottom:3px; margin-top:3px;
+         border-bottom:1px solid rgba(176,141,87,.45); }
+.smore:hover { color:var(--deep); border-color:var(--deep); }
+
 /* share + footer */
 .share { text-align:center; border-top:1px solid var(--line); padding-block:24px 4px; }
 .sharebtn { display:inline-flex; align-items:center; gap:9px; text-decoration:none;
@@ -1388,6 +1535,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     </header>
     <nav class="tiles">
 {{TILES}}</nav>
+{{STORY}}
 {{AVIS}}
     <div class="share">
       <a class="sharebtn" href="https://wa.me/?text={{SHARE}}" target="_blank" rel="noopener">
