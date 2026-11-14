@@ -217,6 +217,17 @@ def _avis_when(s):
         y += 2000
     return (y, mo, d)
 
+AVIS_MOIS = ("janvier", "f\u00e9vrier", "mars", "avril", "mai", "juin", "juillet",
+             "ao\u00fbt", "septembre", "octobre", "novembre", "d\u00e9cembre")
+
+def _avis_month(s):
+    """dd/mm/yyyy -> 'novembre 2026'.  Kaoutar wants the month, not the day:
+    it still proves the review is recent, and it ages far more gracefully."""
+    y, mo, _d = _avis_when(s)
+    if not y or not (1 <= mo <= 12):
+        return ""
+    return "%s %d" % (AVIS_MOIS[mo - 1], y)
+
 def _avis_stars(n):
     out = '<span class="stars">' + "&#9733;" * n
     if n < 5:
@@ -247,7 +258,7 @@ def build_avis(rows, shots):
         n = max(1, min(5, n))
         keep.append(dict(when=_avis_when(r[0]), n=n, who=r[2], city=r[3],
                          text=r[4], prod=r[5], ver=(r[6].upper() == "X"),
-                         photo=r[9]))
+                         photo=r[9], mois=_avis_month(r[0])))
     keep.sort(key=lambda a: a["when"], reverse=True)
     keep = keep[:AVIS_MAX]
 
@@ -274,7 +285,8 @@ def build_avis(rows, shots):
         pic   = ('<div class="aphoto"><img src="%s" alt="" loading="lazy"></div>'
                  % e(a["photo"])) if a["photo"] else ""
         badge = ('<span class="aver">%s Achat v&eacute;rifi&eacute;</span>' % AVIS_TICK) if a["ver"] else ""
-        city  = ('<span>%s</span>' % e(a["city"])) if a["city"] else ""
+        under = " \u00b7 ".join(x for x in (a["city"], a["mois"]) if x)
+        city  = ('<span>%s</span>' % e(under)) if under else ""
         text  = "<br>".join(e(p) for p in a["text"].splitlines() if p.strip())
         cards.append('<article class="acard">%s<p class="q">%s</p>%s%s'
                      '<div class="afoot"><div class="aname">%s%s</div>%s</div></article>'
@@ -1929,6 +1941,12 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   function when(d){ var m=/^\s*(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/.exec(d||'');
                     if(!m) return 0; var y=+m[3]; if(y<100) y+=2000;
                     return y*10000 + (+m[2])*100 + (+m[1]); }
+  var MOIS=['janvier','f\u00e9vrier','mars','avril','mai','juin','juillet',
+            'ao\u00fbt','septembre','octobre','novembre','d\u00e9cembre'];
+  function mois(d){ var m=/^\s*(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/.exec(d||'');
+                    if(!m) return ''; var y=+m[3]; if(y<100) y+=2000;
+                    var k=+m[2]; if(!(k>=1&&k<=12)) return '';
+                    return MOIS[k-1]+' '+y; }
   function stars(n){ var s='<span class="stars">', i;
     for(i=0;i<n;i++) s+='\u2605';
     if(n<5){ s+='<span class="off">'; for(i=n;i<5;i++) s+='\u2605'; s+='</span>'; }
@@ -1950,7 +1968,9 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
         var shot = hit ? ('<div class="aprod"><img src="'+hit[1]+'" alt="" loading="lazy" width="50" height="66">'
                         + '<div><div class="pn">'+esc(hit[0])+'</div><div class="pp">'+esc(hit[2])+'</div></div></div>') : '';
         var pic   = a.ph ? '<div class="aphoto"><img src="'+esc(a.ph)+'" alt="" loading="lazy"></div>' : '';
-        var city  = a.city ? '<span>'+esc(a.city)+'</span>' : '';
+        var bits  = []; if(a.city) bits.push(a.city);
+        var mm    = mois(a.d); if(mm) bits.push(mm);
+        var city  = bits.length ? '<span>'+esc(bits.join(' \u00b7 '))+'</span>' : '';
         var badge = a.v ? '<span class="aver">'+TICK+' Achat v\u00e9rifi\u00e9</span>' : '';
         html += '<article class="acard">' + stars(n) + '<p class="q">'
               + esc(a.t).replace(/\n/g,'<br>') + '</p>' + pic + shot
