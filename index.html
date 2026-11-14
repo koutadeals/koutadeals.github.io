@@ -114,6 +114,24 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .aphoto img { width:100%; max-height:300px; object-fit:cover; display:block;
               border:1px solid var(--line); border-radius:2px; }
 
+/* our story */
+.story { border-top:1px solid var(--line); padding-block:30px 4px; }
+.sgrid { display:grid; grid-template-columns:1fr; gap:18px; align-items:center; }
+@media (min-width:760px) { .sgrid { grid-template-columns:290px 1fr; gap:34px; } }
+.sphoto { display:block; line-height:0; border:1px solid var(--line); border-radius:3px;
+          overflow:hidden; background:var(--bg); }
+.sphoto img { width:100%; height:auto; aspect-ratio:4/3; object-fit:cover;
+              object-position:center 41%; display:block; }
+@media (min-width:760px) { .sphoto img { aspect-ratio:3/4; object-position:center 35%; } }
+.stext h2 { font-family:var(--display); font-weight:400; letter-spacing:.05em;
+            font-size:clamp(20px,5.4vw,27px); line-height:1.26; color:var(--deep);
+            margin:9px 0 13px; text-wrap:balance; }
+.stext p { margin:0 0 11px; font-size:14px; line-height:1.75; color:var(--fg); }
+.smore { display:inline-block; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+         color:var(--gold); text-decoration:none; padding-bottom:3px; margin-top:3px;
+         border-bottom:1px solid rgba(176,141,87,.45); }
+.smore:hover { color:var(--deep); border-color:var(--deep); }
+
 /* share + footer */
 .share { text-align:center; border-top:1px solid var(--line); padding-block:24px 4px; }
 .sharebtn { display:inline-flex; align-items:center; gap:9px; text-decoration:none;
@@ -371,15 +389,29 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   <span class="tmeta"><span class="tname">Homme</span><span class="tnum">L&#x27;élégance au masculin</span></span>
   <span class="tgo" aria-hidden="true">&rsaquo;</span>
 </a></nav>
+<section class="story">
+  <div class="sgrid">
+    <a class="sphoto" href="p/histoire.html" aria-label="Notre histoire"><img src="img/kouta-histoire.jpg" alt="Kaoutar, Kouta Deals" loading="lazy" width="720" height="960"></a>
+    <div class="stext">
+      <p class="eyebrow">Notre histoire</p>
+      <h2>Une histoire personnelle,<br>devenue une aventure &agrave; partager.</h2>
+      <p>Kouta, c&rsquo;est le surnom que mes proches me donnent depuis l&rsquo;enfance. Au fil de mes voyages, j&rsquo;ai pris go&ucirc;t aux articles qui allient style, qualit&eacute; et belles opportunit&eacute;s.</p>
+      <p>Kouta Deals est n&eacute;e de l&rsquo;envie de partager ces trouvailles. Ici, pas de fronti&egrave;res ni de r&egrave;gles&nbsp;: chacun peut trouver son bonheur.</p>
+      <a class="smore" href="p/histoire.html">Lire notre histoire</a>
+    </div>
+  </div>
+</section>
+
 <section class="avis" id="avisSec">
   <div class="avishead">
     <p class="eyebrow">Avis clientes</p>
     <h2>Elles parlent de nous</h2>
     <p class="sub" id="avisSub">Quelques mots de celles qui nous ont fait confiance</p>
-    <div class="score"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="n">5</span><span class="c">sur 1 avis publié</span></div>
+    <div class="score"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="n">5</span><span class="c">sur 2 avis publiés</span></div>
   </div>
   <div class="agrid">
 <article class="acard"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p class="q">Very nice. I like it, easy to use.</p><div class="afoot"><div class="aname">Hafida<span>Casablanca</span></div></div></article>
+<article class="acard"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p class="q">Je recommande Kouta Deals les yeux fermés ! ❤️<br>Je suis une cliente fidèle depuis un moment et j&#x27;ai toujours été très satisfaite de mes achats.<br>On y trouve de beaux articles, de la qualité, du choix et surtout une partenaire adorable.<br>Merci pour ton sérieux et ton professionnalisme. <br>Khadija</p><div class="afoot"><div class="aname">Khadija<span>Essaouira</span></div><span class="aver"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm-1 11.5L3.5 8 4.9 6.6 7 8.7l4.1-4.1 1.4 1.4L7 11.5z"/></svg> Achat v&eacute;rifi&eacute;</span></div></article>
   </div>
   <div class="avisfoot">
     <a class="sharebtn" href="p/avis.html">Partager un avis</a>
