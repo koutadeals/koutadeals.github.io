@@ -289,7 +289,7 @@ def build_avis(rows, shots):
             '  </div>\n'
             '  <div class="agrid">\n%s\n  </div>\n'
             '  <div class="avisfoot">\n'
-            '    <a class="sharebtn" href="avis.html">Partager un avis</a>\n'
+            '    <a class="sharebtn" href="p/avis.html">Partager un avis</a>\n'
             '    <p>Votre message arrive directement &agrave; Kouta Deals.<br>'
             'Nous le publions apr&egrave;s lecture.</p>\n'
             '  </div>\n'
@@ -765,10 +765,6 @@ def main():
         f.write(page)
     open(os.path.join(OUT, ".nojekyll"), "w").close()
 
-    # ---- the page a customer writes her review on
-    with open(os.path.join(OUT, "avis.html"), "w", encoding="utf-8") as f:
-        f.write(AVIS_PAGE.replace("{{API}}", SHEET_URL))
-
     # ---- one small page per product, so a shared link carries its own photo
     pdir = os.path.join(OUT, "p")
     shutil.rmtree(pdir, ignore_errors=True)
@@ -789,6 +785,11 @@ def main():
                 url=e(SITE + "/p/" + it["slug"] + "/"),
                 img=e(SITE + "/" + it["_big"][0]), alt=e(it["name"]),
                 price=e(it["label"]), go=e(go), gojs=_json.dumps(go)))
+    # ---- the page a customer writes her review on
+    os.makedirs(pdir, exist_ok=True)
+    with open(os.path.join(pdir, "avis.html"), "w", encoding="utf-8") as f:
+        f.write(AVIS_PAGE.replace("{{API}}", SHEET_URL))
+
     if all(os.path.exists(os.path.join(PHOTOS, n)) for n in SHARE_PHOTOS):
         write_share_card(OUT)            # only when the five share photos are there
 
