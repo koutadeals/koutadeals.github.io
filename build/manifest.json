@@ -2304,6 +2304,22 @@
 "img/ensemble-3-pi-ces-primark-6-t.jpg"
 ]
 },
+"Anti-Stress Forme Bâtonnet De Beurre|": {
+"big": [
+"img/anti-stress-forme-b-tonnet-de-beurre-1.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-2.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-3.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-4.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-5.jpg"
+],
+"thumb": [
+"img/anti-stress-forme-b-tonnet-de-beurre-1-t.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-2-t.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-3-t.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-4-t.jpg",
+"img/anti-stress-forme-b-tonnet-de-beurre-5-t.jpg"
+]
+},
 "Panneau métallique Vintage|Angenerm": {
 "big": [
 "img/panneau-m-tallique-vintage-angenerm-1.jpg",
@@ -2393,7 +2409,7 @@
 "Plage & Piscine": "img/drap-de-plage-fran-oise-saget-1-tile.jpg",
 "Voyage & Bagages": "img/ensemble-de-4-flacons-de-voyage-primark-1-tile.jpg",
 "Enfants": "img/carnet-de-notes-en-peluche-1-tile.jpg",
-"Maison": "img/panneau-m-tallique-vintage-angenerm-1-tile.jpg",
+"Maison": "img/anti-stress-forme-b-tonnet-de-beurre-1-tile.jpg",
 "Sport & Fitness": "img/active-leggings-trousers-f-bubblegum-pink-calzedonia-1-tile.jpg",
 "Homme": "img/pyjama-milano-milano-1.jpg"
 }
