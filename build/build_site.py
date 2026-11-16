@@ -764,6 +764,7 @@ def main():
                    .replace("{{SZCATS}}", ", ".join(repr(c) for c in SIZE_FILTER_CATS)) \
                    .replace("{{AVIS}}", avis_html) \
                    .replace("{{STORY}}", STORY_BLOCK) \
+                   .replace("{{HOWTO}}", HOWTO_BLOCK) \
                    .replace("{{SHOTS}}", avis_shots_js(avis_shots)) \
                    .replace("{{API}}",  SHEET_URL) \
                    .replace("{{WA1R}}",  WA1) \
@@ -873,6 +874,33 @@ a{{color:#B08D57}}</style>
 <p>{title}<br>{price}<br><a href="{go}">Voir sur Kouta Deals</a></p>
 </body>
 </html>
+"""
+
+HOWTO_BLOCK = """<section class="howto">
+  <div class="howhead">
+    <p class="eyebrow">Commander</p>
+    <h2>Comment commander&nbsp;?</h2>
+    <p class="sub">Faites votre s&eacute;lection sur Kouta Deals, puis retrouvez-nous sur
+    WhatsApp pour finaliser votre commande&nbsp;!</p>
+  </div>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>Choisissez vos articles</h3><p>Parcourez nos cat&eacute;gories, regardez les photos et s&eacute;lectionnez la taille ou les options propos&eacute;es, lorsqu&rsquo;il y en&nbsp;a.</p></div>
+    <div class="step"><span class="n">2</span><h3>Ajoutez-les au panier</h3><p>Choisissez la quantit&eacute; souhait&eacute;e et appuyez sur &laquo;&nbsp;Ajouter&nbsp;&raquo;. Vous pouvez ensuite continuer vos achats.</p></div>
+    <div class="step"><span class="n">3</span><h3>V&eacute;rifiez votre s&eacute;lection</h3><p>Appuyez sur &laquo;&nbsp;Voir ma commande&nbsp;&raquo; en bas de l&rsquo;&eacute;cran pour retrouver vos articles et le total. Retirez un article si n&eacute;cessaire.</p></div>
+    <div class="step"><span class="n">4</span><h3>Envoyez votre commande</h3><p>Appuyez sur &laquo;&nbsp;Envoyer ma commande sur WhatsApp&nbsp;&raquo;. Une fois WhatsApp ouvert, envoyez le message pour nous transmettre votre s&eacute;lection.</p></div>
+  </div>
+  <div class="howfoot">
+    <div class="howbox">
+      <p class="t">Moyens de paiement</p>
+      <p>Nous acceptons le paiement en esp&egrave;ces ou par virement bancaire.</p>
+    </div>
+    <div class="howbox">
+      <p class="t">Besoin d&rsquo;aide&nbsp;?</p>
+      <p>Une question sur un article ou sur votre commande&nbsp;?</p>
+      <a class="wa" href="https://wa.me/212661793236" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.98 3 3 6.58 3 11c0 2.3 1.08 4.36 2.82 5.8L5 21l4.3-1.7c.85.23 1.75.35 2.7.35 5.02 0 9-3.58 9-8s-3.98-8-9-8z"/></svg> Nous &eacute;crire</a>
+    </div>
+  </div>
+</section>
 """
 
 STORY_PAGE = r"""<!doctype html>
@@ -1359,6 +1387,35 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
          border-bottom:1px solid rgba(176,141,87,.45); }
 .smore:hover { color:var(--deep); border-color:var(--deep); }
 
+/* how to order */
+.howto { border-top:1px solid var(--line); padding-block:30px 6px; }
+.howhead { text-align:center; padding-bottom:4px; }
+.howhead h2 { font-family:var(--display); font-weight:400; letter-spacing:.09em;
+              font-size:clamp(22px,6vw,31px); line-height:1.15; color:var(--deep);
+              margin:13px 0 7px; }
+.howhead .sub { font-family:var(--display); font-style:italic; color:var(--muted);
+                font-size:14.5px; margin:0 auto; max-width:520px; line-height:1.5; }
+.steps { display:grid; grid-template-columns:1fr; gap:16px; padding-block:24px 6px; }
+@media (min-width:720px) { .steps { grid-template-columns:repeat(4,1fr); gap:20px; } }
+.step { background:var(--surface); border:1px solid var(--line); border-radius:3px;
+        padding:17px 18px 16px; display:flex; flex-direction:column; gap:7px; }
+.step .n { font-family:var(--display); font-size:25px; line-height:1; color:var(--gold); }
+.step h3 { font-family:var(--display); font-weight:400; font-size:16.5px; color:var(--deep);
+           margin:0; line-height:1.3; }
+.step p { margin:0; font-size:13.5px; line-height:1.7; color:var(--fg); }
+.howfoot { display:grid; grid-template-columns:1fr; gap:14px; padding-block:18px 2px; }
+@media (min-width:720px) { .howfoot { grid-template-columns:1fr 1fr; gap:20px; } }
+.howbox { border-top:1px solid var(--line); padding-top:14px; }
+.howbox .t { font-size:9.5px; letter-spacing:.28em; text-transform:uppercase;
+             color:var(--gold); margin:0 0 6px; }
+.howbox p { margin:0; font-size:13.5px; line-height:1.7; color:var(--fg); }
+.howbox a.wa { display:inline-flex; align-items:center; gap:8px; margin-top:9px;
+               font-family:var(--display); font-size:15px; color:var(--deep);
+               text-decoration:none; border:1px solid var(--line); border-radius:999px;
+               padding:8px 17px; }
+.howbox a.wa svg { width:16px; height:16px; }
+.howbox a.wa:hover { border-color:var(--gold); color:var(--gold); }
+
 /* share + footer */
 .share { text-align:center; border-top:1px solid var(--line); padding-block:24px 4px; }
 .sharebtn { display:inline-flex; align-items:center; gap:9px; text-decoration:none;
@@ -1549,6 +1606,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 {{TILES}}</nav>
 {{STORY}}
 {{AVIS}}
+{{HOWTO}}
     <div class="share">
       <a class="sharebtn" href="https://wa.me/?text={{SHARE}}" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.2.4-.2.6-.1l2.1 1c.3.1.5.2.5.4.1.1.1.6-.1 1.1z"/></svg>
