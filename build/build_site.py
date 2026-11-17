@@ -68,8 +68,6 @@ THUMB_W, THUMB_Q = 220, 78     # the small strip under the photo
 TILE_W, TILE_Q = 700, 80       # category menu cover
 
 WA   = "212661793236"          # WhatsApp number the order is sent to
-WA1  = "34611392655"           # second number, link form
-WA2  = "+34 611 392 655"
 WA3  = "+212 661 793 236"
 SITE = "https://koutadeals.com"
 SHARE_TXT = SITE
@@ -767,9 +765,7 @@ def main():
                    .replace("{{HOWTO}}", HOWTO_BLOCK) \
                    .replace("{{SHOTS}}", avis_shots_js(avis_shots)) \
                    .replace("{{API}}",  SHEET_URL) \
-                   .replace("{{WA1R}}",  WA1) \
                    .replace("{{WA}}",    WA) \
-                   .replace("{{WA2}}",   WA2) \
                    .replace("{{WA3}}",   WA3) \
                    .replace("{{SHARE}}", quote(SHARE_TXT, safe="")) \
                    .replace("{{OGIMG}}", SITE + "/" + SHARE_IMG) \
@@ -1387,7 +1383,36 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
          border-bottom:1px solid rgba(176,141,87,.45); }
 .smore:hover { color:var(--deep); border-color:var(--deep); }
 
+/* search */
+.srch { margin:0; padding-block:20px 2px; }
+.srow { display:flex; align-items:center; gap:9px; max-width:430px; margin:0 auto;
+        background:var(--surface); border:1px solid var(--line); border-radius:999px;
+        padding:9px 15px; }
+.srow:focus-within { border-color:var(--gold); }
+.sic { width:17px; height:17px; flex:0 0 auto; color:var(--muted); }
+.sin { flex:1; min-width:0; font:inherit; font-size:14.5px; color:var(--fg);
+       background:none; border:0; outline:none; padding:0; -webkit-appearance:none; appearance:none; }
+.sin::placeholder { color:var(--muted); opacity:.9; }
+.sin::-webkit-search-cancel-button, .sin::-webkit-search-decoration { -webkit-appearance:none; display:none; }
+.sclr { flex:0 0 auto; width:23px; height:23px; border:0; border-radius:50%; cursor:pointer;
+        background:var(--bg); color:var(--muted); font-size:11px; line-height:1; padding:0; }
+.sclr:hover { color:var(--gold); }
+.bsrch { padding:0; flex:1 1 165px; max-width:250px; }
+.bsrch .srow { padding:6px 12px; max-width:none; }
+.bsrch .sin { font-size:13.5px; }
+@media (max-width:560px) { .bsrch { flex:1 1 100%; max-width:none; } }
+.nores { text-align:center; color:var(--muted); font-size:14px; line-height:2.1; padding:36px 0 10px; }
+.noresclr { font:inherit; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+            color:var(--gold); background:none; border:0; cursor:pointer; padding:6px 0; }
+
 /* how to order */
+.howlink { text-align:center; margin:15px 0 0; }
+.howlink button { font-family:var(--display); font-size:15px; color:var(--muted);
+                  background:var(--surface); border:1px solid var(--line);
+                  border-radius:999px; padding:8px 20px; cursor:pointer;
+                  display:inline-flex; align-items:center; gap:7px; }
+.howlink button:hover { border-color:var(--gold); color:var(--gold); }
+.howarr { width:14px; height:14px; flex:0 0 auto; }
 .howto { border-top:1px solid var(--line); padding-block:30px 6px; }
 .howhead { text-align:center; padding-bottom:4px; }
 .howhead h2 { font-family:var(--display); font-weight:400; letter-spacing:.09em;
@@ -1426,6 +1451,7 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .sharebtn svg { width:18px; height:18px; fill:currentColor; }
 .share p { margin:10px 0 0; font-size:13px; color:var(--muted); }
 footer .fnote { max-width:34em; margin-inline:auto; }
+footer .hours { max-width:34em; margin-inline:auto; font-size:12.5px; }
 .smax { font-size:12.5px; color:var(--del); margin:5px 0 0; }
 
 /* category view */
@@ -1602,6 +1628,15 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       <div class="rule"></div>
       <p class="tag">Choisissez une cat&eacute;gorie</p>
     </header>
+    <form class="srch" role="search" onsubmit="return false;">
+      <div class="srow">
+        <svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10.5 3.5a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm4.95 11.95L20.5 20.5"/></svg>
+        <input id="q" class="sin" type="search" autocomplete="off" spellcheck="false"
+               placeholder="Rechercher&nbsp;: Stitch, pyjama, torchon&hellip;" aria-label="Rechercher un article">
+        <button class="sclr" id="qclr" type="button" aria-label="Effacer la recherche" hidden>&#10005;</button>
+      </div>
+    </form>
+    <p class="howlink"><button type="button" id="howgo">Comment commander&nbsp;?<svg class="howarr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 10l6 6 6-6"/></svg></button></p>
     <nav class="tiles">
 {{TILES}}</nav>
 {{STORY}}
@@ -1617,7 +1652,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <footer>
       <p class="eyebrow">Commandes &amp; assistance sur WhatsApp</p>
       <p class="fnote">Commandez facilement sur WhatsApp et contactez-nous pour toute question ou besoin d&rsquo;aide.</p>
-      <p class="num"><a href="https://wa.me/{{WA1R}}">{{WA2}}</a> &nbsp;&middot;&nbsp; <a href="https://wa.me/{{WA}}">{{WA3}}</a></p>
+      <p class="num"><a href="https://wa.me/{{WA}}">{{WA3}}</a></p>
+      <p class="hours">Horaires de r&eacute;ponse&nbsp;: tous les jours de 09h00 &agrave; 21h00, sauf jours de f&ecirc;tes religieuses.</p>
       <p>Livraison gratuite sur Essaouira</p>
     </footer>
   </section>
@@ -1626,6 +1662,14 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     <div class="bar">
       <a class="back pill" href="#/">&larr; Toutes les cat&eacute;gories</a>
       <h2 class="ctitle" id="ctitle"></h2>
+      <form class="srch bsrch" role="search" onsubmit="return false;">
+        <div class="srow">
+          <svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10.5 3.5a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm4.95 11.95L20.5 20.5"/></svg>
+          <input id="q2" class="sin" type="search" autocomplete="off" spellcheck="false"
+                 placeholder="Rechercher&hellip;" aria-label="Rechercher un article">
+          <button class="sclr" id="qclr2" type="button" aria-label="Effacer la recherche" hidden>&#10005;</button>
+        </div>
+      </form>
       <div class="filters" id="filters"></div>
     </div>
     <div class="fby" id="fby" hidden>
@@ -1636,6 +1680,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       <button class="fclr" id="fclr" type="button" hidden>Tout afficher</button>
     </div>
     <p class="count" id="count"></p>
+    <p class="nores" id="nores" hidden>Aucun article ne correspond &agrave; votre recherche.<br>
+      <button class="noresclr" id="noresclr" type="button">Effacer la recherche</button></p>
     <div class="grid" id="grid">
 {{CARDS}}</div>
   </section>
@@ -1675,7 +1721,46 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   var fby=document.getElementById('fby'), szf=document.getElementById('szfilters'),
       frowsz=document.getElementById('frowsz'), frowse=document.getElementById('frowse'),
       fclr=document.getElementById('fclr'), seasonHome=filters.parentNode;
-  var cur={cat:0, f:'all', sz:''};
+  var cur={cat:0, f:'all', sz:'', q:'', qw:[]};
+
+  /* ---- search ---- */
+  var qin=document.getElementById('q'), qin2=document.getElementById('q2'),
+      qclr=document.getElementById('qclr'), qclr2=document.getElementById('qclr2'),
+      nores=document.getElementById('nores'),
+      noresclr=document.getElementById('noresclr');
+  var qtimer=null;
+  /* lower case, accents off, punctuation to spaces: "Été" and "ete" match */
+  function nrm(s){
+    s=String(s==null?'':s).toLowerCase();
+    try{ s=s.normalize('NFD').replace(/[̀-ͯ]/g,''); }catch(e){}
+    return s.replace(/[^a-z0-9]+/g,' ').replace(/^ +| +$/g,'');
+  }
+  /* what one card can be found by: name, brand, category, description */
+  function hay(c){
+    if(c._hay==null){
+      c._hay=nrm([c.getAttribute('data-name')||'', c.getAttribute('data-brand')||'',
+                  c.getAttribute('data-cat')||'', c.getAttribute('data-descr')||''].join(' '));
+    }
+    return c._hay;
+  }
+  function hit(c,words){
+    if(!words.length) return false;
+    var h=hay(c);
+    for(var i=0;i<words.length;i++){ if(h.indexOf(words[i])<0) return false; }
+    return true;
+  }
+  function toggleClr(){
+    if(qclr)  qclr.hidden  = !(qin  && qin.value);
+    if(qclr2) qclr2.hidden = !(qin2 && qin2.value);
+  }
+  function clearSearch(){
+    if(qtimer){ clearTimeout(qtimer); qtimer=null; }
+    if(qin)  qin.value='';
+    if(qin2) qin2.value='';
+    toggleClr();
+    cur.q=''; cur.qw=[];
+    if(location.hash==='#/' || location.hash==='') { openHome(); } else { location.hash='#/'; }
+  }
 
   /* the sizes a card offers, read from its own size picker */
   function sizesOf(c){
@@ -1814,13 +1899,16 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   });
 
   function apply(){
-    var n=0, firstSold=null;
+    var n=0, shown=0, firstSold=null;
     cards.forEach(function(c){
-      var on = c.dataset.cat===RAW[cur.cat]
-               && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*')
-               && (!cur.sz||sizesOf(c).indexOf(cur.sz)>=0);
+      var on = cur.q
+               ? hit(c, cur.qw)
+               : (c.dataset.cat===RAW[cur.cat]
+                  && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*')
+                  && (!cur.sz||sizesOf(c).indexOf(cur.sz)>=0));
       c.hidden=!on;
       if(on){
+        shown++;
         if(c.dataset.sold==='1'){ if(!firstSold) firstSold=c; }
         else n++;
       }
@@ -1833,7 +1921,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     }
     if(firstSold) firstSold.parentNode.insertBefore(hd,firstSold);
     else if(hd.parentNode) hd.parentNode.removeChild(hd);
-    count.textContent=n+(n>1?' modèles':' modèle');
+    if(cur.q){
+      count.textContent = shown? (n+(n>1?' modèles':' modèle')) : '';
+      if(nores) nores.hidden = shown>0;
+    } else {
+      count.textContent=n+(n>1?' modèles':' modèle');
+      if(nores) nores.hidden=true;
+    }
     [].slice.call(filters.children).forEach(function(ch){
       ch.setAttribute('aria-pressed',String(ch.dataset.f===cur.f));
     });
@@ -1844,7 +1938,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   }
 
   function openCat(i){
-    cur.cat=i; cur.f='all'; cur.sz='';
+    cur.cat=i; cur.f='all'; cur.sz=''; cur.q=''; cur.qw=[];
+    if(qin2) qin2.value=''; toggleClr();
     ctitle.textContent=CATS[i];
     var present=SEAS.filter(function(s){
       return cards.some(function(c){ return c.dataset.cat===RAW[i] && c.dataset.season===s; });
@@ -1889,8 +1984,35 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     refresh(); window.scrollTo(0,0);
   }
   function openHome(){
+    cur.q=''; cur.qw=[];
+    if(qin)  qin.value='';
+    if(qin2) qin2.value='';
+    toggleClr();
+    if(nores) nores.hidden=true;
     catv.hidden=true; cartv.hidden=true; home.hidden=false;
     refresh(); window.scrollTo(0,0);
+  }
+
+  /* the results live in the same view as a category, so the cards keep their
+     own options and their working "Ajouter" button */
+  function openSearch(q){
+    var fromHome = (document.activeElement===qin);
+    cur.q=q; cur.qw=nrm(q).split(' ').filter(function(w){ return !!w; });
+    cur.f='all'; cur.sz='';
+    ctitle.textContent='Résultats pour « '+q+' »';
+    filters.innerHTML='';
+    seasonHome.appendChild(filters);
+    fby.hidden=true; count.hidden=false;
+    if(qin  && qin.value!==q)  qin.value=q;
+    if(qin2 && qin2.value!==q) qin2.value=q;
+    toggleClr();
+    apply();
+    home.hidden=true; cartv.hidden=true; catv.hidden=false;
+    refresh();
+    /* the home field is hidden now, so carry the cursor over to the one in the bar */
+    if(fromHome && qin2){
+      try{ qin2.focus(); qin2.setSelectionRange(qin2.value.length, qin2.value.length); }catch(e){}
+    } else { window.scrollTo(0,0); }
   }
   function openCart(){
     home.hidden=true; catv.hidden=true; cartv.hidden=false;
@@ -1906,6 +2028,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     if(h.indexOf('#/c/')===0){
       var i=parseInt(h.slice(4),10);
       if(i>=0 && i<RAW.length) return openCat(i);
+      return openHome();
+    }
+    if(h.indexOf('#/q/')===0){
+      var q='';
+      try{ q=decodeURIComponent(h.slice(4).replace(/\+/g,'%20')); }catch(e){ q=h.slice(4); }
+      q=q.slice(0,80).trim();
+      if(nrm(q)) return openSearch(q);
       return openHome();
     }
     if(h.indexOf('#/p/')===0){
@@ -1945,6 +2074,55 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       window.open('https://wa.me/?text='+encodeURIComponent(txt+'\n'+url),'_blank','noopener');
     }
   });
+  /* ---- the search fields ---- */
+  function askSearch(text, now){
+    if(qtimer){ clearTimeout(qtimer); qtimer=null; }
+    var go=function(){
+      qtimer=null;
+      var t=String(text||'').trim();
+      if(!nrm(t)){
+        if(location.hash.indexOf('#/q/')===0) location.hash='#/';
+        return;
+      }
+      var nh='#/q/'+encodeURIComponent(t);
+      if(location.hash.indexOf('#/q/')===0){
+        try{ history.replaceState(null,'',nh); openSearch(t); return; }catch(e){}
+      }
+      if(location.hash===nh) openSearch(t); else location.hash=nh;
+    };
+    if(now) go(); else qtimer=setTimeout(go,260);
+  }
+  [qin,qin2].forEach(function(el){
+    if(!el) return;
+    el.addEventListener('input',function(){
+      var other=(el===qin?qin2:qin);
+      if(other) other.value=el.value;
+      toggleClr();
+      askSearch(el.value,false);
+    });
+    el.addEventListener('keydown',function(ev){
+      if(ev.key==='Enter'||ev.keyCode===13){
+        ev.preventDefault();
+        askSearch(el.value,true);
+        try{ el.blur(); }catch(e){}
+      }
+    });
+  });
+  [qclr,qclr2,noresclr].forEach(function(b){
+    if(!b) return;
+    b.addEventListener('click',function(){ clearSearch(); });
+  });
+
+  /* ---- "Comment commander ?" at the top of the home page ---- */
+  (function(){
+    var b=document.getElementById('howgo'), sec=document.querySelector('.howto');
+    if(!b||!sec) return;
+    b.addEventListener('click',function(){
+      try{ sec.scrollIntoView({behavior:'smooth',block:'start'}); }
+      catch(e){ sec.scrollIntoView(); }
+    });
+  })();
+
   window.addEventListener('hashchange',route);
   route();
 })();
