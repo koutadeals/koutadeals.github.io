@@ -614,6 +614,9 @@ def main():
     # ---- category tiles
     tiles = []
     for n, c in enumerate(cats):
+        # a category with nothing available waits off the home page; the
+        # products, the sheet and the direct address #/c/N are all untouched
+        avail = any(i["cat"] == c and not i["sold"] for i in items)
         want  = covers.get(c, "")
         first, pic = None, None
         if want:
@@ -644,6 +647,9 @@ def main():
         else:
             href = MAN_TILES.get(c) or (first["ready"]["big"][0] if first.get("ready") else "")
         TILES_USED[c] = href
+        if not avail:
+            problems.append("%s has no piece available: its tile is not shown" % c)
+            continue
         num   = cnt[c]
         sub = taglines.get(c, "")
         tiles.append(
@@ -1486,8 +1492,8 @@ footer .hours { max-width:34em; margin-inline:auto; font-size:12.5px; }
 .card { background:var(--surface); border:1px solid var(--line); border-radius:3px;
         display:flex; flex-direction:column; min-width:0; overflow:hidden; }
 .card[data-on="1"] { border-color:var(--ok); box-shadow:0 0 0 1px var(--ok); }
-.shot { aspect-ratio:3/4; background:var(--bg); position:relative; }
-.shot img { width:100%; height:100%; object-fit:cover; display:block; }
+.shot { aspect-ratio:3/4; background:var(--surface); position:relative; }
+.shot img { width:100%; height:100%; object-fit:contain; display:block; }
 .tick { position:absolute; top:10px; right:10px; width:30px; height:30px; border-radius:50%;
         background:var(--ok); color:var(--okfg); display:none; align-items:center;
         justify-content:center; font-size:16px; line-height:1; }
@@ -1818,7 +1824,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       var q=qtyOf(c); t+=lineTotal(c);
       var sz=sizeOf(c), det='';
       if(hasSize(c)) det=' ('+(sz?('taille '+sz):'taille \u00e0 pr\u00e9ciser')+')';
-      lines.push('\u2022 '+(q>1?q+' \u00d7 ':'')+c.dataset.brand+' \u2014 '+c.dataset.name
+      var br=(c.dataset.brand||'').replace(/^\s+|\s+$/g,'');
+      lines.push('\u2022 '+(q>1?q+' \u00d7 ':'')+(br?br+' \u2014 ':'')+c.dataset.name
                  +det+(c.dataset.price?' \u2014 '+money(lineTotal(c)):''));
     });
     return {total:t, text:'Bonjour Kouta Deals, je souhaite commander :\n'+lines.join('\n')
