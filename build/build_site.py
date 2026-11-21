@@ -12,7 +12,7 @@ high resolution and the phone only downloads what is on screen.
 
 Usage:  python3 build_shop.py [outdir]      (default: site)
 """
-import os, re, sys, html, glob, shutil, collections
+import os, re, sys, html, glob, shutil, collections, unicodedata
 from urllib.parse import quote
 from PIL import Image, ImageOps, ImageDraw, ImageFont
 
@@ -96,6 +96,68 @@ SKIP_PHOTOS = {
     "Tongs_Havaianas (2).PNG",
     "Tongs_Havaianas_1.PNG",
 }
+# ---------------------------------------------------------------- aisles
+# The sheet keeps its own categories, untouched.  This table only decides
+# how they are gathered on the home page.  A category that is not named
+# here simply keeps an aisle of its own, so nothing can go missing.
+FAMILIES = [
+    {"key": "nuit",        "title": "Nuit & Cocooning",
+     "cats": ["Nuit & Cocooning"]},
+    {"key": "dessous",     "title": "Dessous & Lingerie",
+     "cats": ["Dessous & Lingerie", "Collants & bas", "Chaussettes"],
+     "subs": [("lingerie",    "Lingerie",        ["Dessous & Lingerie"]),
+              ("collants",    "Collants & bas",  ["Collants & bas"]),
+              ("chaussettes", "Chaussettes",     ["Chaussettes"])]},
+    {"key": "mode",        "title": "Mode",
+     "cats": ["Mode", "Sport & Fitness"],
+     "subs": [("sport", "Sport & fitness", ["Sport & Fitness"])]},
+    {"key": "chaussures",  "title": "Chaussures & chaussons",
+     "cats": ["L'Univers Chaussures"]},
+    {"key": "maison",      "title": "Maison & Cuisine",
+     "cats": ["Maison", "Cuisine"],
+     "subs": [("cuisine", "Cuisine",           None),
+              ("table",   "Arts de la table",  None),
+              ("deco",    "Entretien & d\u00e9co",  None)]},
+    {"key": "beaute",      "title": "Beaut\u00e9 & Maquillage",
+     "cats": ["Beaut\u00e9 & Maquillage"]},
+    {"key": "enfants",     "title": "Enfants",
+     "cats": ["Enfants"]},
+    {"key": "voyage",      "title": "Voyage & Plage",
+     "cats": ["Voyage & Bagages", "Plage & Piscine"],
+     "subs": [("voyage", "Voyage & bagages", ["Voyage & Bagages"]),
+              ("plage",  "Plage & piscine",  ["Plage & Piscine"])]},
+]
+
+# Maison & Cuisine is split by what a piece is actually for, read from its
+# own name.  Table first, then kitchen work, and whatever is neither is
+# upkeep or decoration.
+MC_TABLE = ("assiette", "couvert", "couteau", "cuillere", "fourchette",
+            "nappe", "set de table", "porte serviette", "saliere",
+            "poivriere", "verre", "carafe", "tasse", "mug", "plateau",
+            "chemin de table", "sous verre", "dessous de plat")
+MC_CUISINE = ("tablier", "torchon", "gant", "manique", "moule",
+              "papier cuisson", "brochette", "barbecue", "cocktail",
+              "casserole", "poele", "spatule", "fouet", "saladier",
+              "planche a decouper", "passoire", "econome", "ouvre boite",
+              "tire bouchon", "bouilloire", "cafetiere", "theiere",
+              "ustensile", "rouleau a patisserie", "balance de cuisine",
+              "robot de cuisine", "mixeur", "rape", "louche")
+
+def fold(s):
+    s = unicodedata.normalize("NFD", (s or "").lower())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    return re.sub(r"[^a-z0-9]+", " ", s).strip()
+
+def mc_sub(name):
+    f = fold(name)
+    for k in MC_TABLE:
+        if re.search(r"\b" + k, f):
+            return "table"
+    for k in MC_CUISINE:
+        if re.search(r"\b" + k, f):
+            return "cuisine"
+    return "deco"
+
 ALL_SEASONS = "toutes saisons"
 SEASONS = [("été", "Été"), ("demi-saison", "Demi-saison"), ("hiver", "Hiver")]
 
@@ -611,12 +673,33 @@ def main():
         problems.append("%d older sold pieces are kept in the sheet but not shown" % dropped)
     items = keep
 
-    # ---- category tiles
-    tiles = []
+    # ---- the aisles: which family, and which shelf inside it
+    fams = [dict(F) for F in FAMILIES]
+    cat2fam = {}
+    for fi, F in enumerate(fams):
+        for c in F["cats"]:
+            cat2fam[c] = fi
+    for c in cats:                 # a category the table does not know
+        if c not in cat2fam:       # keeps an aisle of its own
+            cat2fam[c] = len(fams)
+            fams.append({"key": slug(c), "title": c[:1].upper() + c[1:], "cats": [c]})
+    for it in items:
+        F = fams[cat2fam[it["cat"]]]
+        it["fam"] = F["key"]
+        sub = ""
+        for (sk, _st, sc) in F.get("subs") or []:
+            if sc is None:
+                sub = mc_sub(it["name"])
+                break
+            if it["cat"] in sc:
+                sub = sk
+                break
+        it["sub"] = sub
+    for F in fams:
+        F["navail"] = sum(1 for i in items if i["fam"] == F["key"] and not i["sold"])
+
+    # ---- the cover photo of every category (the family takes the first one)
     for n, c in enumerate(cats):
-        # a category with nothing available waits off the home page; the
-        # products, the sheet and the direct address #/c/N are all untouched
-        avail = any(i["cat"] == c and not i["sold"] for i in items)
         want  = covers.get(c, "")
         first, pic = None, None
         if want:
@@ -647,18 +730,32 @@ def main():
         else:
             href = MAN_TILES.get(c) or (first["ready"]["big"][0] if first.get("ready") else "")
         TILES_USED[c] = href
-        if not avail:
-            problems.append("%s has no piece available: its tile is not shown" % c)
+
+    # ---- one card per aisle, with a small button for each shelf
+    tiles = []
+    for F in fams:
+        if not F["navail"]:
+            problems.append("%s has no piece available: its card is not shown" % F["title"])
             continue
-        num   = cnt[c]
-        sub = taglines.get(c, "")
+        lead = F["cats"][0]
+        href = TILES_USED.get(lead, "")
+        sub  = taglines.get(lead, "")
+        chips = ""
+        for (sk, st, _sc) in F.get("subs") or []:
+            if not any(i["fam"] == F["key"] and i["sub"] == sk and not i["sold"] for i in items):
+                continue
+            chips += ('<a class="tsub" href="#/r/%s/%s">%s</a>'
+                      % (F["key"], sk, e(st)))
         tiles.append(
-            '<a class="tile" href="#/c/%d">\n'
-            '  <span class="tshot"><img src="%s" alt="" loading="lazy" width="700" height="525"></span>\n'
-            '  <span class="tmeta"><span class="tname">%s</span>'
+            '<div class="tilewrap">\n'
+            '  <a class="tile" href="#/r/%s">\n'
+            '    <span class="tshot"><img src="%s" alt="" loading="lazy" width="700" height="525"></span>\n'
+            '    <span class="tmeta"><span class="tname">%s</span>'
             '<span class="tnum">%s</span></span>\n'
-            '  <span class="tgo" aria-hidden="true">&rsaquo;</span>\n'
-            '</a>' % (n, href, e(c[:1].upper() + c[1:]), e(sub)))
+            '    <span class="tgo" aria-hidden="true">&rsaquo;</span>\n'
+            '  </a>%s\n'
+            '</div>' % (F["key"], href, e(F["title"]), e(sub),
+                        ('\n  <div class="tsubs">%s</div>' % chips) if chips else ""))
 
     # ---- a short address for every product, used by the share link
     taken = {}
@@ -724,7 +821,7 @@ def main():
                  '<button class="pick" aria-pressed="false"><span>Ajouter</span></button>')
 
         cards.append(
-            '<article class="card%s" data-cat="%s" data-season="%s"\n'
+            '<article class="card%s" data-cat="%s" data-fam="%s" data-sub="%s" data-season="%s"\n'
             '         data-name="%s" data-brand="%s" data-stock="%s"\n'
             '         data-price="%s" data-label="%s" data-slug="%s"%s%s>\n'
             '  <div class="shot"><img src="%s" alt="%s" loading="lazy" width="1000" height="1333">%s\n'
@@ -741,7 +838,8 @@ def main():
             '    %s\n'
             '  </div>\n'
             '</article>'
-            % (scls, e(it["cat"]), e(sea), e(it["name"]), e(it["brand"]), e(it["stock"]),
+            % (scls, e(it["cat"]), e(it["fam"]), e(it["sub"]), e(sea),
+               e(it["name"]), e(it["brand"]), e(it["stock"]),
                e(it["price"]), e(it["label"]), e(it["slug"]), dattr, sattr,
                big[0], e(it["name"]), stick, SHARE_ICON,
                gal, e(it["brand"]), e(it["name"]), more, ("" if sold else sz),
@@ -761,11 +859,27 @@ def main():
     if avis_html:
         print("Avis: %d review(s) on the home page" % avis_html.count('class="acard"'))
 
+    # an address shared before the aisles existed still lands in the right place
+    legacy = []
+    for c in cats:
+        F = fams[cat2fam[c]]
+        sb = ""
+        for (sk, _st, sc) in F.get("subs") or []:
+            if sc and c in sc:
+                sb = sk
+        legacy.append(F["key"] + ("/" + sb if sb else ""))
+
     page = TEMPLATE.replace("{{TILES}}", "\n".join(tiles)) \
                    .replace("{{CARDS}}", "\n".join(cards)) \
-                   .replace("{{CATS}}",  ", ".join(repr(c[:1].upper() + c[1:]) for c in cats)) \
-                   .replace("{{RAW}}",   ", ".join(repr(c) for c in cats)) \
-                   .replace("{{SZCATS}}", ", ".join(repr(c) for c in SIZE_FILTER_CATS)) \
+                   .replace("{{FAMS}}",   _json.dumps(
+                        [{"k": F["key"], "t": F["title"],
+                          "s": [{"k": sk, "t": st} for (sk, st, _sc) in (F.get("subs") or [])
+                                if any(i["fam"] == F["key"] and i["sub"] == sk for i in items)]}
+                         for F in fams], ensure_ascii=False)) \
+                   .replace("{{LEGACY}}", _json.dumps(legacy, ensure_ascii=False)) \
+                   .replace("{{SZFAMS}}", _json.dumps(
+                        sorted(set(fams[cat2fam[c]]["key"] for c in SIZE_FILTER_CATS
+                                   if c in cat2fam)), ensure_ascii=False)) \
                    .replace("{{AVIS}}", avis_html) \
                    .replace("{{STORY}}", STORY_BLOCK) \
                    .replace("{{HOWTO}}", HOWTO_BLOCK) \
@@ -1316,6 +1430,15 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 /* category menu */
 .tiles { display:grid; grid-template-columns:1fr; gap:10px; padding-block:10px 24px; }
 @media (min-width:760px) { .tiles { grid-template-columns:1fr 1fr; gap:14px; } }
+.tiles { align-items:start; }
+.tilewrap { display:flex; flex-direction:column; min-width:0; }
+.tsubs { display:flex; flex-wrap:wrap; gap:6px; padding:7px 4px 0; }
+.tsub { font-family:var(--body); font-size:12px; letter-spacing:.04em; text-decoration:none;
+        color:var(--muted); background:var(--surface); border:1px solid var(--line);
+        border-radius:999px; padding:5px 12px; white-space:nowrap; }
+.tsub:hover { border-color:var(--gold); color:var(--gold); }
+.subs { display:flex; flex-wrap:wrap; gap:8px; padding:14px 0 0; }
+.subs .chip { font-size:12.5px; }
 .tile { display:flex; flex-direction:row; align-items:center; gap:14px; text-decoration:none;
         color:inherit; background:var(--surface); border:1px solid var(--line);
         border-radius:3px; overflow:hidden; padding:10px 14px 10px 10px; }
@@ -1685,6 +1808,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       <div class="frow" id="frowse" hidden><span class="flab">Saison</span></div>
       <button class="fclr" id="fclr" type="button" hidden>Tout afficher</button>
     </div>
+    <div class="subs" id="subs" hidden></div>
     <p class="count" id="count"></p>
     <p class="nores" id="nores" hidden>Aucun article ne correspond &agrave; votre recherche.<br>
       <button class="noresclr" id="noresclr" type="button">Effacer la recherche</button></p>
@@ -1713,7 +1837,7 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 </div>
 <script>
 (function(){
-  var WA='{{WA}}', CUR='MAD', CATS=[{{CATS}}], RAW=[{{RAW}}], SZCATS=[{{SZCATS}}];
+  var WA='{{WA}}', CUR='MAD', FAMS={{FAMS}}, LEGACY={{LEGACY}}, SZFAMS={{SZFAMS}};
   var SEAS=['Été', 'Demi-saison', 'Hiver'];
   var home=document.getElementById('home'), catv=document.getElementById('cat'),
       cartv=document.getElementById('cart');
@@ -1726,8 +1850,13 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   var sumbar=document.getElementById('sumbar'), sum=document.getElementById('sum');
   var fby=document.getElementById('fby'), szf=document.getElementById('szfilters'),
       frowsz=document.getElementById('frowsz'), frowse=document.getElementById('frowse'),
-      fclr=document.getElementById('fclr'), seasonHome=filters.parentNode;
-  var cur={cat:0, f:'all', sz:'', q:'', qw:[]};
+      fclr=document.getElementById('fclr'), seasonHome=filters.parentNode,
+      subsbox=document.getElementById('subs');
+  var cur={fam:0, sub:'', f:'all', sz:'', q:'', qw:[]};
+  function famIndex(key){
+    for(var i=0;i<FAMS.length;i++){ if(FAMS[i].k===key) return i; }
+    return -1;
+  }
 
   /* ---- search ---- */
   var qin=document.getElementById('q'), qin2=document.getElementById('q2'),
@@ -1910,7 +2039,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     cards.forEach(function(c){
       var on = cur.q
                ? hit(c, cur.qw)
-               : (c.dataset.cat===RAW[cur.cat]
+               : (c.dataset.fam===FAMS[cur.fam].k
+                  && (!cur.sub || c.dataset.sub===cur.sub)
                   && (cur.f==='all'||c.dataset.season===cur.f||c.dataset.season==='*')
                   && (!cur.sz||sizesOf(c).indexOf(cur.sz)>=0));
       c.hidden=!on;
@@ -1941,15 +2071,35 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     [].slice.call(szf.children).forEach(function(ch){
       ch.setAttribute('aria-pressed',String(ch.dataset.sz===cur.sz));
     });
+    [].slice.call(subsbox.children).forEach(function(ch){
+      ch.setAttribute('aria-pressed',String((ch.dataset.sub||'')===cur.sub));
+    });
     fclr.hidden=!cur.sz;
   }
 
-  function openCat(i){
-    cur.cat=i; cur.f='all'; cur.sz=''; cur.q=''; cur.qw=[];
+  function openFam(i, sub){
+    cur.fam=i; cur.sub=sub||''; cur.f='all'; cur.sz=''; cur.q=''; cur.qw=[];
     if(qin2) qin2.value=''; toggleClr();
-    ctitle.textContent=CATS[i];
+    var F=FAMS[i];
+    ctitle.textContent=F.t;
+    /* the shelves of this aisle, "Tout voir" first */
+    subsbox.innerHTML='';
+    if(F.s && F.s.length){
+      [{k:'',t:'Tout voir'}].concat(F.s).forEach(function(sv){
+        var b=document.createElement('button'); b.className='chip'; b.type='button';
+        b.dataset.sub=sv.k; b.textContent=sv.t;
+        b.addEventListener('click',function(){
+          cur.sub=sv.k;
+          var nh='#/r/'+F.k+(sv.k?('/'+sv.k):'');
+          try{ history.replaceState(null,'',nh); }catch(e){}
+          apply();
+        });
+        subsbox.appendChild(b);
+      });
+    }
+    subsbox.hidden=!(F.s && F.s.length);
     var present=SEAS.filter(function(s){
-      return cards.some(function(c){ return c.dataset.cat===RAW[i] && c.dataset.season===s; });
+      return cards.some(function(c){ return c.dataset.fam===F.k && c.dataset.season===s; });
     });
     filters.innerHTML='';
     if(present.length>1){
@@ -1960,12 +2110,12 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
         filters.appendChild(b);
       });
     }
-    /* the size filter, only in the categories that ask for it */
+    /* the size filter, only in the aisles that ask for it */
     szf.innerHTML='';
-    if(SZCATS.indexOf(RAW[i])>=0){
+    if(SZFAMS.indexOf(F.k)>=0){
       var seen=[];
       cards.forEach(function(c){
-        if(c.dataset.cat!==RAW[i]||c.dataset.sold==='1') return;
+        if(c.dataset.fam!==F.k||c.dataset.sold==='1') return;
         sizesOf(c).forEach(function(s){ if(s&&seen.indexOf(s)<0) seen.push(s); });
       });
       seen.sort(szcmp);
@@ -1991,7 +2141,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
     refresh(); window.scrollTo(0,0);
   }
   function openHome(){
-    cur.q=''; cur.qw=[];
+    cur.q=''; cur.qw=[]; cur.sub='';
+    if(subsbox){ subsbox.innerHTML=''; subsbox.hidden=true; }
     if(qin)  qin.value='';
     if(qin2) qin2.value='';
     toggleClr();
@@ -2005,7 +2156,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
   function openSearch(q){
     var fromHome = (document.activeElement===qin);
     cur.q=q; cur.qw=nrm(q).split(' ').filter(function(w){ return !!w; });
-    cur.f='all'; cur.sz='';
+    cur.f='all'; cur.sz=''; cur.sub='';
+    if(subsbox){ subsbox.innerHTML=''; subsbox.hidden=true; }
     ctitle.textContent='Résultats pour « '+q+' »';
     filters.innerHTML='';
     seasonHome.appendChild(filters);
@@ -2032,9 +2184,19 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
 
   function route(){
     var h=location.hash||'#/';
+    /* an aisle, and the shelf inside it */
+    if(h.indexOf('#/r/')===0){
+      var bits=h.slice(4).split('/');
+      var fi=famIndex(decodeURIComponent(bits[0]||''));
+      if(fi<0) return openHome();
+      var sb=decodeURIComponent(bits[1]||'');
+      var okSub=(FAMS[fi].s||[]).some(function(x){ return x.k===sb; });
+      return openFam(fi, okSub?sb:'');
+    }
+    /* an address shared before the aisles existed */
     if(h.indexOf('#/c/')===0){
-      var i=parseInt(h.slice(4),10);
-      if(i>=0 && i<RAW.length) return openCat(i);
+      var n=parseInt(h.slice(4),10);
+      if(n>=0 && n<LEGACY.length){ location.replace('#/r/'+LEGACY[n]); return; }
       return openHome();
     }
     if(h.indexOf('#/q/')===0){
@@ -2048,8 +2210,8 @@ footer .num a:hover { color:var(--gold); border-bottom-color:var(--gold); }
       var sg=decodeURIComponent(h.slice(4)).replace(/[^A-Za-z0-9-]/g,'');
       var card=sg?document.querySelector('.card[data-slug="'+sg+'"]'):null;
       if(card){
-        var ci=RAW.indexOf(card.getAttribute('data-cat'));
-        openCat(ci<0?0:ci);
+        var ci=famIndex(card.getAttribute('data-fam'));
+        openFam(ci<0?0:ci, '');
         setTimeout(function(){
           try{ card.scrollIntoView({block:'center'}); }catch(e){ card.scrollIntoView(); }
           card.classList.add('lit');
