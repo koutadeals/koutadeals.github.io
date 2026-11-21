@@ -110,11 +110,14 @@ FAMILIES = [
               ("chaussettes", "Chaussettes",     ["Chaussettes"])]},
     {"key": "mode",        "title": "Mode",
      "cats": ["Mode", "Sport & Fitness"],
-     "subs": [("sport", "Sport & fitness", ["Sport & Fitness"])]},
+     "subs": [("mode",  "Mode",            ["Mode"]),
+              ("sport", "Sport & fitness", ["Sport & Fitness"])]},
     {"key": "chaussures",  "title": "Chaussures & chaussons",
      "cats": ["L'Univers Chaussures"]},
     {"key": "maison",      "title": "Maison & Cuisine",
      "cats": ["Maison", "Cuisine"],
+     "cover": "Cuisine",
+     "tag": "L'art de recevoir, le charme du quotidien",
      "subs": [("cuisine", "Cuisine",           None),
               ("table",   "Arts de la table",  None),
               ("deco",    "Entretien & d\u00e9co",  None)]},
@@ -738,8 +741,8 @@ def main():
             problems.append("%s has no piece available: its card is not shown" % F["title"])
             continue
         lead = F["cats"][0]
-        href = TILES_USED.get(lead, "")
-        sub  = taglines.get(lead, "")
+        href = TILES_USED.get(F.get("cover") or lead, "")
+        sub  = F.get("tag") or taglines.get(lead, "")
         chips = ""
         for (sk, st, _sc) in F.get("subs") or []:
             if not any(i["fam"] == F["key"] and i["sub"] == sk and not i["sold"] for i in items):
@@ -748,14 +751,14 @@ def main():
                       % (F["key"], sk, e(st)))
         tiles.append(
             '<div class="tilewrap">\n'
-            '  <a class="tile" href="#/r/%s">\n'
-            '    <span class="tshot"><img src="%s" alt="" loading="lazy" width="700" height="525"></span>\n'
-            '    <span class="tmeta"><span class="tname">%s</span>'
+            '  <a class="tilelink" href="#/r/%s" aria-label="%s"></a>\n'
+            '  <span class="tshot"><img src="%s" alt="" loading="lazy" width="700" height="525"></span>\n'
+            '  <span class="tmeta"><span class="tname">%s</span>'
             '<span class="tnum">%s</span></span>\n'
-            '    <span class="tgo" aria-hidden="true">&rsaquo;</span>\n'
-            '  </a>%s\n'
-            '</div>' % (F["key"], href, e(F["title"]), e(sub),
-                        ('\n  <div class="tsubs">%s</div>' % chips) if chips else ""))
+            '%s'
+            '  <span class="tgo" aria-hidden="true">&rsaquo;</span>\n'
+            '</div>' % (F["key"], e(F["title"]), href, e(F["title"]), e(sub),
+                        ('  <div class="tsubs">%s</div>\n' % chips) if chips else ""))
 
     # ---- a short address for every product, used by the share link
     taken = {}
@@ -1431,26 +1434,30 @@ h1 { font-family:var(--display); font-weight:400; font-size:clamp(28px,8.5vw,44p
 .tiles { display:grid; grid-template-columns:1fr; gap:10px; padding-block:10px 24px; }
 @media (min-width:760px) { .tiles { grid-template-columns:1fr 1fr; gap:14px; } }
 .tiles { align-items:start; }
-.tilewrap { display:flex; flex-direction:column; min-width:0; }
-.tsubs { display:flex; flex-wrap:wrap; gap:6px; padding:7px 4px 0; }
+.tilewrap { position:relative; display:grid; min-width:0;
+            grid-template-columns:64px minmax(0,1fr) auto; column-gap:14px;
+            align-items:center; background:var(--surface);
+            border:1px solid var(--line); border-radius:3px;
+            padding:10px 14px 10px 10px; }
+.tilewrap:hover { border-color:var(--gold); }
+.tilelink { position:absolute; inset:0; z-index:1; border-radius:3px;
+            text-decoration:none; }
+.tsubs { grid-column:2; grid-row:2; display:flex; flex-wrap:wrap; gap:7px;
+         padding-top:9px; position:relative; z-index:2; }
 .tsub { font-family:var(--body); font-size:12px; letter-spacing:.04em; text-decoration:none;
         color:var(--muted); background:var(--surface); border:1px solid var(--line);
         border-radius:999px; padding:5px 12px; white-space:nowrap; }
 .tsub:hover { border-color:var(--gold); color:var(--gold); }
 .subs { display:flex; flex-wrap:wrap; gap:8px; padding:14px 0 0; }
 .subs .chip { font-size:12.5px; }
-.tile { display:flex; flex-direction:row; align-items:center; gap:14px; text-decoration:none;
-        color:inherit; background:var(--surface); border:1px solid var(--line);
-        border-radius:3px; overflow:hidden; padding:10px 14px 10px 10px; }
-.tile:hover { border-color:var(--gold); }
-.tshot { flex:0 0 64px; width:64px; height:64px; border-radius:2px; overflow:hidden;
-         background:var(--bg); display:block; }
+.tshot { grid-column:1; grid-row:1 / -1; width:64px; height:64px;
+         border-radius:2px; overflow:hidden; background:var(--bg); display:block; }
 .tshot img { width:100%; height:100%; object-fit:cover; display:block; }
-.tmeta { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:3px; }
+.tmeta { grid-column:2; grid-row:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
 .tname { font-family:var(--display); font-size:17.5px; color:var(--deep); padding:0; line-height:1.2; }
 .tnum { font-family:var(--display); font-style:italic; font-size:13.5px; color:var(--gold);
         padding:0; letter-spacing:0; text-transform:none; line-height:1.3; }
-.tgo { flex:0 0 auto; color:var(--gold); font-size:24px; line-height:1; }
+.tgo { grid-column:3; grid-row:1 / -1; color:var(--gold); font-size:24px; line-height:1; }
 
 /* avis clientes */
 .avis { padding-block:6px 10px; border-top:1px solid var(--line); margin-top:22px; }
